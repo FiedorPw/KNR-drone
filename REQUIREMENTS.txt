@@ -1,0 +1,11 @@
+gpiozero
+numpy
+Pillow
+RPi.GPIO
+smbus
+pigpio
+opencv-python
+ffmpeg-python
+matplotlib
+pyserial
+flask
