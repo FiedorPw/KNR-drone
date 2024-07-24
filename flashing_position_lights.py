@@ -1,9 +1,10 @@
 import time
 from rpi_ws281x import PixelStrip, Color
 
+# czerwony do 5v niebieski do masy
 # Konfiguracja parametrów
 LED_COUNT = 4         # Liczba diod PL9823
-LED_PIN = 12          # GPIO pin (musi wspierać PWM, w Raspberry Pi GPIO 12)
+LED_PIN = 12          # GPIO pin (zielony kabel) (musi wspierać PWM, w Raspberry Pi GPIO 12)
 LED_FREQ_HZ = 800000  # Częstotliwość sygnału PWM
 LED_DMA = 10          # Kanał DMA
 LED_BRIGHTNESS = 255  # Jasność (0-255)
