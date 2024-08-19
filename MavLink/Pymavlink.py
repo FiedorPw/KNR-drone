@@ -48,6 +48,9 @@ def arm_disarm(arm):
 def takeoff(altitude):
     master.mav.command_long_send(master.target_system, master.target_component,
                                  mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 0, 0, 0, 0, 0, 0, 0, altitude)
+    msg = master.recv_match(type='COMMAND_ACK',blocking=True)
+    print(msg)
+    
     print(f"Takeoff command sent for altitude {altitude} meters")
 
 def get_gps_position():
@@ -91,6 +94,26 @@ def get_all_telemetry():
     get_gps_position()
     get_attitude()
     get_battery_status() 
+
+def set_motor_speed(speed_percent):
+    """Set motor speed from 0 to 100%."""
+    speed = speed_percent / 100.0
+    master.mav.set_actuator_control_target_send(
+        0,  # time_boot_ms (not used)
+        master.target_system,
+        master.target_component,
+        0,  # group_mlx (actuator group)
+        [speed] * 8,  # controls (throttle values for motors 1-8)
+        0  # target_system
+    )
+
+def gradual_motor_speed_change():
+    """Gradually change motor speed from 0% to 20% to 40% to 20% to 0% with 2-second intervals."""
+    speeds = [0, 20, 40, 20, 0]
+    for speed in speeds:
+        set_motor_speed(speed)
+        print(f"Setting motor speed to {speed}%")
+        time.sleep(2)
 
 def send_position(target_x, target_y, target_z):
     current_position = master.recv_match(type='LOCAL_POSITION_NED', blocking=True)
@@ -137,30 +160,33 @@ def fly_square():
 
 if __name__ == "__main__":
     try:
-
-        # print("Getting telemetry data...")
-        # get_all_telemetry()
-        # get_gps_position()
-        # get_attitude()
-        # get_battery_status()
-        # Arm the drone
+        set_flight_mode(0)
+        time.sleep(1)
         arm_disarm(1)
-        time.sleep(2)  # Wait for 2 seconds
+        time.sleep(0.1)  # Wait for 2 seconds
+        set_flight_mode(4)
+        time.sleep(0.1)
+        
+        takeoff(1)
+        time.sleep(2)
+        set_flight_mode(6)
+        time.sleep(1)
+        arm_disarm(0)
 
         # Change flight mode to GUIDED (mode number 4)
-        set_flight_mode(4)
-        time.sleep(4)  # Wait for 1 second
-        get_flight_mode()
-        time.sleep(2)
-        # # Take off to 2 meters altitude
-        print("Takeoff start")
-        takeoff(0.5)
-        time.sleep(5)  # Hover for 5 seconds
+        # set_flight_mode(4)
+        # time.sleep(4)  # Wait for 1 second
+        # get_flight_mode()
+        # time.sleep(2)
+        # # # Take off to 2 meters altitude
+        # print("Takeoff start")
+        # takeoff(0.5)
+        # time.sleep(5)  # Hover for 5 seconds
 
         # # Fly in a square trajectory
         # fly_square()
-        set_flight_mode(8)
-        sleep(4)
+        # set_flight_mode(8)
+        # time.sleep(4)
         # arm_disarm(0)
 
         # # Continuous loop for telemetry data and flight mode monitoring
@@ -180,7 +206,7 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"An error occurred: {e}")    
     finally:
-        set_flight_mode(8)
-        time.sleep(6)
+        # set_flight_mode(0)
+        # time.sleep(2)
         # Disarm the drone
         arm_disarm(0)

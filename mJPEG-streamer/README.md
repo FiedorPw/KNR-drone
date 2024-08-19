@@ -5,5 +5,3 @@ ffmpeg -i http://192.168.77.183:8080/?action=stream -c:v copy -f segment -segmen
 
 Adres strima:
 http://192.168.77.183:8080/?action=stream
-
-Mikołaj kurwa debilu to nie tak sie robi
