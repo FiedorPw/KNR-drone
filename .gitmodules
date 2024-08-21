@@ -1,0 +1,3 @@
+[submodule "drone-WebApp"]
+	path = drone-WebApp
+	url = https://github.com/FiedorPw/drone-WebApp.git
