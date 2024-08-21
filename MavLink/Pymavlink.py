@@ -4,6 +4,8 @@ import math
 
 # Establish connection to the flight controller
 master = mavutil.mavlink_connection('/dev/ttyACM0', baud=57600)
+#master = mavutil.mavlink_connection('/dev/ttyAMA0', baud=57600)
+#master = mavutil.mavlink_connection('/dev/ttyS0', baud=57600)
 
 # Wait for the heartbeat message to find the system ID
 master.wait_heartbeat()
@@ -160,17 +162,17 @@ def fly_square():
 
 if __name__ == "__main__":
     try:
-        set_flight_mode(0)
-        time.sleep(1)
+        # set_flight_mode(0)
+        # time.sleep(1)
         arm_disarm(1)
-        time.sleep(0.1)  # Wait for 2 seconds
-        set_flight_mode(4)
-        time.sleep(0.1)
+        # time.sleep(0.1)  # Wait for 2 seconds
+        # set_flight_mode(4)
+        time.sleep(4)
         
-        takeoff(1)
-        time.sleep(2)
-        set_flight_mode(6)
-        time.sleep(1)
+        # takeoff(1)
+        # time.sleep(2)
+        # set_flight_mode(6)
+        # time.sleep(1)
         arm_disarm(0)
 
         # Change flight mode to GUIDED (mode number 4)
