@@ -4,8 +4,8 @@ import math
 
 # Establish connection to the flight controller
 master = mavutil.mavlink_connection('/dev/ttyACM0', baud=57600)
-#master = mavutil.mavlink_connection('/dev/ttyAMA0', baud=57600)
-#master = mavutil.mavlink_connection('/dev/ttyS0', baud=57600)
+# SITL
+# master = mavutil.mavlink_connection('tcp:127.0.0.1:5760')
 
 # Wait for the heartbeat message to find the system ID
 master.wait_heartbeat()
@@ -117,7 +117,7 @@ def gradual_motor_speed_change():
         print(f"Setting motor speed to {speed}%")
         time.sleep(2)
 
-def send_position(target_x, target_y, target_z):
+def send_position(target_x, target_y, target_z, velocity_x=0, velocity_y=0, velocity_z=0):
     current_position = master.recv_match(type='LOCAL_POSITION_NED', blocking=True)
     if current_position:
         start_x = current_position.x
@@ -128,68 +128,70 @@ def send_position(target_x, target_y, target_z):
         target_y += start_y
         target_z += start_z
 
+        # Send position and velocity target
         master.mav.set_position_target_local_ned_send(
             0,  # time_boot_ms (not used)
             master.target_system, master.target_component,
             mavutil.mavlink.MAV_FRAME_LOCAL_NED,  # frame
-            0b0000111111111000,  # type_mask (only positions enabled)
+            0b0000111111000111,  # type_mask (positions and velocities enabled)
             target_x, target_y, target_z,  # x, y, z positions in meters
-            0, 0, 0,  # x, y, z velocity in m/s (not used)
+            velocity_x, velocity_y, velocity_z,  # x, y, z velocity in m/s
             0, 0, 0,  # x, y, z acceleration (not used)
-            0, 0)  # yaw, yaw_rate (not used)
-        print(f"Moving to position (x: {target_x}, y: {target_y}, z: {target_z})")
+            0, 0  # yaw, yaw_rate (not used)
+        )
+        print(f"Moving to position (x: {target_x}, y: {target_y}, z: {target_z}) with velocity (vx: {velocity_x}, vy: {velocity_y}, vz: {velocity_z})")
+
+    else:
+        print("Failed to receive current position data.")
+
 
 def fly_square():
-    # Move forward by 0.5 meters
-    send_position(0.5, 0, 0)
-    time.sleep(5)
-    print("Moved forward by 0.5 meters")
+    # Ustal prędkość na 0.5 m/s (dostosuj do potrzeb)
+    velocity = 0.25
 
-    # Move left by 0.5 meters
-    send_position(0, -0.5, 0)
+    # Przesuń do przodu o 0.5 metra
+    send_position(0.5, 0, 0, velocity_x=velocity)
     time.sleep(5)
-    print("Moved left by 0.5 meters")
 
-    # Move backward by 0.5 meters
-    send_position(-0.5, 0, 0)
+    # Przesuń w lewo o 0.5 metra
+    send_position(0, -0.5, 0, velocity_y=-velocity)
     time.sleep(5)
-    print("Moved backward by 0.5 meters")
 
-    # Move right by 0.5 meters
-    send_position(0, 0.5, 0)
+    # Przesuń do tyłu o 0.5 metra
+    send_position(-0.5, 0, 0, velocity_x=-velocity)
     time.sleep(5)
-    print("Moved right by 0.5 meters")
+
+    # Przesuń w prawo o 0.5 metra
+    send_position(0, 0.5, 0, velocity_y=velocity)
+    time.sleep(5)
+
+def mission_one():
+
+        set_flight_mode(0)
+        time.sleep(1)
+
+        arm_disarm(1)
+        time.sleep(0.1)  # Wait for 2 seconds
+
+        set_flight_mode(4)
+        time.sleep(4)
+        
+        takeoff(1)
+        time.sleep(2)
+
+        fly_square()
+        time.sleep(4)
+
+        set_flight_mode(8)
+        time.sleep(4)  
+
 
 if __name__ == "__main__":
     try:
-        # set_flight_mode(0)
-        # time.sleep(1)
-        arm_disarm(1)
-        # time.sleep(0.1)  # Wait for 2 seconds
-        # set_flight_mode(4)
-        time.sleep(4)
+        set_flight_mode(0)
+        time.sleep(2)
         
-        # takeoff(1)
-        # time.sleep(2)
-        # set_flight_mode(6)
-        # time.sleep(1)
-        arm_disarm(0)
-
-        # Change flight mode to GUIDED (mode number 4)
-        # set_flight_mode(4)
-        # time.sleep(4)  # Wait for 1 second
-        # get_flight_mode()
-        # time.sleep(2)
-        # # # Take off to 2 meters altitude
-        # print("Takeoff start")
-        # takeoff(0.5)
-        # time.sleep(5)  # Hover for 5 seconds
-
-        # # Fly in a square trajectory
-        # fly_square()
-        # set_flight_mode(8)
-        # time.sleep(4)
-        # arm_disarm(0)
+        mission_one()
 
         # # Continuous loop for telemetry data and flight mode monitoring
         # while True:
@@ -203,7 +205,7 @@ if __name__ == "__main__":
         #     print("Monitoring flight mode changes...")
         #     get_flight_mode()
 
-        #     time.sleep(2)  # Pause for 2 seconds between telemetry updates
+        arm_disarm(0)  
 
     except Exception as e:
         print(f"An error occurred: {e}")    
