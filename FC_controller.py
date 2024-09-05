@@ -24,6 +24,9 @@ class FC_Controller:
         # Start the connection by waiting for heartbeat
         self._wait_for_heartbeat()
 
+        # Set arming check parameter to 0 - disable all arming flags
+        self.set_param('ARMING_CHECK', 0)
+
         # Start Flask web app in a separate thread
         self.app = Flask(__name__)
         CORS(self.app)
@@ -77,6 +80,16 @@ class FC_Controller:
             self.save_count = 0
             self.log_filename = self.create_log_filename()
             self.telemetry_data = self.reset_telemetry_data()
+        
+    def set_param(self, param_id, param_value, param_type=mavutil.mavlink.MAV_PARAM_TYPE_REAL32):
+        # Przesyłanie komendy do zmiany parametru
+        self.master.mav.param_set_send(
+            self.master.target_system,
+            self.master.target_component,
+            param_id.encode('utf-8'),
+            param_value,
+            param_type
+        )
 
     # Retrieves GPS position data
     def get_gps_position(self):
@@ -296,7 +309,7 @@ class FC_Controller:
         time.sleep(0.1)  # Wait for motors to arm
 
         self.set_flight_mode(4)
-        time.sleep(4)
+        time.sleep(2)
 
         self.takeoff(1)
         time.sleep(2)

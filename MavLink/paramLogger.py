@@ -118,7 +118,7 @@ def get_arm_status():
 
 def get_all_telemetry():
     # Get current timestamp
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
     telemetry_data["Timestamp"].append(timestamp)
 
     attitude_data = get_attitude()
