@@ -117,53 +117,94 @@ def gradual_motor_speed_change():
         print(f"Setting motor speed to {speed}%")
         time.sleep(2)
 
-def send_position(target_x, target_y, target_z, velocity_x=0, velocity_y=0, velocity_z=0):
+def send_position_body_frame(target_x_body, target_y_body, target_z_body, velocity_x=0, velocity_y=0, velocity_z=0):
+    # Get the current attitude of the drone (yaw, pitch, roll)
+    msg = master.recv_match(type='ATTITUDE', blocking=True)
+    if msg:
+        yaw = msg.yaw  # Yaw in radians
+    else:
+        print("Failed to receive attitude data.")
+        return
+    
+    # Create a rotation matrix for yaw transformation
+    cos_yaw = math.cos(yaw)
+    sin_yaw = math.sin(yaw)
+
+    # Apply the rotation matrix to convert body frame to NED frame
+    # target_x_ned = cos_yaw * target_x_body - sin_yaw * target_y_body
+    # target_y_ned = sin_yaw * target_x_body + cos_yaw * target_y_body
+    # target_z_ned = target_z_body  # Z remains the same (vertical axis)
+
+    target_x_ned = target_x_body
+    target_y_ned = target_y_body
+    target_z_ned = target_z_body
+
+
+        
+
+    # Get the current local position in NED frame
     current_position = master.recv_match(type='LOCAL_POSITION_NED', blocking=True)
     if current_position:
         start_x = current_position.x
         start_y = current_position.y
         start_z = current_position.z
 
-        target_x += start_x
-        target_y += start_y
-        target_z += start_z
+        target_x_ned += start_x
+        target_y_ned += start_y
+        target_z_ned += start_z
 
-        # Send position and velocity target
+        # Send position and velocity target in NED frame
         master.mav.set_position_target_local_ned_send(
             0,  # time_boot_ms (not used)
             master.target_system, master.target_component,
             mavutil.mavlink.MAV_FRAME_LOCAL_NED,  # frame
             0b0000111111000111,  # type_mask (positions and velocities enabled)
-            target_x, target_y, target_z,  # x, y, z positions in meters
+            target_x_ned, target_y_ned, target_z_ned,  # x, y, z positions in meters (NED frame)
             velocity_x, velocity_y, velocity_z,  # x, y, z velocity in m/s
             0, 0, 0,  # x, y, z acceleration (not used)
-            0, 0  # yaw, yaw_rate (not used)
+            yaw, 0  # Yaw in radians, with no yaw rate
         )
-        print(f"Moving to position (x: {target_x}, y: {target_y}, z: {target_z}) with velocity (vx: {velocity_x}, vy: {velocity_y}, vz: {velocity_z})")
+        print(f"Moving to position (x: {target_x_ned}, y: {target_y_ned}, z: {target_z_ned}) in NED frame, converted from body frame (x: {target_x_body}, y: {target_y_body}, z: {target_z_body})")
 
     else:
         print("Failed to receive current position data.")
 
 
+
+
 def fly_square():
     # Ustal prędkość na 0.5 m/s (dostosuj do potrzeb)
-    velocity = 0.25
+    velocity = 1
+    altitude = 2
 
     # Przesuń do przodu o 0.5 metra
-    send_position(0.5, 0, 0, velocity_x=velocity)
-    time.sleep(5)
+    send_position_body_frame(2, 0, altitude, velocity_x=velocity)
+    time.sleep(3)
 
     # Przesuń w lewo o 0.5 metra
-    send_position(0, -0.5, 0, velocity_y=-velocity)
-    time.sleep(5)
+    send_position_body_frame(0, -2, altitude, velocity_y=-velocity)
+    time.sleep(3)
 
     # Przesuń do tyłu o 0.5 metra
-    send_position(-0.5, 0, 0, velocity_x=-velocity)
-    time.sleep(5)
+    send_position_body_frame(-2, 0, altitude, velocity_x=-velocity)
+    time.sleep(3)
 
     # Przesuń w prawo o 0.5 metra
-    send_position(0, 0.5, 0, velocity_y=velocity)
-    time.sleep(5)
+    send_position_body_frame(0, 2, altitude, velocity_y=velocity)
+    time.sleep(3)
+
+def fly_straight():
+    # Ustal prędkość na 0.5 m/s (dostosuj do potrzeb)
+    velocity = 1
+    altitude = 2
+
+    # Przesuń do przodu o 0.5 metra
+    send_position_body_frame(3, 0, altitude, velocity_x=velocity)
+    time.sleep(4)
+
+    # Przesuń do tyłu o 0.5 metra
+    send_position_body_frame(-3, 0, altitude, velocity_x=-velocity)
+    time.sleep(4)
 
 def mission_one():
 
@@ -174,13 +215,20 @@ def mission_one():
         time.sleep(0.1)  # Wait for 2 seconds
 
         set_flight_mode(4)
-        time.sleep(4)
+        time.sleep(3)
         
-        takeoff(1)
-        time.sleep(2)
+        takeoff(2.5)
 
-        fly_square()
-        time.sleep(4)
+        time.sleep(3)
+
+
+        # fly_square()
+
+        # takeoff(2.5)
+
+        fly_straight()
+
+        time.sleep(2)
 
         set_flight_mode(8)
         time.sleep(4)  
@@ -192,6 +240,7 @@ if __name__ == "__main__":
         time.sleep(2)
         
         mission_one()
+        
 
         # # Continuous loop for telemetry data and flight mode monitoring
         # while True:
@@ -213,4 +262,4 @@ if __name__ == "__main__":
         # set_flight_mode(0)
         # time.sleep(2)
         # Disarm the drone
-        arm_disarm(0)
+        set_flight_mode(8)

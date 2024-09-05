@@ -281,44 +281,121 @@ class FC_Controller:
         else:
             print("Failed to receive current position data.")
 
-    # Makes the drone fly in a square pattern
+    # # Makes the drone fly in a square pattern
+    # def fly_square(self):
+    #     velocity = 0.25  # Speed of 0.25 m/s
+    #     # Move forward by 0.5 meters
+    #     self.send_position(0.5, 0, 0, velocity_x=int(velocity * 10))
+    #     time.sleep(5)
+
+    #     # Move left by 0.5 meters
+    #     self.send_position(0, -0.5, 0, velocity_y=int(-velocity * 10))
+    #     time.sleep(5)
+
+    #     # Move backward by 0.5 meters
+    #     self.send_position(-0.5, 0, 0, velocity_x=int(-velocity * 10))
+    #     time.sleep(5)
+
+    #     # Move right by 0.5 meters
+    #     self.send_position(0, 0.5, 0, velocity_y=int(velocity * 10))
+    #     time.sleep(5)
+
+    def fly_square_small(self):
+        # Ustal prędkość na 0.5 m/s (dostosuj do potrzeb)
+        velocity = 1
+        # altitude 
+
+
+        for i in range(10):
+            # Przesuń do przodu o 0.5 metra
+            if(i%2 == 0):
+                value = 1
+            else:
+                value = -1
+
+            self.send_position(0, 2*value-(i*0.2),  2-(i*0.2) , velocity_x=velocity)
+            time.sleep(1.5)
+
+
+        # # Przesuń do przodu o 0.5 metra
+        # self.send_position(0.1, 0, 2, velocity_x=velocity)
+        
+        # time.sleep(3)
+
+        # # Przesuń w lewo o 0.5 metra
+        # self.send_position(0.2, -0.2, 2.5, velocity_y=-velocity)
+        # time.sleep(3)
+
+        # # Przesuń do tyłu o 0.5 metra
+        # self.send_position(-0.3, 0.3, 2, velocity_x=-velocity)
+        # time.sleep(3)
+
+        # # Przesuń w prawo o 0.5 metra
+        # self.send_position(-0.4, 0.4, 2.5, velocity_y=velocity)
+        # time.sleep(3)
+
+
+
+
     def fly_square(self):
-        velocity = 0.25  # Speed of 0.25 m/s
-        # Move forward by 0.5 meters
-        self.send_position(0.5, 0, 0, velocity_x=int(velocity * 10))
-        time.sleep(5)
+        # Ustal prędkość na 0.5 m/s (dostosuj do potrzeb)
+        velocity = 1
 
-        # Move left by 0.5 meters
-        self.send_position(0, -0.5, 0, velocity_y=int(-velocity * 10))
-        time.sleep(5)
+        # Przesuń do przodu o 0.5 metra
+        self.send_position(2, 0, 0, velocity_x=velocity)
+        
+        time.sleep(3)
 
-        # Move backward by 0.5 meters
-        self.send_position(-0.5, 0, 0, velocity_x=int(-velocity * 10))
-        time.sleep(5)
+        # Przesuń w lewo o 0.5 metra
+        self.send_position(0, -2, 0, velocity_y=-velocity)
+        time.sleep(3)
 
-        # Move right by 0.5 meters
-        self.send_position(0, 0.5, 0, velocity_y=int(velocity * 10))
-        time.sleep(5)
+        # Przesuń do tyłu o 0.5 metra
+        self.send_position(-2, 0, 0, velocity_x=-velocity)
+        time.sleep(3)
+
+        # Przesuń w prawo o 0.5 metra
+        self.send_position(0, 2, 0, velocity_y=velocity)
+        time.sleep(3)
+
+    def fly_straight(self):
+        # Ustal prędkość na 0.5 m/s (dostosuj do potrzeb)
+        velocity = 1
+
+        # Przesuń do przodu o 0.5 metra
+        self.send_position(2, 0, 0, velocity_x=velocity)
+        time.sleep(4)
+
+        # Przesuń do tyłu o 0.5 metra
+        self.send_position(-2, 0, 0, velocity_x=-velocity)
+        time.sleep(4)
 
     # Executes a predefined mission
+    
     def mission_one(self):
-        self.set_flight_mode(0)
-        time.sleep(1)
 
-        self.arm_disarm(1)
-        time.sleep(0.1)  # Wait for motors to arm
+            self.set_flight_mode(0)
+            time.sleep(1)
 
-        self.set_flight_mode(4)
-        time.sleep(2)
+            self.arm_disarm(1)
+            time.sleep(0.1)  # Wait for 2 seconds
 
-        self.takeoff(1)
-        time.sleep(2)
+            self.set_flight_mode(4)
+            time.sleep(4)
+            
+            self.takeoff(2)
+            time.sleep(4)
 
-        self.fly_square()
-        time.sleep(4)
+            # self.fly_square()
+            # self.fly_straight()
+            self.takeoff(2.5)
+            print("lecimy test~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-        self.set_flight_mode(8)
-        time.sleep(4)
+            self.fly_square_small()
+            time.sleep(2)
+
+            self.set_flight_mode(8)
+            time.sleep(4)  
 
     # Sends a takeoff command to the drone
     def takeoff(self, altitude):
@@ -331,7 +408,7 @@ class FC_Controller:
     # Sets the flight mode of the drone
     def set_flight_mode(self, mode_number):
         mode_mapping = {
-            0: 'STABILIZE',
+            0: 'STABILIZE', 
             2: 'ALT_HOLD',
             3: 'AUTO',
             4: 'GUIDED',
@@ -357,3 +434,4 @@ class FC_Controller:
 if __name__ == "__main__":
     drone = FC_Controller()
     drone.mission_one()
+    
