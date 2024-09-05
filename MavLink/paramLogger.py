@@ -18,6 +18,7 @@ log_filename = f"/home/KNR/KNR-dron/MavLink/LOGS/dane_telemetryczne_{current_tim
 
 # Initialize the telemetry data structure
 telemetry_data = {
+    "Timestamp": [],
     "Roll": [],
     "Pitch": [],
     "Yaw": [],
@@ -116,6 +117,10 @@ def get_arm_status():
         return False
 
 def get_all_telemetry():
+    # Get current timestamp
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    telemetry_data["Timestamp"].append(timestamp)
+
     attitude_data = get_attitude()
     if attitude_data:
         telemetry_data["Roll"].append(attitude_data["Roll"])
