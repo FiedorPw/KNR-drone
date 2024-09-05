@@ -87,6 +87,34 @@ class CameraController:
         except ffmpeg.Error as e:
             print("ffmpeg error:", e.stderr.decode('utf8'))
 
+        def take_pictures_continously():
+
+
+        camera_controller_obj = CameraController()
+        camera_controller_obj.take_picture()
+
+        # array_pic = camera_controller_obj.take_pictures_continously()
+            
+            # #działa# patrzy w dół
+            # print("kamera patrzy w dół")
+            # # camera_controller_obj.set_angle(33)
+            # # sleep żeby miało czas się ruszyć
+            # sleep(0.2)
+            # # strzel fote
+            # print("zrobienie zdjęcia")
+            # camera_controller_obj.take_picture()
+
+            # # patrzy do przodu pod kątem lekko w dół
+            # print("kamera patrzy na skos")
+            # # camera_controller_obj.set_angle(-25)
+            # sleep(0.2)
+            # print("zrobienie zdjęcia")
+            # camera_controller_obj.take_picture()
+
+        #test ruchu kamery i zrobienia zdjęcia
+        # test_gripper_controller()
+
+
 if __name__ == "__main__":
     camera_controller_obj = CameraController()
     camera_controller_obj.max_positions_test()
