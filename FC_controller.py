@@ -10,7 +10,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 
 class FC_Controller:
-    def __init__(self, connection_string='/dev/ttyACM0', baud_rate=57600, log_dir="/home/KNR/KNR-dron/LOGS/"):
+    def __init__(self, connection_string='/dev/ttyACM0', baud_rate=57600, log_dir="/home/KNR/LOGS/"):
         self.master = mavutil.mavlink_connection(connection_string, baud=baud_rate)
         self.log_dir = log_dir
         # Lock for thread-safe file operations
@@ -80,7 +80,7 @@ class FC_Controller:
             self.save_count = 0
             self.log_filename = self.create_log_filename()
             self.telemetry_data = self.reset_telemetry_data()
-        
+
     def set_param(self, param_id, param_value, param_type=mavutil.mavlink.MAV_PARAM_TYPE_REAL32):
         # Przesyłanie komendy do zmiany parametru
         self.master.mav.param_set_send(
@@ -196,26 +196,6 @@ class FC_Controller:
         armed_status = self.get_arm_status()
         self.telemetry_data["Armed"].append(armed_status)
 
-    # Starts the Flask web server
-    def start_flask(self):
-        self.app.run(host='0.0.0.0', port=5000)
-
-    # Sets up Flask routes for the web server
-    def setup_flask_routes(self):
-        @self.app.route('/api/telemetry', methods=['GET'])
-        def get_telemetry():
-            try:
-                data = self.read_from_json()
-                last_data = {key: values[-1] for key, values in data.items()}  # Get the last entry
-                return jsonify(last_data)
-            except Exception as e:
-                return jsonify({"error": str(e)}), 500
-
-    # Reads telemetry data from the JSON file
-    def read_from_json(self):
-        with self.file_lock:
-            with open(self.log_filename, 'r') as json_file:
-                return json.load(json_file)
 
     # Collects telemetry data and saves it periodically
     def telemetry_collection(self):
@@ -303,7 +283,7 @@ class FC_Controller:
     def fly_square_small(self):
         # Ustal prędkość na 0.5 m/s (dostosuj do potrzeb)
         velocity = 1
-        # altitude 
+        # altitude
 
 
         for i in range(10):
@@ -319,7 +299,7 @@ class FC_Controller:
 
         # # Przesuń do przodu o 0.5 metra
         # self.send_position(0.1, 0, 2, velocity_x=velocity)
-        
+
         # time.sleep(3)
 
         # # Przesuń w lewo o 0.5 metra
@@ -343,7 +323,7 @@ class FC_Controller:
 
         # Przesuń do przodu o 0.5 metra
         self.send_position(2, 0, 0, velocity_x=velocity)
-        
+
         time.sleep(3)
 
         # Przesuń w lewo o 0.5 metra
@@ -371,7 +351,7 @@ class FC_Controller:
         time.sleep(4)
 
     # Executes a predefined mission
-    
+
     def mission_one(self):
 
             self.set_flight_mode(0)
@@ -382,7 +362,7 @@ class FC_Controller:
 
             self.set_flight_mode(4)
             time.sleep(4)
-            
+
             self.takeoff(2)
             time.sleep(4)
 
@@ -395,7 +375,7 @@ class FC_Controller:
             time.sleep(2)
 
             self.set_flight_mode(8)
-            time.sleep(4)  
+            time.sleep(4)
 
     # Sends a takeoff command to the drone
     def takeoff(self, altitude):
@@ -408,7 +388,7 @@ class FC_Controller:
     # Sets the flight mode of the drone
     def set_flight_mode(self, mode_number):
         mode_mapping = {
-            0: 'STABILIZE', 
+            0: 'STABILIZE',
             2: 'ALT_HOLD',
             3: 'AUTO',
             4: 'GUIDED',
@@ -434,4 +414,3 @@ class FC_Controller:
 if __name__ == "__main__":
     drone = FC_Controller()
     drone.mission_one()
-    

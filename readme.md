@@ -5,6 +5,22 @@ odpala python enviroment:
 source /setup.sh &
 
 
+## porty
+
+Wykorzystujemy tunelowanie za pomocą cloudflare argotunnel obsługiwane przez cloudflared.
+
+80:/
+443:/
+
+5000:/api
+https://dron.knr.edu.pl/api
+
+8080:/camera
+
+9090:/cockpit
+https://dron-cockpit.knr.edu.pl/
+nie działa tylko z firefoxa :(
+
 ## pobranie libek i stworzenie python virtual enviroment(venv)
 python3 -m venv myenv
 pip install -r REQUIREMENTS.txt
@@ -20,7 +36,8 @@ sudo systemctl enable --now snapd.socket
 sudo ln -s /var/lib/snapd/snap /snap
 
 /snap/bin/mjpg-streamer -i "input_uvc.so -d /dev/video0" -o "output_http.so -w /usr/share/mjpg-streamer/www -p 8080"
-
+## obsługa błedow
+sudo systemctl restart mjpg-streamer.service    #restart kamery
 # Dokumentacja
 ## Architektura Hardware'u
 1. Elektronikę w postaci mikro-komputera RaspberyPI 4B - elemęt wykonawczy dla algorytmów lotu, CV i sterowania peryferiami(schemat kodu poniżej).
@@ -31,7 +48,7 @@ sudo ln -s /var/lib/snapd/snap /snap
   - Gripper - do łapania kolorowych piłek(konkurencja kopalnie marsjańskie)
   - Serwo do ruszania kamerą
 5. Sensory
-  - Kamera szerokokątna 
+  - Kamera szerokokątna
   - Czujnik odbiciowy
 
 
