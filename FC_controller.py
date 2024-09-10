@@ -6,8 +6,8 @@ import math
 from datetime import datetime
 import shutil
 from threading import Thread, Lock
-from flask import Flask, jsonify
-from flask_cors import CORS
+# from flask import Flask, jsonify
+# from flask_cors import CORS
 
 
 class FC_Controller:
@@ -28,12 +28,12 @@ class FC_Controller:
         # Set arming check parameter to 0 - disable all arming flags
         self.set_param('ARMING_CHECK', 0)
 
-        # Start Flask web app in a separate thread
-        self.app = Flask(__name__)
-        CORS(self.app)
-        self.setup_flask_routes()
-        self.flask_thread = Thread(target=self.start_flask, daemon=True)
-        self.flask_thread.start()
+        # # Start Flask web app in a separate thread
+        # self.app = Flask(__name__)
+        # CORS(self.app)
+        # self.setup_flask_routes()
+        # self.flask_thread = Thread(target=self.start_flask, daemon=True)
+        # self.flask_thread.start()
 
         # Start telemetry collection in a separate thread
         self.telemetry_thread = Thread(target=self.telemetry_collection, daemon=True)

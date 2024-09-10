@@ -1,9 +1,9 @@
-from GripperController import GripperController
-from CameraController import CameraController
+#
+# from GripperController import GripperController
+# from CameraController import CameraController
 from FC_controller import FC_Controller
-from CV import BallFinder
-# import LandingController
-#import FlightControllerInterface
+from CV_Controller import BallDetector
+
 
 import subprocess
 import time
@@ -12,8 +12,9 @@ import requests
 import json
 
 def run_mission():
-    camera_controller_obj = CameraController()
-    gripper_controller_obj = GripperController()
+    # camera_controller_obj = CameraController()
+    # gripper_controller_obj = GripperController()
+
 
     # algorytm 1 - znajdywanie piłek
     #
@@ -43,47 +44,62 @@ def test_FCC():
     print(GPSData)
     pass
 
-def test_camera_controller():
-    # inicjalizacja obiektu
-    camera_controller_obj = CameraController()
+def detect_balls():
+    # Initialize the BallDetector
+    detector = BallDetector()
 
-    # patrzy w dółsleep(1)
-    print("kamera patrzy w dół")
-    camera_controller_obj.set_angle(33)
-    # sleep żeby miało czas się ruszyć
-    sleep(0.5)
-    # strzel fote
-    print("zrobienie zdjęcia")
-    camera_controller_obj.take_picture()
+    # URL of your MJPEG stream
+    mjpeg_url = 'http://127.0.0.1:8080/?action=snapshot'  # Replace with the actual URL
 
-    #patrzy do przodu pod kątem lekko w dół
-    print("kamera patrzy na skos")
-    camera_controller_obj.set_angle(-25)
-    sleep(0.5)
-    print("zrobienie zdjęcia")
-    camera_controller_obj.take_picture()
+    # Fetch and process a single JPEG frame
+    frame = detector.fetch_frame(mjpeg_url)
+    balls = detector.process_frame(frame)
 
-def test_gripper_controller():
-    gripper_controller_obj = GripperController()
+    print("Detected balls:")
+    for color, ball in balls.items():
+        print(f"{color} ball - Center: {ball.center}, Size: {ball.size}")
 
-    #działa
-    gripper_controller_obj.open_gripper(0.4)
-    time.sleep(2)
-    gripper_controller_obj.close_gripper(0.4)
-    time.sleep(2)
+# def test_camera_controller():
+#     # inicjalizacja obiektu
+#     camera_controller_obj = CameraController()
 
-    print("czytanie z czujnika odbiciowego")
-    distance_from_sensor = gripper_controller_obj.get_distance_claw_sensor()
-    print(distance_from_sensor)
+#     # patrzy w dółsleep(1)
+#     print("kamera patrzy w dół")
+#     camera_controller_obj.set_angle(33)
+#     # sleep żeby miało czas się ruszyć
+#     sleep(0.5)
+#     # strzel fote
+#     print("zrobienie zdjęcia")
+#     camera_controller_obj.take_picture()
+
+#     #patrzy do przodu pod kątem lekko w dół
+#     print("kamera patrzy na skos")
+#     camera_controller_obj.set_angle(-25)
+#     sleep(0.5)
+#     print("zrobienie zdjęcia")
+#     camera_controller_obj.take_picture()
+
+# def test_gripper_controller():
+#     gripper_controller_obj = GripperController()
+
+#     #działa
+#     gripper_controller_obj.open_gripper(0.4)
+#     time.sleep(2)
+#     gripper_controller_obj.close_gripper(0.4)
+#     time.sleep(2)
+
+#     print("czytanie z czujnika odbiciowego")
+#     distance_from_sensor = gripper_controller_obj.get_distance_claw_sensor()
+#     print(distance_from_sensor)
 
 
 
 
 if __name__ == "__main__":
 
-    test_FCC()
+    # test_FCC()
     # test_camera_controller()
-
+    detect_balls()
     #take_pictures_continously()
 
     # print(status)
