@@ -4,6 +4,15 @@
 odpala python enviroment:
 source /setup.sh &
 
+## serwisy
+
+### 4G LTE
+
+mmcli -L
+mmcli -m 0
+
+sudo mmcli -m 0 --enable
+successfully enabled the modem
 
 ## porty
 

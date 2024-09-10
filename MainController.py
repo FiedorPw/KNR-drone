@@ -1,5 +1,6 @@
 from GripperController import GripperController
 from CameraController import CameraController
+from FC_controller import FC_Controller
 from CV import BallFinder
 # import LandingController
 #import FlightControllerInterface
@@ -34,6 +35,13 @@ def run_mission():
 
     pass
 
+def test_FCC():
+
+    FCC_obj = FC_Controller()
+
+    GPSData = FCC_obj.get_gps_position()
+    print(GPSData)
+    pass
 
 def test_camera_controller():
     # inicjalizacja obiektu
@@ -73,10 +81,9 @@ def test_gripper_controller():
 
 if __name__ == "__main__":
 
-
+    test_FCC()
     # test_camera_controller()
 
     #take_pictures_continously()
 
-    status = send_data_to_flask("duuupa")
-    print(status)
+    # print(status)

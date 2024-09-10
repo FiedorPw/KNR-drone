@@ -9,6 +9,7 @@ from threading import Thread, Lock
 from flask import Flask, jsonify
 from flask_cors import CORS
 
+
 class FC_Controller:
     def __init__(self, connection_string='/dev/ttyACM0', baud_rate=57600, log_dir="/home/KNR/LOGS/"):
         self.master = mavutil.mavlink_connection(connection_string, baud=baud_rate)
@@ -20,7 +21,7 @@ class FC_Controller:
         self.attitude_lock = Lock()
         self.telemetry_data = self.reset_telemetry_data()
         self.log_filename = self.create_log_filename()
-
+        
         # Start the connection by waiting for heartbeat
         self._wait_for_heartbeat()
 
@@ -250,7 +251,7 @@ class FC_Controller:
             self.master.mav.set_position_target_local_ned_send(
                 0,  # time_boot_ms (not used)
                 self.master.target_system, self.master.target_component,
-                mavutil.mavlink.MAV_FRAME_LOCAL_NED,  # frame
+                mavutil.mavlink.MAV_FRAME_BODY_NED,  # frame
                 0b0000111111000111,  # type_mask (positions and velocities enabled)
                 target_x, target_y, target_z,  # x, y, z positions in meters
                 velocity_x, velocity_y, velocity_z,  # x, y, z velocity in m/s
@@ -261,24 +262,55 @@ class FC_Controller:
         else:
             print("Failed to receive current position data.")
 
-    # # Makes the drone fly in a square pattern
-    # def fly_square(self):
-    #     velocity = 0.25  # Speed of 0.25 m/s
-    #     # Move forward by 0.5 meters
-    #     self.send_position(0.5, 0, 0, velocity_x=int(velocity * 10))
-    #     time.sleep(5)
+    def navigate_to_target(self, target_x, target_y, target_z, tolerance=0.2, max_velocity=2.0):
+        """
+        Naprowadza drona na zadany punkt (target_x, target_y, target_z).
+        Tolerance określa, jak blisko dron musi być do celu, aby uznać, że dotarł do punktu.
+        max_velocity to maksymalna prędkość w m/s, jaką dron może osiągnąć.
+        """
+        while True:
+            # Pobierz aktualną pozycję drona
+            current_position = self.master.recv_match(type='LOCAL_POSITION_NED', blocking=True)
+            if current_position:
+                current_x = current_position.x
+                current_y = current_position.y
+                current_z = current_position.z
 
-    #     # Move left by 0.5 meters
-    #     self.send_position(0, -0.5, 0, velocity_y=int(-velocity * 10))
-    #     time.sleep(5)
+                # Oblicz odległości do celu
+                delta_x = target_x - current_x
+                delta_y = target_y - current_y
+                delta_z = target_z - current_z
 
-    #     # Move backward by 0.5 meters
-    #     self.send_position(-0.5, 0, 0, velocity_x=int(-velocity * 10))
-    #     time.sleep(5)
+                # Oblicz całkowitą odległość do celu
+                distance_to_target = math.sqrt(delta_x**2 + delta_y**2 + delta_z**2)
 
-    #     # Move right by 0.5 meters
-    #     self.send_position(0, 0.5, 0, velocity_y=int(velocity * 10))
-    #     time.sleep(5)
+                # Sprawdź, czy dron jest wystarczająco blisko celu
+                if distance_to_target <= tolerance:
+                    print(f"Dron dotarł do celu ({target_x}, {target_y}, {target_z})")
+                    break
+
+                # Oblicz prędkości w kierunkach x, y, z i normalizuj je
+                velocity_x = delta_x / distance_to_target * max_velocity
+                velocity_y = delta_y / distance_to_target * max_velocity
+                velocity_z = delta_z / distance_to_target * max_velocity
+
+                # Ogranicz prędkości do maksymalnej wartości
+                velocity_magnitude = math.sqrt(velocity_x**2 + velocity_y**2 + velocity_z**2)
+                if velocity_magnitude > max_velocity:
+                    velocity_x = (velocity_x / velocity_magnitude) * max_velocity
+                    velocity_y = (velocity_y / velocity_magnitude) * max_velocity
+                    velocity_z = (velocity_z / velocity_magnitude) * max_velocity
+
+                self.send_position(target_x, target_y, target_z, velocity_x, velocity_y, velocity_z)
+                print(f"Przemieszczanie do ({target_x}, {target_y}, {target_z}) - Odległość: {distance_to_target:.2f}m")
+
+                # Poczekaj chwilę przed następnym krokiem
+                time.sleep(0.2)
+            else:
+                print("Nie można uzyskać bieżącej pozycji.")
+                break
+
+
 
     def fly_square_small(self):
         # Ustal prędkość na 0.5 m/s (dostosuj do potrzeb)
@@ -360,16 +392,18 @@ class FC_Controller:
             self.arm_disarm(1)
             time.sleep(0.1)  # Wait for 2 seconds
 
-            self.set_flight_mode(4)
+            self.set_flight_mode(4) #GUIDED
             time.sleep(4)
 
             self.takeoff(2)
-            time.sleep(4)
+            time.sleep(2)
+
+            self.naviga
 
             # self.fly_square()
             # self.fly_straight()
             self.takeoff(2.5)
-            print("lecimy test~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            # print("lecimy test~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
             self.fly_square_small()
             time.sleep(2)
