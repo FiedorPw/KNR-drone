@@ -2,6 +2,9 @@ import cv2
 import numpy as np
 import requests
 import io
+import os
+import json
+import sysv_ipc
 
 # Static threshold for size (area) of white squares
 SIZE_THRESHOLD = 500  # Adjust this value as needed
@@ -71,6 +74,7 @@ class BallDetector:
             'blue': Ball('blue', (105, 65, 15), (230, 115, 45)),
             'purple': Ball('purple', (105, 50, 60), (170, 85, 90))
         }
+        self.mq = sysv_ipc.MessageQueue(128, sysv_ipc.IPC_CREAT)
 
     def fetch_frame(self, mjpeg_url):
         # Fetch a single JPEG frame from the MJPEG stream
@@ -144,8 +148,11 @@ class BallDetector:
         cv2.destroyAllWindows()
 
         return self.balls
-    
+
     def process_frame_debug(self, frame):
+        '''
+        pokazuje przetworzoną klatkę w oknie
+        '''
         if frame is None:
             print("No frame to process")
             return
@@ -193,9 +200,27 @@ class BallDetector:
         for ball in self.balls.values():
             ball.draw(frame, screen_center)
 
+        # Calculate vector_to_center for the largest ball
+        largest_ball = max(self.balls.values(), key=lambda b: b.size if b.size > 0 else 0)
+        vector_to_center = (screen_center[0] - largest_ball.center[0], screen_center[1] - largest_ball.center[1])
+
+        # Dane do wysłania
+        data = {
+            'vector_to_center': vector_to_center
+        }
+
+        # Konwertujemy obiekt na string w formacie JSON
+        json_data = json.dumps(data)
+
+        # Wysyłamy dane jako bajty
+        self.mq.send(json_data.encode('utf-8'))
+        print(f"Sent vector: {json_data}")
+
         # Display the resulting frame with bounding boxes and circles
         # cv2.imshow('Bounding Boxes and Ball Detection', frame)
         # cv2.waitKey(0)  # Wait for a key press to close the window
+
+
 
         # PODŁĄCZENIE Z MAIN COTROLEREM
         print("red center: ", self.balls['red'].center)  # red center:  (99, 306)
@@ -205,14 +230,22 @@ class BallDetector:
 
         return self.balls
 
-# Example usage
-detector = BallDetector()
+def write_vector_to_pipe(vector_to_center, pipe_path):
+    if not os.path.exists(pipe_path):
+        os.mkfifo(pipe_path)
+    with open(pipe_path, 'w') as pipe:
+        vector_str = f"{vector_to_center[0]},{vector_to_center[1]}"
+        pipe.write(vector_str)
+        pipe.flush()
 
-# URL of your MJPEG stream
-mjpeg_url = 'http://127.0.0.1:8080/?action=snapshot'  # Replace with the actual URL
+if __name__ == "__main__":
+    detector = BallDetector()
+    # stream URL
+    mjpeg_url = 'http://127.0.0.1:8080/?action=snapshot'
 
-# Fetch and process a single JPEG frame
-print("fetching")
-frame = detector.fetch_frame(mjpeg_url)
-print("procesing")
-print(detector.process_frame_debug(frame))
+    # Fetch and process a single JPEG frame
+    print("fetching")
+    frame = detector.fetch_frame(mjpeg_url)
+    print("procesing")
+    #print(detector.process_frame(frame))	
+    print(detector.process_frame_debug(frame))

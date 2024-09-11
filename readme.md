@@ -25,6 +25,7 @@ Wykorzystujemy tunelowanie za pomocą cloudflare argotunnel obsługiwane przez c
 https://dron.knr.edu.pl/api
 
 8080:/camera
+https://dron-kamera.knr.edu.pl/?action=stream
 
 9090:/cockpit
 https://dron-cockpit.knr.edu.pl/

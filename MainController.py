@@ -1,15 +1,14 @@
-#
 # from GripperController import GripperController
 # from CameraController import CameraController
 from FC_controller import FC_Controller
 from CV_Controller import BallDetector
-
 
 import subprocess
 import time
 from time import sleep
 import requests
 import json
+import sysv_ipc
 
 def run_mission():
     # camera_controller_obj = CameraController()
@@ -40,9 +39,15 @@ def test_FCC():
 
     FCC_obj = FC_Controller()
 
-    GPSData = FCC_obj.get_gps_position()
-    print(GPSData)
+    # GPSData = FCC_obj.get_gps_position()
+    # print(GPSData)
     pass
+
+def print_balls(balls):
+    for ball in balls:
+        print("red: center: ", balls['red'].center,"size: " ,balls['red'].size)  # red center:  (99, 306)
+        print("blue: center: ", balls['blue'].center,"size: " ,balls['blue'].size)  # red center:  (99, 306)
+        print("purple: center: ", balls['purple'].center,"size: ", balls['purple'].size)  # red center:  (99, 306)
 
 def detect_balls():
     # Initialize the BallDetector
@@ -56,9 +61,7 @@ def detect_balls():
     balls = detector.process_frame(frame)
 
     print("Detected balls:")
-    for color, ball in balls.items():
-        print(f"{color} ball - Center: {ball.center}, Size: {ball.size}")
-
+    print_balls(balls)
 # def test_camera_controller():
 #     # inicjalizacja obiektu
 #     camera_controller_obj = CameraController()
@@ -92,14 +95,44 @@ def detect_balls():
 #     distance_from_sensor = gripper_controller_obj.get_distance_claw_sensor()
 #     print(distance_from_sensor)
 
+FCC_obj = FC_Controller()
+mq = sysv_ipc.MessageQueue(128, sysv_ipc.IPC_CREAT)
 
+def receive_and_navigate():
+    try:
+        # Odbieramy wiadomość z kolejki (maksymalna długość wiadomości to 1024 bajty)
+        message, _ = mq.receive(block=True)
 
+        # Dekodujemy wiadomość z bajtów na string
+        message = message.decode('utf-8')
+
+        # Konwertujemy string w formacie JSON na obiekt Python (słownik)
+        data = json.loads(message)
+
+        # Pobieramy wektor z danych
+        vector_to_center = data.get('vector_to_center', None)
+
+        if vector_to_center:
+            print(f"Received vector: {vector_to_center}")
+
+            # Wywołanie metody navigate_to_target w FC_Controller
+            FCC_obj.navigate_to_target(vector_to_center)
+        else:
+            print("No vector received!")
+
+    except sysv_ipc.BusyError:
+        print("No message received in queue.")
 
 if __name__ == "__main__":
 
+    while True:
+        # Odbieraj wektor i wywołaj funkcję nawigacji
+        receive_and_navigate()
+
     # test_FCC()
     # test_camera_controller()
-    detect_balls()
+    # detect_balls()
     #take_pictures_continously()
+
 
     # print(status)

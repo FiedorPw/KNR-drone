@@ -8,7 +8,7 @@ import shutil
 from threading import Thread, Lock
 # from flask import Flask, jsonify
 # from flask_cors import CORS
-
+import sysv_ipc
 
 class FC_Controller:
     def __init__(self, connection_string='/dev/ttyACM0', baud_rate=57600, log_dir="/home/KNR/LOGS/"):
@@ -21,6 +21,7 @@ class FC_Controller:
         self.attitude_lock = Lock()
         self.telemetry_data = self.reset_telemetry_data()
         self.log_filename = self.create_log_filename()
+        self.mq = sysv_ipc.MessageQueue(128)
         
         # Start the connection by waiting for heartbeat
         self._wait_for_heartbeat()
@@ -262,53 +263,35 @@ class FC_Controller:
         else:
             print("Failed to receive current position data.")
 
-    def navigate_to_target(self, target_x, target_y, target_z, tolerance=0.2, max_velocity=2.0):
+
+    def navigate_to_target(self, pipe_path, target_z=2, max_velocity=2.0):
         """
-        Naprowadza drona na zadany punkt (target_x, target_y, target_z).
-        Tolerance określa, jak blisko dron musi być do celu, aby uznać, że dotarł do punktu.
-        max_velocity to maksymalna prędkość w m/s, jaką dron może osiągnąć.
+        Navigate drone based on velocity direction from named pipe.
+        pipe_path: Path to the named pipe.
         """
         while True:
-            # Pobierz aktualną pozycję drona
-            current_position = self.master.recv_match(type='LOCAL_POSITION_NED', blocking=True)
-            if current_position:
-                current_x = current_position.x
-                current_y = current_position.y
-                current_z = current_position.z
+            # Read velocity vector from the pipe
+            vector = self.read_vector_from_pipe(pipe_path)
+            if vector:
+                velocity_x, velocity_y, velocity_z = vector
 
-                # Oblicz odległości do celu
-                delta_x = target_x - current_x
-                delta_y = target_y - current_y
-                delta_z = target_z - current_z
-
-                # Oblicz całkowitą odległość do celu
-                distance_to_target = math.sqrt(delta_x**2 + delta_y**2 + delta_z**2)
-
-                # Sprawdź, czy dron jest wystarczająco blisko celu
-                if distance_to_target <= tolerance:
-                    print(f"Dron dotarł do celu ({target_x}, {target_y}, {target_z})")
-                    break
-
-                # Oblicz prędkości w kierunkach x, y, z i normalizuj je
-                velocity_x = delta_x / distance_to_target * max_velocity
-                velocity_y = delta_y / distance_to_target * max_velocity
-                velocity_z = delta_z / distance_to_target * max_velocity
-
-                # Ogranicz prędkości do maksymalnej wartości
+                # Normalize and limit velocity
                 velocity_magnitude = math.sqrt(velocity_x**2 + velocity_y**2 + velocity_z**2)
                 if velocity_magnitude > max_velocity:
                     velocity_x = (velocity_x / velocity_magnitude) * max_velocity
                     velocity_y = (velocity_y / velocity_magnitude) * max_velocity
                     velocity_z = (velocity_z / velocity_magnitude) * max_velocity
 
-                self.send_position(target_x, target_y, target_z, velocity_x, velocity_y, velocity_z)
-                print(f"Przemieszczanie do ({target_x}, {target_y}, {target_z}) - Odległość: {distance_to_target:.2f}m")
+                # Send position and velocity commands to the drone
+                self.send_position(0, 0, target_z, velocity_x, velocity_y, velocity_z)
 
-                # Poczekaj chwilę przed następnym krokiem
-                time.sleep(0.2)
+                print(f"Navigating with velocity vector ({velocity_x}, {velocity_y}, {velocity_z})")
+
             else:
-                print("Nie można uzyskać bieżącej pozycji.")
-                break
+                print("Failed to read vector from pipe.")
+
+            # Add a small delay to avoid overwhelming the system
+            time.sleep(0.5)
 
 
 
@@ -443,6 +426,8 @@ class FC_Controller:
         mode_id = self.master.mode_mapping()[mode]
         self.master.set_mode(mode_id)
         print(f"Flight mode set to {mode} (mode number {mode_number})")
+
+
 
 # Example usage
 if __name__ == "__main__":
