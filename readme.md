@@ -10,9 +10,29 @@ source /setup.sh &
 
 mmcli -L
 mmcli -m 0
+# Konfiguracja 4G
+# wgl jak nic nie rozumiecie to tu macie tutorial(link do konfy z chatem) ostatnie prompty sa pomocne 
+https://chatgpt.com/share/f2990dc2-e79a-4dcb-aab6-339bf06d000a
+sudo mmcli -m 1 --set-allowed-modes=4g 
+
+# wgl chuj wie co ale cos trzeba dodac na te sciezke na ktorej jest to polaczenie 
+sudo mmcli -b 3 # sie okazuje ze tutaj to ten 3 port
+# a wszystkie inne odlaczamy
+sudo mmcli -b 0 --disconnect
+sudo mmcli -b 1 --disconnect
+sudo mmcli -b 2 --disconnect
 
 sudo mmcli -m 0 --enable
 successfully enabled the modem
+# modem connecting
+sudo mmcli -m 0 --simple-connect="apn=internet,ip-type=ipv4"
+# jak nie zadziala 
+sudo mmcli -m 0 --simple-disconnect
+sudo mmcli -m 0 --simple-connect="apn=internet,ip-type=ipv4"
+# Konfiguracja ip
+ip addr show
+sudo ip addr add 100.109.58.165/30 dev wwan0  ten adres znajdziesz w adr show: 100.109.58.165/30
+
 
 ## porty
 

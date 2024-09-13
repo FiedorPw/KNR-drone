@@ -6,12 +6,13 @@ import math
 from datetime import datetime
 import shutil
 from threading import Thread, Lock
+import numpy as np
 # from flask import Flask, jsonify
 # from flask_cors import CORS
-import sysv_ipc
+from CV_Controller import BallDetector
 
 class FC_Controller:
-    def __init__(self, connection_string='/dev/ttyACM0', baud_rate=57600, log_dir="/home/KNR/LOGS/"):
+    def __init__(self, connection_string='/dev/ttyACM0', baud_rate=57600, log_dir="/home/KNR/KNR-dron/LOGS/"):
         self.master = mavutil.mavlink_connection(connection_string, baud=baud_rate)
         self.log_dir = log_dir
         # Lock for thread-safe file operations
@@ -21,7 +22,7 @@ class FC_Controller:
         self.attitude_lock = Lock()
         self.telemetry_data = self.reset_telemetry_data()
         self.log_filename = self.create_log_filename()
-        self.mq = sysv_ipc.MessageQueue(128)
+        # self.mq = sysv_ipc.MessageQueue(128)
         
         # Start the connection by waiting for heartbeat
         self._wait_for_heartbeat()
@@ -226,21 +227,8 @@ class FC_Controller:
             self.master.motors_disarmed_wait()
             print("Motors disarmed")
 
-    # Sets the motor speed from 0 to 100%
-    def set_motor_speed(self, speed_percent):
-        """Set motor speed from 0 to 100%."""
-        speed = speed_percent / 100.0
-        self.master.mav.set_actuator_control_target_send(
-            0,  # time_boot_ms (not used)
-            self.master.target_system,
-            self.master.target_component,
-            0,  # group_mlx (actuator group)
-            [speed] * 8,  # controls (throttle values for motors 1-8)
-            0  # target_system
-        )
-
     # Sends position and velocity targets to the drone
-    def send_position(self, target_x, target_y, target_z, velocity_x=0, velocity_y=0, velocity_z=0):
+    def send_position(self, target_x, target_y, target_z, velocity_x, velocity_y, velocity_z):
         current_position = self.master.recv_match(type='LOCAL_POSITION_NED', blocking=True)
         if current_position:
             start_x = current_position.x
@@ -263,71 +251,25 @@ class FC_Controller:
         else:
             print("Failed to receive current position data.")
 
-
-    def navigate_to_target(self, pipe_path, target_z=2, max_velocity=2.0):
-        """
-        Navigate drone based on velocity direction from named pipe.
-        pipe_path: Path to the named pipe.
-        """
-        while True:
-            # Read velocity vector from the pipe
-            vector = self.read_vector_from_pipe(pipe_path)
-            if vector:
-                velocity_x, velocity_y, velocity_z = vector
-
-                # Normalize and limit velocity
-                velocity_magnitude = math.sqrt(velocity_x**2 + velocity_y**2 + velocity_z**2)
-                if velocity_magnitude > max_velocity:
-                    velocity_x = (velocity_x / velocity_magnitude) * max_velocity
-                    velocity_y = (velocity_y / velocity_magnitude) * max_velocity
-                    velocity_z = (velocity_z / velocity_magnitude) * max_velocity
-
-                # Send position and velocity commands to the drone
-                self.send_position(0, 0, target_z, velocity_x, velocity_y, velocity_z)
-
-                print(f"Navigating with velocity vector ({velocity_x}, {velocity_y}, {velocity_z})")
-
-            else:
-                print("Failed to read vector from pipe.")
-
-            # Add a small delay to avoid overwhelming the system
-            time.sleep(0.5)
-
-
-
-    def fly_square_small(self):
-        # Ustal prędkość na 0.5 m/s (dostosuj do potrzeb)
-        velocity = 1
-        # altitude
-
-
-        for i in range(10):
-            # Przesuń do przodu o 0.5 metra
-            if(i%2 == 0):
-                value = 1
-            else:
-                value = -1
-
-            self.send_position(0, 2*value-(i*0.2),  2-(i*0.2) , velocity_x=velocity)
-            time.sleep(1.5)
-
-
-        # # Przesuń do przodu o 0.5 metra
-        # self.send_position(0.1, 0, 2, velocity_x=velocity)
-
-        # time.sleep(3)
-
-        # # Przesuń w lewo o 0.5 metra
-        # self.send_position(0.2, -0.2, 2.5, velocity_y=-velocity)
-        # time.sleep(3)
-
-        # # Przesuń do tyłu o 0.5 metra
-        # self.send_position(-0.3, 0.3, 2, velocity_x=-velocity)
-        # time.sleep(3)
-
-        # # Przesuń w prawo o 0.5 metra
-        # self.send_position(-0.4, 0.4, 2.5, velocity_y=velocity)
-        # time.sleep(3)
+    def send_velocity(self, target_z, velocity_x, velocity_y):
+        current_position = self.master.recv_match(type='LOCAL_POSITION_NED', blocking=True)
+        if current_position:
+            start_z = current_position.z
+            target_z += start_z  # Dodanie pozycji startowej do target Z
+            
+            self.master.mav.set_position_target_local_ned_send(
+                0,  # time_boot_ms (not used)
+                self.master.target_system, self.master.target_component,
+                mavutil.mavlink.MAV_FRAME_BODY_NED,  # frame
+                0b0000111111001011,  # type_mask (velocities X, Y and position Z enabled)
+                0, 0, target_z,  # x, y positions ignored, z position used
+                velocity_x, velocity_y, 0,  # x, y velocities used, z velocity ignored
+                0, 0, 0,  # x, y, z acceleration (not used)
+                0, 0  # yaw, yaw_rate (not used)
+            )
+            print(f"Moving with velocity (vx: {velocity_x}, vy: {velocity_y}) and target Z: {target_z}")
+        else:
+            print("Failed to receive current position data.")
 
 
 
@@ -365,8 +307,6 @@ class FC_Controller:
         self.send_position(-2, 0, 0, velocity_x=-velocity)
         time.sleep(4)
 
-    # Executes a predefined mission
-
     def mission_one(self):
 
             self.set_flight_mode(0)
@@ -380,8 +320,6 @@ class FC_Controller:
 
             self.takeoff(2)
             time.sleep(2)
-
-            self.naviga
 
             # self.fly_square()
             # self.fly_straight()
@@ -427,9 +365,50 @@ class FC_Controller:
         self.master.set_mode(mode_id)
         print(f"Flight mode set to {mode} (mode number {mode_number})")
 
+    # def normalize_vector(vector, maxV):
+    #     mag = np.linalg.norm(vector)
+
+    #     if mag == 0:
+    #         return [0, 0]  
+        
+    #     norm_vector = vector / mag
+        
+    #     # Pomnóż znormalizowany wektor przez nową długość
+    #     scaled_vector = norm_vector * maxV
+        
+    #     return scaled_vector
+
+    def navigate_to_target(self):
+        detector = BallDetector()
+
+        mjpeg_url = 'http://127.0.0.1:8080/?action=snapshot'
+        frame = detector.fetch_frame(mjpeg_url)
+        balls = detector.process_frame_debug(frame)
+
+        #Multiplikator do zwiększania prędkości
+        multV = 2 
+        #Wysokość na której dron leci do celu w metrach
+        alt = 2
+
+        if detector.target_vector is None:
+            print("Piłka zniknęła z pola widzenia. Ustawiam prędkości na 0.")
+            vx = 0
+            vy = 0
+        else:
+            # Normalizacja wektora, jeśli cel jest wykryty
+            # vector = normalize_vector(detector.target_vector, 2)  # maksymalna V drona to 2m/s
+            vector = detector.target_vector 
+            # camera_dims = detector.frame_dims
+            vx = vector[0]/960*multV
+            vy = vector[1]/540*multV
+
+        self.send_velocity(alt,vx,vy) # Leć w stronę piłki na H=2m
+
+        print(f"Target vector: {detector.target_vector[0]}, {detector.target_vector[1]}")
+        print(f"Prędkość w osi X: {vx}, Prędkość w osi Y: {vy}")
 
 
 # Example usage
 if __name__ == "__main__":
-    drone = FC_Controller()
-    drone.mission_one()
+    fcc = FC_Controller()
+    # detector = BallDetector()

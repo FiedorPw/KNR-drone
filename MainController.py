@@ -1,14 +1,13 @@
 # from GripperController import GripperController
 # from CameraController import CameraController
-from FC_controller import FC_Controller
+from FC_Controller import FC_Controller
 from CV_Controller import BallDetector
 
 import subprocess
+# from time import sleep
 import time
-from time import sleep
+import numpy as np
 import requests
-import json
-import sysv_ipc
 
 def run_mission():
     # camera_controller_obj = CameraController()
@@ -35,14 +34,6 @@ def run_mission():
 
     pass
 
-def test_FCC():
-
-    FCC_obj = FC_Controller()
-
-    # GPSData = FCC_obj.get_gps_position()
-    # print(GPSData)
-    pass
-
 def print_balls(balls):
     for ball in balls:
         print("red: center: ", balls['red'].center,"size: " ,balls['red'].size)  # red center:  (99, 306)
@@ -62,6 +53,7 @@ def detect_balls():
 
     print("Detected balls:")
     print_balls(balls)
+
 # def test_camera_controller():
 #     # inicjalizacja obiektu
 #     camera_controller_obj = CameraController()
@@ -95,39 +87,46 @@ def detect_balls():
 #     distance_from_sensor = gripper_controller_obj.get_distance_claw_sensor()
 #     print(distance_from_sensor)
 
-FCC_obj = FC_Controller()
-mq = sysv_ipc.MessageQueue(128, sysv_ipc.IPC_CREAT)
+def test_navi_vision():
+    fcc = FC_Controller()
+    fcc.navigate_to_target()
 
-def receive_and_navigate():
-    try:
-        # Odbieramy wiadomość z kolejki (maksymalna długość wiadomości to 1024 bajty)
-        message, _ = mq.receive(block=True)
+#    def navigate_to_target(self, pipe_path, target_z=2, max_velocity=2.0):
+#         """
+#         Navigate drone based on velocity direction from named pipe.
+#         pipe_path: Path to the named pipe.
+#         """
+#         while True:
+#             # Read velocity vector from the pipe
+#             vector = self.read_vector_from_pipe(pipe_path)
+#             if vector:
+#                 velocity_x, velocity_y, velocity_z = vector
 
-        # Dekodujemy wiadomość z bajtów na string
-        message = message.decode('utf-8')
+#                 # Normalize and limit velocity
+#                 velocity_magnitude = math.sqrt(velocity_x**2 + velocity_y**2 + velocity_z**2)
+#                 if velocity_magnitude > max_velocity:
+#                     velocity_x = (velocity_x / velocity_magnitude) * max_velocity
+#                     velocity_y = (velocity_y / velocity_magnitude) * max_velocity
+#                     velocity_z = (velocity_z / velocity_magnitude) * max_velocity
 
-        # Konwertujemy string w formacie JSON na obiekt Python (słownik)
-        data = json.loads(message)
+#                 # Send position and velocity commands to the drone
+#                 self.send_position(0, 0, target_z, velocity_x, velocity_y, velocity_z)
 
-        # Pobieramy wektor z danych
-        vector_to_center = data.get('vector_to_center', None)
+#                 print(f"Navigating with velocity vector ({velocity_x}, {velocity_y}, {velocity_z})")
 
-        if vector_to_center:
-            print(f"Received vector: {vector_to_center}")
+#             else:
+#                 print("Failed to read vector from pipe.")
 
-            # Wywołanie metody navigate_to_target w FC_Controller
-            FCC_obj.navigate_to_target(vector_to_center)
-        else:
-            print("No vector received!")
+#             # Add a small delay to avoid overwhelming the system
+#             time.sleep(0.5)
 
-    except sysv_ipc.BusyError:
-        print("No message received in queue.")
+
 
 if __name__ == "__main__":
 
     while True:
-        # Odbieraj wektor i wywołaj funkcję nawigacji
-        receive_and_navigate()
+
+        test_navi_vision()
 
     # test_FCC()
     # test_camera_controller()

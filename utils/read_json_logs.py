@@ -16,3 +16,5 @@ def read_last_json_log():
         raise FileNotFoundError("No log files found.")
     with open(log_path, 'r') as json_file:
         return json.load(json_file)
+if __name__ == '__main__':
+    print(read_last_json_log())

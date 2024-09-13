@@ -5,6 +5,7 @@ import io
 import os
 import json
 import sysv_ipc
+import time
 
 # Static threshold for size (area) of white squares
 SIZE_THRESHOLD = 500  # Adjust this value as needed
@@ -74,7 +75,9 @@ class BallDetector:
             'blue': Ball('blue', (105, 65, 15), (230, 115, 45)),
             'purple': Ball('purple', (105, 50, 60), (170, 85, 90))
         }
-        self.mq = sysv_ipc.MessageQueue(128, sysv_ipc.IPC_CREAT)
+        # self.mq = sysv_ipc.MessageQueue(128, sysv_ipc.IPC_CREAT)
+        self.target_vector = None
+        # self.frame_dims = None
 
     def fetch_frame(self, mjpeg_url):
         # Fetch a single JPEG frame from the MJPEG stream
@@ -84,6 +87,7 @@ class BallDetector:
             image_bytes = io.BytesIO(response.content)
             image = np.asarray(bytearray(image_bytes.read()), dtype=np.uint8)
             frame = cv2.imdecode(image, cv2.IMREAD_COLOR)
+            # self.frame_dims=(frame.shape[1], frame.shape[0])
             return frame
         else:
             print("Failed to fetch frame")
@@ -143,6 +147,8 @@ class BallDetector:
 
         # PODŁĄCZENIE Z MAIN COTROLEREM
         print("red center: ", self.balls['red'].center)  # red center:  (99, 306)
+        print("blue center: ", self.balls['blue'].center)  # red center:  (99, 306)
+        print("purple center: ", self.balls['purple'].center)  # red center:  (99, 306)
         print("blue size: ", self.balls['blue'].size)  # blue size:  20
 
         cv2.destroyAllWindows()
@@ -202,50 +208,52 @@ class BallDetector:
 
         # Calculate vector_to_center for the largest ball
         largest_ball = max(self.balls.values(), key=lambda b: b.size if b.size > 0 else 0)
-        vector_to_center = (screen_center[0] - largest_ball.center[0], screen_center[1] - largest_ball.center[1])
+        self.target_vector = (screen_center[0] - largest_ball.center[0], screen_center[1] - largest_ball.center[1])
 
-        # Dane do wysłania
-        data = {
-            'vector_to_center': vector_to_center
-        }
 
-        # Konwertujemy obiekt na string w formacie JSON
-        json_data = json.dumps(data)
+        # # Dane do wysłania
+        # data = {
+        #     'vector_to_center': vector_to_center
+        # }
 
-        # Wysyłamy dane jako bajty
-        self.mq.send(json_data.encode('utf-8'))
-        print(f"Sent vector: {json_data}")
+        # # Konwertujemy obiekt na string w formacie JSON
+        # json_data = json.dumps(data)
+
+        # # Wysyłamy dane jako bajty
+        # self.mq.send(json_data.encode('utf-8'))
+        # print(f"Sent vector: {json_data}")
 
         # Display the resulting frame with bounding boxes and circles
         # cv2.imshow('Bounding Boxes and Ball Detection', frame)
         # cv2.waitKey(0)  # Wait for a key press to close the window
 
-
-
         # PODŁĄCZENIE Z MAIN COTROLEREM
         print("red center: ", self.balls['red'].center)  # red center:  (99, 306)
-        print("blue size: ", self.balls['blue'].size)  # blue size:  20
+        print("red size: ", self.balls['red'].size)  # blue size:  20
+
+        # print("blue size: ", self.balls['blue'].size)  # blue size:  20
 
         # cv2.destroyAllWindows()
 
         return self.balls
 
-def write_vector_to_pipe(vector_to_center, pipe_path):
-    if not os.path.exists(pipe_path):
-        os.mkfifo(pipe_path)
-    with open(pipe_path, 'w') as pipe:
-        vector_str = f"{vector_to_center[0]},{vector_to_center[1]}"
-        pipe.write(vector_str)
-        pipe.flush()
-
 if __name__ == "__main__":
     detector = BallDetector()
     # stream URL
-    mjpeg_url = 'http://127.0.0.1:8080/?action=snapshot'
+    # mjpeg_url = 'http://127.0.0.1:8080/?action=snapshot'
 
-    # Fetch and process a single JPEG frame
-    print("fetching")
-    frame = detector.fetch_frame(mjpeg_url)
-    print("procesing")
-    #print(detector.process_frame(frame))	
-    print(detector.process_frame_debug(frame))
+    # while True:
+    #     # Fetch and process a single JPEG frame
+    #     print("fetching")
+    #     frame = detector.fetch_frame(mjpeg_url)
+    #     if frame is not None:
+    #         # Print resolution of the frame -> 1920x1080
+    #         # print("Frame resolution: ", frame.shape[1], "x", frame.shape[0]) 
+    #         print("processing")
+    #         detector.process_frame_debug(frame)
+    #         # print(detector.process_frame_debug(frame))
+    #         print(detector.target_vector)
+    #     else:
+    #         print("Failed to fetch frame")
+    #     time.sleep(1)
+
