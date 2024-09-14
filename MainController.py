@@ -1,7 +1,8 @@
 # from GripperController import GripperController
 # from CameraController import CameraController
-from FC_Controller import FC_Controller
+# from FC_Controller import FC_Controller
 from CV_Controller import BallDetector
+from FCCtest import FC_Controller
 
 import subprocess
 # from time import sleep
@@ -87,9 +88,6 @@ def detect_balls():
 #     distance_from_sensor = gripper_controller_obj.get_distance_claw_sensor()
 #     print(distance_from_sensor)
 
-def test_navi_vision():
-    fcc = FC_Controller()
-    fcc.navigate_to_target()
 
 #    def navigate_to_target(self, pipe_path, target_z=2, max_velocity=2.0):
 #         """
@@ -124,11 +122,9 @@ def test_navi_vision():
 
 if __name__ == "__main__":
 
-    while True:
+    fcc = FC_Controller()
+    fcc.test_command_telemetry()
 
-        test_navi_vision()
-
-    # test_FCC()
     # test_camera_controller()
     # detect_balls()
     #take_pictures_continously()

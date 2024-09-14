@@ -31,8 +31,13 @@ sudo mmcli -m 0 --simple-disconnect
 sudo mmcli -m 0 --simple-connect="apn=internet,ip-type=ipv4"
 # Konfiguracja ip
 ip addr show
+sudo ip link set wwan0 up
 sudo ip addr add 100.109.58.165/30 dev wwan0  ten adres znajdziesz w adr show: 100.109.58.165/30
-
+# sprawdzanie polaczenia 
+ping 8.8.8.8
+# usuwanie ip wlan
+sudo ip route del default via 192.168.77.1 dev wlan0
+sudo mmcli -m 0 --simple-disconnect
 
 ## porty
 
