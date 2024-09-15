@@ -240,20 +240,20 @@ class BallDetector:
 if __name__ == "__main__":
     detector = BallDetector()
     # stream URL
-    # mjpeg_url = 'http://127.0.0.1:8080/?action=snapshot'
+    mjpeg_url = 'http://127.0.0.1:8080/?action=snapshot'
 
-    # while True:
-    #     # Fetch and process a single JPEG frame
-    #     print("fetching")
-    #     frame = detector.fetch_frame(mjpeg_url)
-    #     if frame is not None:
-    #         # Print resolution of the frame -> 1920x1080
-    #         # print("Frame resolution: ", frame.shape[1], "x", frame.shape[0]) 
-    #         print("processing")
-    #         detector.process_frame_debug(frame)
-    #         # print(detector.process_frame_debug(frame))
-    #         print(detector.target_vector)
-    #     else:
-    #         print("Failed to fetch frame")
-    #     time.sleep(1)
+    while True:
+        # Fetch and process a single JPEG frame
+        print("fetching")
+        frame = detector.fetch_frame(mjpeg_url)
+        if frame is not None:
+            # Print resolution of the frame -> 1920x1080
+            # print("Frame resolution: ", frame.shape[1], "x", frame.shape[0]) 
+            print("processing")
+            detector.process_frame_debug(frame)
+            # print(detector.process_frame_debug(frame))
+            print(detector.target_vector)
+        else:
+            print("Failed to fetch frame")
+        time.sleep(1)
 

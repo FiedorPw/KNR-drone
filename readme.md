@@ -6,38 +6,82 @@ source /setup.sh &
 
 ## serwisy
 
-### 4G LTE
+
+
+### Konfiguracja modemu 4G LTE Huawei
 
 mmcli -L
-mmcli -m 0
-# Konfiguracja 4G
-# wgl jak nic nie rozumiecie to tu macie tutorial(link do konfy z chatem) ostatnie prompty sa pomocne 
-https://chatgpt.com/share/f2990dc2-e79a-4dcb-aab6-339bf06d000a
-sudo mmcli -m 1 --set-allowed-modes=4g 
+    /org/freedesktop/ModemManager1/Modem/2 [huawei] E3276
 
-# wgl chuj wie co ale cos trzeba dodac na te sciezke na ktorej jest to polaczenie 
-sudo mmcli -b 3 # sie okazuje ze tutaj to ten 3 port
-# a wszystkie inne odlaczamy
-sudo mmcli -b 0 --disconnect
-sudo mmcli -b 1 --disconnect
-sudo mmcli -b 2 --disconnect
+    stąd bierzemy id do następnej komendy, w tym przypadku 2
 
-sudo mmcli -m 0 --enable
-successfully enabled the modem
-# modem connecting
-sudo mmcli -m 0 --simple-connect="apn=internet,ip-type=ipv4"
-# jak nie zadziala 
-sudo mmcli -m 0 --simple-disconnect
-sudo mmcli -m 0 --simple-connect="apn=internet,ip-type=ipv4"
-# Konfiguracja ip
-ip addr show
-sudo ip link set wwan0 up
-sudo ip addr add 100.109.58.165/30 dev wwan0  ten adres znajdziesz w adr show: 100.109.58.165/30
-# sprawdzanie polaczenia 
+mmcli -m 2
+sudo mmcli -m 2 --simple-connect="apn=internet,ip-type=ipv4"
+
+mmcli -m 2
+  --------------------------------
+  General  |                 path: /org/freedesktop/ModemManager1/Modem/2
+           |            device id: 31386a378d888b459070e8a2b8767c2d5469c360
+  --------------------------------
+  Hardware |         manufacturer: huawei
+           |                model: E3276
+           |    firmware revision: 21.260.05.00.618
+           |            supported: gsm-umts
+           |              current: gsm-umts
+           |         equipment id: 863781013763835
+  --------------------------------
+  System   |               device: /sys/devices/pci0000:00/0000:00:14.0/usb1/1-1
+           |              physdev: /sys/devices/pci0000:00/0000:00:14.0/usb1/1-1
+           |              drivers: huawei_cdc_ncm, option
+           |               plugin: huawei
+           |         primary port: cdc-wdm0
+           |                ports: cdc-wdm0 (at), ttyUSB0 (at), wwx0c5b8f279a64 (net)
+  --------------------------------
+  Status   |       unlock retries: sim-pin (3), sim-puk (10), sim-pin2 (3), sim-puk2 (10)
+           |                state: connected
+           |          power state: on
+           |          access tech: lte
+           |       signal quality: 93% (recent)
+  --------------------------------
+  Modes    |            supported: allowed: 2g; preferred: none
+           |                       allowed: 3g; preferred: none
+           |                       allowed: 4g; preferred: none
+           |                       allowed: 2g, 3g, 4g; preferred: none
+           |              current: allowed: 4g; preferred: none
+  --------------------------------
+  IP       |            supported: ipv4, ipv6, ipv4v6
+  --------------------------------
+  3GPP     |                 imei: 863781013763835
+           |          operator id: 26006
+           |        operator name: POL
+           |         registration: home
+           | packet service state: attached
+  --------------------------------
+  3GPP EPS | ue mode of operation: csps-2
+  --------------------------------
+  SIM      |     primary sim path: /org/freedesktop/ModemManager1/SIM/2
+  --------------------------------
+  Bearer   |                paths: /org/freedesktop/ModemManager1/Bearer/0
+
+  z ostatniej lini bierzemy id bearera w tym przypadku 0, do następnego polecenia
+
+sudo mmcli -b 0
+
+ip a
+  stąd bierzemy nazwę interface'u do następnej komendy, w tmy przypadku wwx0c5b8f279a64
+
+sudo ip link set wwx0c5b8f279a64 up
+
+sudo dhclient wwx0c5b8f279a64
+
 ping 8.8.8.8
-# usuwanie ip wlan
-sudo ip route del default via 192.168.77.1 dev wlan0
-sudo mmcli -m 0 --simple-disconnect
+# poprawny output
+64 bytes from 8.8.8.8: icmp_seq=59 ttl=58 time=15.8 ms
+powinno działać
+
+można jeszcze przełączyć na defaultowy interface wwx0c5b8f279a64 
+
+# Konfiguracja 4G
 
 ## porty
 

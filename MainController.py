@@ -2,10 +2,9 @@
 # from CameraController import CameraController
 # from FC_Controller import FC_Controller
 from CV_Controller import BallDetector
-from FCCtest import FC_Controller
+from FC_Controller import FC_Controller
 
 import subprocess
-# from time import sleep
 import time
 import numpy as np
 import requests
@@ -123,7 +122,9 @@ def detect_balls():
 if __name__ == "__main__":
 
     fcc = FC_Controller()
-    fcc.test_command_telemetry()
+    detector = BallDetector()
+    
+    fcc.start_command_thread()
 
     # test_camera_controller()
     # detect_balls()
