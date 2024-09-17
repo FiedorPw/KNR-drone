@@ -13,15 +13,15 @@ from CV_Controller import BallDetector
 
 
 #TODO:
-# 1. telemetry collection
+# 1. (written in telemetry collection method)
 # 2. __del__ (can be atted auto landing, fail safe etc, in case of program crash)
 # 3. [DONE] Battery failsafe
-# 4. Set commands priority
+# 4. Write down commands priority
 # 5. [DONE] JSON cannot read properly flight mode parameter, rest works fine
-# 6. When failsafe is triggered, abort mission and execute only RTL
-# 7. Upgrade algorithm navigate to target to 
-# 8. [PARTIALLY DONE] When Land/RTL set, stop command thread 
-
+# 6. [PARTIALLY DONE] When failsafe is triggered, abort mission and execute only RTL
+# 7. [PARTIALLY DONE] When Land/RTL set, stop command thread 
+# 8. [DONE] Before arming drone add method get_position from launchpad (in future used for reference to launch point)
+# 9. Comands handling of errors
 class FC_Controller:
     def __init__(self, connection_string='/dev/ttyACM0', baud_rate=57600, log_dir="/home/KNR/KNR-dron/LOGS/"):
         self.master = mavutil.mavlink_connection(connection_string, baud=baud_rate)
@@ -37,7 +37,9 @@ class FC_Controller:
         self.lowBatteryCounter = 0
         self.failsafeVoltageThreshold = 13.5
         self.abortMission = False
-        self.isLanding = False
+        self.start_position = [0.0,0.0,0.0]
+        self.is_armed = False
+        # self.isLanding = False
         
         # Start the connection by waiting for heartbeat
         self._wait_for_heartbeat()
@@ -117,12 +119,11 @@ class FC_Controller:
         if msg:
             voltage = msg.voltages[0] / 1000.0
             current = msg.current_battery / 100.0
-            if voltage < self.failsafeVoltageThreshold:
+            if voltage < self.failsafeVoltageThreshold and voltage > 5:
                 self.lowBatteryCounter+=1
             if self.lowBatteryCounter >= 5  and not self.abortMission: #When voltage log is below certain threshhold 5 times (10 sec), Land/RTL is triggered
                 self.send_command(lambda: self.set_flight_mode(8), priority=2) # Always highest priority command
-                self.abortMission = True
-                self.lowBatteryCounter = 0
+                self.abortMission = True # Need to be set after sending command
                 print("@@@@@@@@@@@@@@@@@@@@@ ABORT MISSION - BATTERY FAILSAFE TRIGGERED @@@@@@@@@@@@@@@@@@@@@")
             return {
                 "Voltage": voltage,
@@ -175,8 +176,8 @@ class FC_Controller:
         msg = self.master.recv_match(type='HEARTBEAT', blocking=True)
         if msg:
             mode = mavutil.mode_string_v10(msg)
-            if (mode == 'LAND' or mode == 'RTL') and not self.isLanding:
-                self.isLanding = True
+            if mode in ['LAND', 'RTL']:
+                self.abortMission = True
                 print("@@@@@@@@@@@@@@@@@@@@@ ABORT MISSION - LAND MODE TRIGGERED @@@@@@@@@@@@@@@@@@@@@")
             return mode
         return None
@@ -226,8 +227,12 @@ class FC_Controller:
 
             armed_status = self.get_arm_status()
             self.telemetry_data["Armed"].append(armed_status)
-            
 
+            #Drone start position
+            if armed_status and not self.is_armed:
+                self.start_position = [gps_data["Latitude"],gps_data["Longitude"],gps_data["Altitude"]]
+                print(f'Drone Start Position {self.start_position}')
+                self.is_armed = True
 
     # Collects telemetry data and saves it periodically
     def telemetry_collection(self):
@@ -237,7 +242,7 @@ class FC_Controller:
                     # print("Requesting data streams...")
                     self.master.mav.request_data_stream_send(self.master.target_system,
                                                     self.master.target_component,
-                                                    mavutil.mavlink.MAV_DATA_STREAM_ALL, 4, 1)
+                                                    mavutil.mavlink.MAV_DATA_STREAM_ALL, 5, 1)
                     # print("Getting telemetry data...")
                     #TODO 2 functions below can be modified to be out of mutex zone
                     self.get_all_telemetry()
@@ -307,9 +312,9 @@ class FC_Controller:
             self.master.motors_disarmed_wait()
             print("Motors disarmed")
 
-    # Sends position and velocity targets to the drone
+    # Sends position x,y and velocities x,y to the drone
     def send_position(self, target_x, target_y, target_z, velocity_x, velocity_y, velocity_z):
-        current_position = self.master.recv_match(type='MAV_FRAME_BODY_NED', blocking=True)
+        current_position = self.master.recv_match(type='LOCAL_POSITION_NED', blocking=True)
         if current_position:
             start_x = current_position.x
             start_y = current_position.y
@@ -320,7 +325,7 @@ class FC_Controller:
             self.master.mav.set_position_target_local_ned_send(
                 0,  # time_boot_ms (not used)
                 self.master.target_system, self.master.target_component,
-                mavutil.mavlink.MAV_FRAME_BODY_NED,  # frame
+                mavutil.mavlink.MAV_FRAME_BODY_FRD,  # frame
                 0b0000111111000111,  # type_mask (positions and velocities enabled)
                 target_x, target_y, target_z,  # x, y, z positions in meters
                 velocity_x, velocity_y, velocity_z,  # x, y, z velocity in m/s
@@ -332,7 +337,7 @@ class FC_Controller:
             print("Failed to receive current position data.")
 
     def send_velocity(self, target_z, velocity_x, velocity_y):
-        current_position = self.master.recv_match(type='MAV_FRAME_BODY_NED', blocking=True)
+        current_position = self.master.recv_match(type='LOCAL_POSITION_NED', blocking=True)
         if current_position:
             start_z = current_position.z
             target_z += start_z  # Dodanie pozycji startowej do target Z
@@ -340,7 +345,7 @@ class FC_Controller:
             self.master.mav.set_position_target_local_ned_send(
                 0,  # time_boot_ms (not used)
                 self.master.target_system, self.master.target_component,
-                mavutil.mavlink.MAV_FRAME_BODY_NED,  # frame
+                mavutil.mavlink.MAV_FRAME_BODY_FRD,  # frame
                 0b0000111111001011,  # type_mask (velocities X, Y and position Z enabled)
                 0, 0, target_z,  # x, y positions ignored, z position used
                 velocity_x, velocity_y, 0,  # x, y velocities used, z velocity ignored
@@ -423,8 +428,7 @@ class FC_Controller:
         self.command_queue.put((priority, self.command_counter, command_func))
 
     def process_commands(self):
-        while not self.abortMission and not self.isLanding:
-        # while True:
+        while not self.abortMission:
             priority, counter, command_func = self.command_queue.get(block=True, timeout=None)
             # print("Command in function ", command_func.__name__)
             self.telemetry_event.clear()
@@ -436,6 +440,7 @@ class FC_Controller:
             print("####################TASK DONE####################")
             self.command_queue.task_done()
 
+
 ############################################################################################################
 ##################################################  TESTYYYYYYY ############################################
 ############################################################################################################
@@ -444,8 +449,7 @@ class FC_Controller:
     def send_periodic_commands(self):
         self.telemetry_event.wait()
         self.telemetry_event.clear()
-        print("################### Sending command to the drone #############################")
-        self.send_command(lambda: self.set_flight_mode(0), priority=1)  # Callable function
+        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
         time.sleep(6) 
         self.send_command(lambda: self.arm_disarm(1), priority=1)  # Disarm after 2 seconds
         time.sleep(6) 
@@ -454,14 +458,14 @@ class FC_Controller:
         self.telemetry_event.wait()
         self.telemetry_event.clear()
         self.send_command(lambda: self.set_flight_mode(0), priority=1) 
-        time.sleep(2)
+        time.sleep(1)
         self.send_command(lambda: self.arm_disarm(1), priority=1)  
-        time.sleep(2)
+        time.sleep(1)
         self.send_command(lambda: self.set_flight_mode(4), priority=1)  
-        time.sleep(4)
+        time.sleep(2)
         self.send_command(lambda: self.takeoff(3), priority=1) 
-        time.sleep(6)
-        self.send_command(lambda: self.send_position(2, 0, 3), priority=1) 
+        time.sleep(5)
+        self.send_command(lambda: self.send_position(2, 0, 0), priority=1) 
         time.sleep(4)
 
     def mission_one(self):
@@ -473,24 +477,20 @@ class FC_Controller:
         time.sleep(1)
         self.send_command(lambda: self.set_flight_mode(4), priority=1)  
         time.sleep(1)
-        self.send_command(lambda: self.takeoff(3), priority=1) 
-        time.sleep(8)
-        self.send_command(lambda: self.send_position(-5, 0, 1, 1, 0, 0.1), priority=1) 
-        time.sleep(4)
+        self.send_command(lambda: self.takeoff(5), priority=1) 
+        time.sleep(1)
+        self.send_command(lambda: self.send_position(-5, 0, 4, 1, 0, 0.1), priority=1) 
+        time.sleep(2)
         # for i in range(5):
         #     self.send_command(lambda: self.navigate_to_target(), priority=1)
         #     time.sleep(2)
             
-        self.send_command(lambda: self.send_position(0, 5, 0, 0, 1, -0.1), priority=1) 
-        time.sleep(4)
-        self.send_command(lambda: self.send_position(5, 0, 0, 1,0, 0.1), priority=1) 
-        time.sleep(4)
-        self.send_command(lambda: self.send_position(0, -5, 0, 0, 1,-0.1), priority=1) 
-        time.sleep(4)
-        # self.send_command(lambda: self.send_velocity(5, ), priority=1) 
-        # time.sleep(6)
-        # self.send_command(lambda: self.send_position(0, 5, 0, 0, 1, -0.1), priority=1) 
-        # time.sleep(4)
+        self.send_command(lambda: self.send_position(0, 5, 4, 0, 1, -0.1), priority=1) 
+        time.sleep(2)
+        self.send_command(lambda: self.send_position(5, 0, 4, 1, 0, 0.1), priority=1) 
+        time.sleep(2)
+        self.send_command(lambda: self.send_position(0, -5, 4, 0, 1,-0.1), priority=1) 
+        time.sleep(2)
         self.send_command(lambda: self.set_flight_mode(6), priority=1)  
         time.sleep(6)
         self.send_command(lambda: self.arm_disarm(0), priority=1)  
@@ -499,26 +499,22 @@ class FC_Controller:
         self.telemetry_event.wait()
         self.telemetry_event.clear()
         self.send_command(lambda: self.set_flight_mode(0), priority=1) 
-        time.sleep(1)
+        time.sleep(4)
         self.send_command(lambda: self.arm_disarm(1), priority=1)  
         time.sleep(4)
         self.send_command(lambda: self.set_flight_mode(4), priority=1)  
-        time.sleep(6)
-        self.send_command(lambda: self.set_flight_mode(0), priority=1)  
-        time.sleep(6)
-        self.send_command(lambda: self.set_flight_mode(4), priority=1)  
-        time.sleep(6)
-        # self.send_command(lambda: self.send_velocity(5, ), priority=1) 
-        # time.sleep(6)
-        # self.send_command(lambda: self.send_position(0, 5, 0, 0, 1, -0.1), priority=1) 
-        # time.sleep(4)
-        self.send_command(lambda: self.set_flight_mode(0), priority=1)  
+        time.sleep(10)
+        self.send_command(lambda: self.takeoff(2), priority=1) 
+        time.sleep(1)
+        self.send_command(lambda: self.send_position(0, 5, 0, 0, 1, 0), priority=1) 
+        time.sleep(1)
+        self.send_command(lambda: self.set_flight_mode(8), priority=1)  
         time.sleep(6)
         self.send_command(lambda: self.arm_disarm(0), priority=1)  
  
     # Function to start command thread 
     def start_command_thread(self):
-        command_thread = Thread(target=self.testy, daemon=True)
+        command_thread = Thread(target=self.mission_one, daemon=True)
         command_thread.start()
         command_thread.join()
 
@@ -526,8 +522,10 @@ class FC_Controller:
 # Example usage
 if __name__ == "__main__":
     fcc = FC_Controller()
+
     # self.send_command(lambda: fcc.arm_disarm(1), priority=1)
     fcc.start_command_thread()
+
     del fcc
 
 

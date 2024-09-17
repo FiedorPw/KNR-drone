@@ -1,13 +1,13 @@
 # from GripperController import GripperController
 # from CameraController import CameraController
-# from FC_Controller import FC_Controller
 from CV_Controller import BallDetector
 from FC_Controller import FC_Controller
-
-import subprocess
 import time
-import numpy as np
-import requests
+
+#TODO:
+# 1. Handle keyboard interruption - stop threads and del objects when ctrl+c pushed
+# 2. Convert mission_phase methods from FCC to be executed here and be started in start_command_thread 
+
 
 def run_mission():
     # camera_controller_obj = CameraController()
@@ -34,6 +34,20 @@ def run_mission():
 
     pass
 
+# def mission_phase_one():
+#     fcc.telemetry_event.wait()
+#     fcc.telemetry_event.clear()
+#     fcc.send_command(lambda: fcc.set_flight_mode(0), priority=1) 
+#     time.sleep(1)
+#     fcc.send_command(lambda: fcc.arm_disarm(1), priority=1)  
+#     time.sleep(1)
+#     fcc.send_command(lambda: fcc.set_flight_mode(4), priority=1)  
+#     time.sleep(2)
+#     fcc.send_command(lambda: fcc.takeoff(5), priority=1) 
+#     time.sleep(5)
+#     fcc.send_command(lambda: fcc.send_position(2, 0, 0), priority=1) 
+#     time.sleep(4)
+
 def print_balls(balls):
     for ball in balls:
         print("red: center: ", balls['red'].center,"size: " ,balls['red'].size)  # red center:  (99, 306)
@@ -43,10 +57,8 @@ def print_balls(balls):
 def detect_balls():
     # Initialize the BallDetector
     detector = BallDetector()
-
     # URL of your MJPEG stream
     mjpeg_url = 'http://127.0.0.1:8080/?action=snapshot'  # Replace with the actual URL
-
     # Fetch and process a single JPEG frame
     frame = detector.fetch_frame(mjpeg_url)
     balls = detector.process_frame(frame)
@@ -88,47 +100,22 @@ def detect_balls():
 #     print(distance_from_sensor)
 
 
-#    def navigate_to_target(self, pipe_path, target_z=2, max_velocity=2.0):
-#         """
-#         Navigate drone based on velocity direction from named pipe.
-#         pipe_path: Path to the named pipe.
-#         """
-#         while True:
-#             # Read velocity vector from the pipe
-#             vector = self.read_vector_from_pipe(pipe_path)
-#             if vector:
-#                 velocity_x, velocity_y, velocity_z = vector
-
-#                 # Normalize and limit velocity
-#                 velocity_magnitude = math.sqrt(velocity_x**2 + velocity_y**2 + velocity_z**2)
-#                 if velocity_magnitude > max_velocity:
-#                     velocity_x = (velocity_x / velocity_magnitude) * max_velocity
-#                     velocity_y = (velocity_y / velocity_magnitude) * max_velocity
-#                     velocity_z = (velocity_z / velocity_magnitude) * max_velocity
-
-#                 # Send position and velocity commands to the drone
-#                 self.send_position(0, 0, target_z, velocity_x, velocity_y, velocity_z)
-
-#                 print(f"Navigating with velocity vector ({velocity_x}, {velocity_y}, {velocity_z})")
-
-#             else:
-#                 print("Failed to read vector from pipe.")
-
-#             # Add a small delay to avoid overwhelming the system
-#             time.sleep(0.5)
-
-
-
 if __name__ == "__main__":
+    # try:
 
-    fcc = FC_Controller()
-    detector = BallDetector()
-    
-    fcc.start_command_thread()
+        fcc = FC_Controller()
+        detector = BallDetector()
+        
+        fcc.start_command_thread()
 
-    # test_camera_controller()
-    # detect_balls()
-    #take_pictures_continously()
+        # run_mission()
 
+        # test_camera_controller()
+        # detect_balls()
+        #take_pictures_continously()
+        # print(status)
+    # except KeyboardInterrupt:
+    #     print("\nManual interruption detected. Exiting the program safely.")
+    # finally:
 
-    # print(status)
+    #     print("Program has been safely terminated.")

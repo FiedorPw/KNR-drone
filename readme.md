@@ -13,7 +13,7 @@ source /setup.sh &
 mmcli -L
     /org/freedesktop/ModemManager1/Modem/2 [huawei] E3276
 
-    stąd bierzemy id do następnej komendy, w tym przypadku 2
+   # stąd bierzemy id do następnej komendy, w tym przypadku 2
 
 mmcli -m 2
 sudo mmcli -m 2 --simple-connect="apn=internet,ip-type=ipv4"
@@ -64,6 +64,14 @@ mmcli -m 2
   Bearer   |                paths: /org/freedesktop/ModemManager1/Bearer/0
 
   z ostatniej lini bierzemy id bearera w tym przypadku 0, do następnego polecenia
+# jesli nie ma
+# dodanie bearera: 
+sudo mmcli -m 5 --create-bearer="apn=internet"
+# dezaktywiowanie barera:
+sudo mmcli -b 0 --disconnect
+sudo mmcli -b 0 --delete
+# Jesli cos nie ziala mozna zresetowac:
+sudo systemctl restart ModemManager
 
 sudo mmcli -b 0
 
@@ -74,7 +82,7 @@ sudo ip link set wwx0c5b8f279a64 up
 
 sudo dhclient wwx0c5b8f279a64
 
-ping 8.8.8.8
+ping -I wwan0 8.8.8.8
 # poprawny output
 64 bytes from 8.8.8.8: icmp_seq=59 ttl=58 time=15.8 ms
 powinno działać
@@ -95,6 +103,9 @@ https://dron.knr.edu.pl/api
 
 8080:/camera
 https://dron-kamera.knr.edu.pl/?action=stream
+
+komenda do restartu serwisu kamery:
+sudo systemctl restart mjpg-streamer.service 
 
 9090:/cockpit
 https://dron-cockpit.knr.edu.pl/
