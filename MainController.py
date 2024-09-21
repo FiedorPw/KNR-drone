@@ -7,7 +7,8 @@ import time
 #TODO:
 # 1. Handle keyboard interruption - stop threads and del objects when ctrl+c pushed
 # 2. Convert mission_phase methods from FCC to be executed here and be started in start_command_thread 
-
+# 3. Add attributes: isPhaseXDone; platform_X_position; platform_X_color
+# 4. Phase 2 should be done until platform_X_color list has [red, blue, purple] balls
 
 def run_mission():
     # camera_controller_obj = CameraController()
@@ -106,7 +107,7 @@ if __name__ == "__main__":
         fcc = FC_Controller()
         detector = BallDetector()
         
-        fcc.start_command_thread()
+        fcc.start_mission_thread()
 
         # run_mission()
 

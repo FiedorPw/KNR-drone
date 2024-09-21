@@ -21,10 +21,6 @@ SIZE_THRESHOLD = 1000  # NIE ZMIENIAĆ, NARAZIE DOBRZE DOSTROJONE
 # 8. From some height platform will be not visible as square -> algorithm then needs to be switched to ball detection
 # 9. Add class atribute isClose which tells if target/platform is near center
 # 10. Change mask for  purple ball - it is detected in dark areas
-# 11. Add method to follow target/platform - when 9 platforms are visible and drone is guided torwards one of them rest are not visible. 
-# Position of plaform that was chosen need to be followed
-# 12. In detect rectangles method switch finding contours order with white mask
-# 13. Add to detect method is_barrel_close and add flag is_barrel_size_enough to tell if drone is close enough to release payload (process_frame_debug method)
 
 class Ball:
     def __init__(self, color, lower_bound, upper_bound):
@@ -35,12 +31,8 @@ class Ball:
         self.size = 0
 
     def update(self, roi, x_offset, y_offset):
-        self.center= None
-        self.size=0
-
-        hsv_roi = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
-
-        mask = cv2.inRange(hsv_roi, self.lower_bound, self.upper_bound)
+        # Create a mask for the specific ball color
+        mask = cv2.inRange(roi, self.lower_bound, self.upper_bound)
         color_contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
         if color_contours:
@@ -60,10 +52,9 @@ class Ball:
             color_dict = {
                 'red': (0, 0, 255),  # Red in BGR
                 'blue': (255, 0, 0),  # Blue in BGR
-                'purple': (255, 0, 255),  # Purple in BGR
-                'yellow_green': (0, 255, 255) # Yellow in BGR
+                'purple': (255, 0, 255)  # Purple in BGR
             }
-            color = color_dict.get(self.color, (0, 255, 0))  # Default to green if color not found
+            color = color_dict[self.color]
 
             # Draw the circle with the color
             cv2.circle(frame, self.center, self.size, color, 2)
@@ -97,10 +88,9 @@ class BallDetector:
         self.is_platform_close = False
         self.is_target_close = False
         self.balls = {
-            'red': Ball('red', (0, 100, 100), (10, 255, 255)),  # Adjusted for HSV
-            'blue': Ball('blue', (110, 100, 100), (130, 255, 255)),
-            'purple': Ball('purple', (140, 100, 100), (160, 255, 255)),
-            'yellow_green': Ball('yellow_green', (25, 100, 100), (75, 255, 255))
+            'red': Ball('red', (35, 40, 120), (90, 80, 180)),
+            'blue': Ball('blue', (105, 65, 15), (230, 115, 45)),
+            'purple': Ball('purple', (105, 50, 60), (170, 85, 90))
         }
         self.target_vector = None
         self.platform_vector = None
@@ -122,12 +112,6 @@ class BallDetector:
             print("Failed to fetch frame")
             return None
     
-    def detect_ball_color(self):
-        largest_ball = max(self.balls.values(), key=lambda b: b.size if b.size > 0 else 0)
-        if largest_ball.size > 0:
-            return largest_ball.color
-        else:
-            return None
 
     def detect_white_rectangles(self, frame):
         # Convert the frame to grayscale
@@ -164,9 +148,6 @@ class BallDetector:
         # Update self.large_contours with the filtered contours
         self.large_contours = platform_contours
     
-
-
-
     def get_all_platform_positions(self):
         if len(self.platform_rects) != 9:
             print("Not all 9 platforms are detected")
@@ -340,8 +321,8 @@ class BallDetector:
 
             platform_distance = np.linalg.norm(self.platform_vector)
             self.is_platform_close = platform_distance <= self.close_radius
-            # print("Platform vector:", self.platform_vector)
-            # print("Is platform close:", self.is_platform_close)
+            print("Platform vector:", self.platform_vector)
+            print("Is platform close:", self.is_platform_close)
         else:
             self.platform_vector = None
             self.is_platform_close = False
@@ -360,7 +341,7 @@ class BallDetector:
 
         # Calculate vector_to_center for the largest ball
         largest_ball = max(self.balls.values(), key=lambda b: b.size if b.size > 0 else 0)
-        if largest_ball.size > 0 and largest_ball.center is not None:
+        if largest_ball.size > 0:
             self.target_vector = (largest_ball.center[0]-screen_center[0], screen_center[1] - largest_ball.center[1])
             # Calculate distance from center to ball center
             target_distance = np.linalg.norm(self.target_vector)
@@ -373,15 +354,59 @@ class BallDetector:
             self.target_vector = None
             self.is_target_close = False
 
+
         # Print information about balls
         print("Detected balls:")
         for color, ball in self.balls.items():
-            if ball.center is not None:
-                print(f"{color.capitalize()} center: {ball.center}, size: {ball.size}")
-            else:
-                print(f"{color.capitalize()} not detected in this frame.")
+            print(f"{color.capitalize()} center: {ball.center}, size: {ball.size}")
 
+        # Optionally, you can return the balls data
 
+    def detect_visible_ball(self, frame):
+        """
+        Sprawdza, czy na ekranie widoczna jest piłka i zwraca jej kolor.
+        
+        Args:
+        - frame (np.array): Klasa obrazu do analizy.
+        
+        Returns:
+        - str: Kolor widocznej piłki ('red', 'blue', 'purple') lub None, jeśli żadna piłka nie jest widoczna.
+        """
+        if frame is None:
+            print("No frame to process")
+            return None
+
+        # Get the center of the screen
+        screen_center = (frame.shape[1] // 2, frame.shape[0] // 2)
+
+        # Detect white rectangles (platforms)
+        self.detect_white_rectangles(frame)
+
+        # Update each ball's position and size
+        for ball in self.balls.values():
+            # Create a mask for the specific ball color
+            mask = cv2.inRange(frame, ball.lower_bound, ball.upper_bound)
+            color_contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+            if color_contours:
+                # Find the largest contour for this color
+                largest_contour = max(color_contours, key=cv2.contourArea)
+
+                # Check if the contour is large enough to be considered a ball
+                if cv2.contourArea(largest_contour) > 30:
+                    # Update ball center and size based on the largest contour
+                    (cx, cy), radius = cv2.minEnclosingCircle(largest_contour)
+                    ball.center = (int(cx), int(cy))
+                    ball.size = int(radius)
+
+        # Check each ball to determine if it is visible
+        for color, ball in self.balls.items():
+            if ball.size > 0:  # If the ball has been detected and has a non-zero size
+                return color  # Return the color of the detected ball
+
+        return None  # No ball detected
+
+    # (Pozostałe metody i implementacje są takie same)
 
 if __name__ == "__main__":
     detector = BallDetector()
@@ -390,24 +415,28 @@ if __name__ == "__main__":
 
     while True:
         # Fetch and process a single JPEG frame
-        # print("Fetching frame...")
         frame = detector.fetch_frame(mjpeg_url)
         if frame is not None:
+            # Check for visible ball and get its color
+            ball_color = detector.detect_visible_ball(frame)
+            if ball_color:
+                print(f"Detected a {ball_color} ball.")
+            else:
+                print("No ball detected.")
+            
             # Process the frame and detect balls and white rectangles
-            # print("Processing frame...")
             detector.process_frame_debug(frame)
 
-            # print(f"Detected platforms: {len(detector.large_contours)}")
-            # # Check if all platforms are detected
-            # platform_positions = detector.get_all_platform_positions()
-            # if platform_positions:
-            #     print("All platforms detected. Positions:")
-            #     for number, position in platform_positions.items():
-            #         print(f"Platform {number}: Position {position}")
-            # else:
-            #     print("Not all platforms detected or could not determine platform positions.")
+            print(f"Detected platforms: {len(detector.large_contours)}")
+            # Check if all platforms are detected
+            platform_positions = detector.get_all_platform_positions()
+            if platform_positions:
+                print("All platforms detected. Positions:")
+                for number, position in platform_positions.items():
+                    print(f"Platform {number}: Position {position}")
+            else:
+                print("Not all platforms detected or could not determine platform positions.")
         else:
             print("Failed to fetch frame")
 
-        time.sleep(4)
-
+        time.sleep(2)

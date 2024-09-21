@@ -76,20 +76,22 @@ sudo systemctl restart ModemManager
 sudo mmcli -b 0
 
 ip a
-  stąd bierzemy nazwę interface'u do następnej komendy, w tmy przypadku wwx0c5b8f279a64
+  stąd bierzemy nazwę interface'u do następnej komendy, w tym przypadku zazwyczaj wwan0
 
-sudo ip link set wwx0c5b8f279a64 up
+sudo ip link set wwan0 up
 
-sudo dhclient wwx0c5b8f279a64
+sudo dhclient wwan0
 
 ping -I wwan0 8.8.8.8
 # poprawny output
 64 bytes from 8.8.8.8: icmp_seq=59 ttl=58 time=15.8 ms
 powinno działać
 
-można jeszcze przełączyć na defaultowy interface wwx0c5b8f279a64 
+można jeszcze przełączyć na defaultowy interface wwan0 
 
 # Konfiguracja 4G
+
+nmtui - UI do NetworkManagera
 
 ## porty
 
