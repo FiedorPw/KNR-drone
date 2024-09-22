@@ -1,15 +1,23 @@
 #!/bin/bash
 
-# Step 1: Get modem ID
-modem_id=$(mmcli -L | grep -o 'Modem/[0-9]\+' | grep -o '[0-9]\+')
-echo "Modem ID: $modem_id"
+# Step 0: Restart ModemManager service
+echo "Restarting ModemManager service..."
+sudo systemctl restart ModemManager
 
-# Step 2: Check modem details and connect
-if [ -z "$modem_id" ]; then
-    echo "No modem found. Exiting."
-    exit 1
-fi
+# Optional: Wait for ModemManager to restart
+sleep 5
 
+# Step 1: Wait for the modem to be detected
+echo "Waiting for modem to be detected..."
+while true; do
+    modem_id=$(mmcli -L | grep -o 'Modem/[0-9]\+' | grep -o '[0-9]\+')
+    if [ -n "$modem_id" ]; then
+        echo "Modem ID: $modem_id"
+        break
+    else
+        sleep 1
+    fi
+done
 sudo mmcli -m "$modem_id" --simple-connect="apn=internet,ip-type=ipv4"
 
 # Step 3: Get bearer ID
