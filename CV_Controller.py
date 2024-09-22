@@ -11,20 +11,20 @@ import time
 SIZE_THRESHOLD = 1000  # NIE ZMIENIAĆ, NARAZIE DOBRZE DOSTROJONE
 
 #TODO:
-# 1. [DONE] add method to check if all platforms (9) are visible by camera and return position of left-down platform
-# 2. Add method to check if any ball is visible, if true - return its color (Ball)
-# 3. Add method to detect barrel
+# 1. [DONE - changed idea to nr 5.] add method to check if all platforms (9) are visible by camera and return position of left-down platform
+# 2. [DONE] Add method to check if any ball is visible, if true - return its color (Ball)
+# 3. [DONE] Add method to detect barrel
 # 4. [DONE] Add method to return if any platform is detected
 # 5. Right now get_position_one_platform cant detect 3 rows - nedd to change rowThreshold parameter to fit our purpose
 # 6. [DONE] Add method to make platform_vector from frame center to platform center
-# 7. In process_frame_debug platform_vector is made from largest platform - should it be changed to closest to frame center?
+# 7. [DONE] In process_frame_debug platform_vector is made from largest platform - should it be changed to closest to frame center?
 # 8. From some height platform will be not visible as square -> algorithm then needs to be switched to ball detection
-# 9. Add class atribute isClose which tells if target/platform is near center
+# 9. [DONE] Add class atribute isClose which tells if target/platform is near center
 # 10. Change mask for  purple ball - it is detected in dark areas
 # 11. Add method to follow target/platform - when 9 platforms are visible and drone is guided torwards one of them rest are not visible. 
 # Position of plaform that was chosen need to be followed
 # 12. In detect rectangles method switch finding contours order with white mask
-# 13. Add to detect method is_barrel_close and add flag is_barrel_size_enough to tell if drone is close enough to release payload (process_frame_debug method)
+# 13. [DONE] Add to detect method is_barrel_close and add flag is_barrel_size_enough to tell if drone is close enough to release payload (process_frame_debug method)
 
 class Ball:
     def __init__(self, color, lower_bound, upper_bound):
@@ -90,12 +90,20 @@ class Ball:
 
 class BallDetector:
     def __init__(self):
-        # Define color ranges for red, blue, and purple balls
-        self.aspect_ratio_tolerance = 0.5 # Parameter to detect more square-like or rectangular objects
+        self.aspect_ratio_tolerance = 0.8 # Parameter to detect more square-like or rectangular objects
         self.close_radius = 100
         self.row_threshold = 200 # Adjust based on expected platform size and spacing
+        self.barrel_radius = 0
+        self.release_barrel_size = 80 # TODO Need to tune based on experiments
+        self.ground_target_size = 60 # TODO Need to tune based on experiments - tells drone it is on ground based on ball size
+
         self.is_platform_close = False
         self.is_target_close = False
+        self.is_barrel_close = False
+
+        self.is_barrel_size_enough = False
+        self.is_on_ground = False
+
         self.balls = {
             'red': Ball('red', (0, 100, 100), (10, 255, 255)),  # Adjusted for HSV
             'blue': Ball('blue', (110, 100, 100), (130, 255, 255)),
@@ -104,6 +112,8 @@ class BallDetector:
         }
         self.target_vector = None
         self.platform_vector = None
+        self.barrel_vector = None
+
         self.large_contours = [] # Number of detected platforms
         self.platform_rects = [] # Coordinates of detected platforms
         self.platforms_by_number = {}
@@ -165,7 +175,49 @@ class BallDetector:
         self.large_contours = platform_contours
     
 
-
+    def detect_barrel(self, frame):
+        # Konwersja obrazu do przestrzeni HSV
+        hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        
+        # Definiowanie zakresu dla koloru czarnego w HSV
+        lower_black = np.array([0, 0, 0])
+        upper_black = np.array([180, 255, 50])
+        
+        # Progowanie obrazu HSV, aby uzyskać tylko czarne kolory
+        mask = cv2.inRange(hsv_frame, lower_black, upper_black)
+        
+        # Usunięcie szumów z maski
+        mask = cv2.GaussianBlur(mask, (5, 5), 0)
+        mask = cv2.erode(mask, None, iterations=2)
+        mask = cv2.dilate(mask, None, iterations=2)
+        
+        # Znalezienie konturów w masce
+        contours, _ = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        
+        if contours:
+            # Znalezienie największego konturu w masce
+            largest_contour = max(contours, key=cv2.contourArea)
+            
+            # Przybliżenie konturu do koła
+            ((x, y), radius) = cv2.minEnclosingCircle(largest_contour)
+            M = cv2.moments(largest_contour)
+            
+            if M["m00"] > 0:
+                center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+                
+                # Kontynuuj tylko jeśli promień jest wystarczająco duży
+                if radius > 10:
+                    self.barrel_center = center
+                    self.barrel_radius = int(radius)
+            else:
+                self.barrel_center = None
+                self.barrel_radius = 0
+        else:
+            self.barrel_center = None
+            self.barrel_radius = 0
+        
+        if radius > self.release_barrel_size:
+            self.is_barrel_size_enough = True
 
     def get_all_platform_positions(self):
         if len(self.platform_rects) != 9:
@@ -314,8 +366,8 @@ class BallDetector:
         screen_center = (frame.shape[1] // 2, frame.shape[0] // 2)
 
         self.detect_white_rectangles(frame)
-
         self.get_all_platform_positions()
+        self.detect_barrel(frame)
 
         # Draw bounding boxes around the top 9 largest contours
         for contour in self.large_contours:
@@ -372,6 +424,9 @@ class BallDetector:
         else:
             self.target_vector = None
             self.is_target_close = False
+        
+        if largest_ball.size > self.ground_target_size:
+            self.is_on_ground = True
 
         # Print information about balls
         print("Detected balls:")
@@ -381,7 +436,30 @@ class BallDetector:
             else:
                 print(f"{color.capitalize()} not detected in this frame.")
 
+        # Rysowanie detekcji beczki i wektora
+        if self.barrel_center is not None:
+            # Narysuj okrąg wokół beczki
+            cv2.circle(frame, self.barrel_center, self.barrel_radius, (0, 0, 0), 2)  # Czarny kolor w BGR
 
+            # Oblicz wektor od środka ekranu do środka beczki
+            barrel_vector = (self.barrel_center[0] - screen_center[0], screen_center[1] - self.barrel_center[1])
+            self.barrel_vector = barrel_vector
+
+            # Oblicz odległość do środka beczki
+            barrel_distance = np.linalg.norm(barrel_vector)
+            self.is_barrel_close = barrel_distance <= self.close_radius
+
+            # Narysuj strzałkę wskazującą od środka ekranu do środka beczki
+            cv2.arrowedLine(frame, screen_center, self.barrel_center, (0, 0, 0), 2)  # Czarny kolor w BGR
+
+            # Wyświetl informacje o beczce
+            print("Barrel center:", self.barrel_center)
+            print("Barrel radius:", self.barrel_radius)
+            print("Barrel vector:", self.barrel_vector)
+            print("Is barrel close:", self.is_barrel_close)
+        else:
+            self.barrel_vector = None
+            self.is_barrel_close = False
 
 if __name__ == "__main__":
     detector = BallDetector()
@@ -409,5 +487,5 @@ if __name__ == "__main__":
         else:
             print("Failed to fetch frame")
 
-        time.sleep(4)
+        time.sleep(10)
 

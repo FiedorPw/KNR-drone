@@ -34,29 +34,36 @@ from CV_Controller import BallDetector
 # 8. [DONE] Before arming drone add method get position from launchpad
 # 9. Commands for handling errors
 # 10. [POORLY DONE - HARDCODE] Change logging to JSON so it ends after drone change state from armed to disarmed  
-# 11. Change algorithm from last step of mission_phase_one
+# 11. [DONE in v2 algo] Change algorithm from last step of mission_phase_one
 # 12. [DONE] Add to JSON telemetry logs parameter of battery % next to voltage
 # 13. Add navigate to barrel logic in navigate_to_target method
+# 14. [DONE? CHECK IF CORRECTLY IMPLEMENTED] Implement current telemetry method to use it in algorithm
 
 class FC_Controller:
     def __init__(self, connection_string='/dev/ttyACM0', baud_rate=115200, log_dir="/home/KNR/KNR-dron/LOGS/"):
         self.master = mavutil.mavlink_connection(connection_string, baud=baud_rate)
         self.log_dir = log_dir
-        # Lock for thread-safe file operations
+
+        self.pending_commands = {}
+        self.ack_lock = Lock()
+
         self.file_lock = Lock()
         self.save_count = 0
+
         self.port_mutex = Lock()
         self.telemetry_data = self.reset_telemetry_data()
         self.log_filename = self.create_log_filename()
         self.command_queue = queue.PriorityQueue()
         self.command_counter = 0
         self.lowBatteryCounter = 0
-        self.failsafeVoltageThreshold = 13.5
+        self.failsafeVoltageThreshold = 13
         self.abortMission = False
         self.start_position = [0.0,0.0,0.0] #lat, lon, alt
         self.reset_position = [0.0,0.0,0.0]
         self.is_armed = False
         self.isLanding = False
+
+        self.latest_telemetry = None
         
         # Start the connection by waiting for heartbeat
         self._wait_for_heartbeat()
@@ -68,9 +75,6 @@ class FC_Controller:
         self.telemetry_lock = Lock()  # Mutex for telemetry
         self.telemetry_event = Event()  # Event to signal when telemetry collection is done
 
-        self.pending_commands = {}
-        self.ack_lock = Lock()
-
         # Start telemetry collection in a separate thread
         self.telemetry_thread = Thread(target=self.telemetry_collection)
         self.telemetry_thread.start()
@@ -78,12 +82,19 @@ class FC_Controller:
         self.command_processor_thread = Thread(target=self.process_commands)
         self.command_processor_thread.start()
 
+        self.ack_listener_thread = Thread(target=self.ack_listener)
+        self.ack_listener_thread.start()
+
         self.mission_thread = None
 
     def __del__(self):
-        #TODO make safe deleting objects and make failsafe like RTL/Land
-        self.command_processor_thread.join()
-        self.telemetry_thread.join()
+        # Safe cleanup of threads in case of program termination
+        if self.command_processor_thread.is_alive():
+            self.command_processor_thread.join()
+        if self.telemetry_thread.is_alive():
+            self.telemetry_thread.join()
+        if self.ack_listener_thread.is_alive():
+            self.ack_listener_thread.join()
 
     # Waits for a heartbeat message from the flight controller
     def _wait_for_heartbeat(self):
@@ -147,17 +158,17 @@ class FC_Controller:
             battery_percentage = 0.0
             # Sprawdzamy czy napięcie nie wychodzi poza zakres
             if voltage < min_voltage:
-                battery_percentage = 0
+                return 0
             elif voltage > max_voltage:
-                battery_percentage = 100
-            else:
-                battery_percentage = round(((voltage - min_voltage) / (max_voltage - min_voltage)) * 100, 3)
+                return 100
+            # Obliczamy procent naładowania baterii
+            battery_percentage = round(((voltage - min_voltage) / (max_voltage - min_voltage)) * 100, 3)
             #print(f'{self.battery_percentage}%')
 
             if voltage < self.failsafeVoltageThreshold and voltage > 5:
                 self.lowBatteryCounter+=1
             if self.lowBatteryCounter >= 5  and not self.abortMission: #When voltage log is below certain threshhold 5 times (10 sec), Land/RTL is triggered
-                self.send_command(lambda: self.set_flight_mode(8), priority=3, command_id=mavutil.mavlink.MAV_CMD_DO_SET_MODE) # Always highest priority command
+                self.send_command(lambda: self.set_flight_mode(8), priority=2) # Always highest priority command
                 self.abortMission = True # Need to be set after sending command
                 print("@@@@@@@@@@@@@@@@@@@@@ ABORT MISSION - BATTERY FAILSAFE TRIGGERED @@@@@@@@@@@@@@@@@@@@@")
             return {
@@ -241,7 +252,7 @@ class FC_Controller:
             armed = msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED
             return bool(armed)
         else:
-            # print("No heartbeat message received")
+            print("No heartbeat message received")
             return False
 
     # Collects all telemetry data and appends to the telemetry data structure
@@ -284,6 +295,8 @@ class FC_Controller:
                 print(f'Drone Start Position {self.start_position}')
                 self.is_armed = True
 
+            self.latest_telemetry = self.telemetry_data.copy()
+
     # Collects telemetry data and saves it periodically
     def telemetry_collection(self):
         while True:
@@ -315,7 +328,13 @@ class FC_Controller:
 ############################################################################################################
 
     def set_param(self, param_id, param_value, param_type=mavutil.mavlink.MAV_PARAM_TYPE_REAL32):
-        # Przesyłanie komendy do zmiany parametru
+        command_id = mavutil.mavlink.MAV_CMD_DO_SET_PARAMETER  # Using the MAV_CMD_DO_SET_PARAMETER command ID
+
+        # Register the command before sending
+        with self.ack_lock:
+            self.pending_commands[command_id] = f'Set param {param_id}'
+
+        # Send the parameter change command
         self.master.mav.param_set_send(
             self.master.target_system,
             self.master.target_component,
@@ -323,6 +342,8 @@ class FC_Controller:
             param_value,
             param_type
         )
+        print(f"Setting parameter {param_id} to {param_value}")
+
 
     def set_flight_mode(self, mode_number):
         mode_mapping = {
@@ -346,159 +367,170 @@ class FC_Controller:
         mode = mode_mapping[mode_number]
         mode_id = self.master.mode_mapping()[mode]
 
+        command_id = mavutil.mavlink.MAV_CMD_DO_SET_MODE
+
+        # Register the command before sending
+        with self.ack_lock:
+            self.pending_commands[command_id] = f'Set flight mode to {mode}'
+
         self.master.set_mode(mode_id)
         print(f"Flight mode set to {mode} (mode number {mode_number})")
 
-    # Arms or disarms the drone
+
     def arm_disarm(self, arm):
+        command_id = mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM
+
         if arm:
+            # Register the command before sending
+            with self.ack_lock:
+                self.pending_commands[command_id] = 'Arm motors'
+
             self.master.arducopter_arm()
             print("Arming motors")
             self.master.motors_armed_wait()
             print("Motors armed")
+
         else:
+            # Register the command before sending
+            with self.ack_lock:
+                self.pending_commands[command_id] = 'Disarm motors'
+
             self.master.arducopter_disarm()
             print("Disarming motors")
             self.master.motors_disarmed_wait()
             print("Motors disarmed")
 
+
     # Sends position x,y and velocities x,y to the drone
     def send_position(self, target_x, target_y, target_z, velocity_x, velocity_y, velocity_z):
-        def position_command():
-            current_position = self.master.recv_match(type='MAV_FRAME_BODY_FRD', blocking=True)
-            if current_position:
-                start_x = current_position.x
-                start_y = current_position.y
-                start_z = current_position.z
-                target_x += start_x
-                target_y += start_y
-                target_z += start_z
-                self.master.mav.set_position_target_local_ned_send(
-                    0,  # time_boot_ms (not used)
-                    self.master.target_system, self.master.target_component,
-                    mavutil.mavlink.MAV_FRAME_BODY_FRD,  # frame
-                    0b0000111111000111,  # type_mask (positions and velocities enabled)
-                    target_x, target_y, target_z,  # x, y, z positions in meters
-                    velocity_x, velocity_y, velocity_z,  # x, y, z velocity in m/s
-                    0, 0, 0,  # x, y, z acceleration (not used)
-                    0, 0  # yaw, yaw_rate (not used)
-                )
-                print(f"Moving to position (x: {target_x}, y: {target_y}, z: {target_z}) with velocity (vx: {velocity_x}, vy: {velocity_y}, vz: {velocity_z})")
-            else:
-                print("Failed to receive current position data.")
-        self.send_command(position_command, priority=2)
-
-    def send_global_position(self, target_lat, target_lon, target_alt, velocity_x, velocity_y, velocity_z):
-        def global_position_command():
-            # Convert latitude and longitude to integers required by MAVLink (scaled by 1e7)
-            lat_int = int(target_lat * 1e7)
-            lon_int = int(target_lon * 1e7)
-            alt = target_alt  # Assuming target_alt is in meters relative to home position
-
-            # Set the target position and velocities
-            self.master.mav.set_position_target_global_int_send(
-                0,  # time_boot_ms (not used)
-                self.master.target_system,
-                self.master.target_component,
-                mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT_INT,  # Frame
-                0b0000111111000111,  # type_mask (positions and velocities enabled)
-                lat_int,
-                lon_int,
-                alt,
-                velocity_x,
-                velocity_y,
-                velocity_z,
-                0, 0, 0,  # x, y, z acceleration (not used)
-                0, 0  # yaw, yaw_rate (not used)
-            )
-            print(f"Moving to global position (lat: {target_lat}, lon: {target_lon}, alt: {target_alt}) "
-                f"with velocity (vx: {velocity_x}, vy: {velocity_y}, vz: {velocity_z})")
-        self.send_command(global_position_command, priotity=2)
-
-    # Sends velocity targets to the drone in the body frame
-    def send_velocity(self, velocity_x, velocity_y, velocity_z):
-        def velocity_command():
-            # Set the target velocities in the body frame (FRD)
+        current_position = self.master.recv_match(type='MAV_FRAME_BODY_FRD', blocking=True)
+        if current_position:
+            start_x = current_position.x
+            start_y = current_position.y
+            start_z = current_position.z
+            target_x += start_x
+            target_y += start_y
+            target_z += start_z
             self.master.mav.set_position_target_local_ned_send(
                 0,  # time_boot_ms (not used)
                 self.master.target_system, self.master.target_component,
-                mavutil.mavlink.MAV_FRAME_BODY_FRD,  # Use the body frame (Forward-Right-Down)
-                0b0000111111000110,  # type_mask (ignore position, acceleration, yaw; enable velocity only)
-                0, 0, 0,  # x, y, z positions (ignored)
-                velocity_x, velocity_y, velocity_z,  # x, y, z velocities in body frame
+                mavutil.mavlink.MAV_FRAME_BODY_FRD,  # frame
+                0b0000111111000011,
+                # 0b0000111111000011,  # type_mask (positions and velocities enabled)
+                target_x, target_y, target_z,  # x, y, z positions in meters
+                velocity_x, velocity_y, velocity_z,  # x, y, z velocity in m/s
                 0, 0, 0,  # x, y, z acceleration (not used)
                 0, 0  # yaw, yaw_rate (not used)
             )
-            print(f"Commanding drone to move with velocity vx: {velocity_x} m/s, vy: {velocity_y} m/s, vz: {velocity_z} m/s")
-        self.send_command(velocity_command, priority=2)
+            print(f"Moving to position (x: {target_x}, y: {target_y}, z: {target_z}) with velocity (vx: {velocity_x}, vy: {velocity_y}, vz: {velocity_z})")
+        else:
+            print("Failed to receive current position data.")
 
-    # # Sends a takeoff command to the drone
-    # def takeoff(self, altitude):
-    #     def takeoff_command():
-    #         command_id = mavutil.mavlink.MAV_CMD_NAV_TAKEOFF
-    #         self.master.mav.command_long_send(self.master.target_system, self.master.target_component,
-    #                                         command_id, 0, 0, 0, 0, 0, 0, 0, altitude)
-    #         print(f"Takeoff command sent for altitude {altitude} meters")
-    #         with self.ack_lock:
-    #             self.pending_commands[command_id] = 'Takeoff'
-    #     self.send_command(takeoff_command, priority=2,command_id = mavutil.mavlink.MAV_CMD_NAV_TAKEOFF)
+    def send_global_position(self, target_lat, target_lon, target_alt, velocity_x, velocity_y, velocity_z):
+        # Convert latitude and longitude to integers required by MAVLink (scaled by 1e7)
+        lat_int = int(target_lat * 1e7)
+        lon_int = int(target_lon * 1e7)
+        alt = target_alt  # Assuming target_alt is in meters relative to home position
+
+        # Set the target position and velocities
+        self.master.mav.set_position_target_global_int_send(
+            0,  # time_boot_ms (not used)
+            self.master.target_system,
+            self.master.target_component,
+            mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT_INT,  # Frame
+            0b0000111111000111,  # type_mask (positions and velocities enabled)
+            lat_int,
+            lon_int,
+            alt,
+            velocity_x,
+            velocity_y,
+            velocity_z,
+            0, 0, 0,  # x, y, z acceleration (not used)
+            0, 0  # yaw, yaw_rate (not used)
+        )
+        print(f"Moving to global position (lat: {target_lat}, lon: {target_lon}, alt: {target_alt}) "
+            f"with velocity (vx: {velocity_x}, vy: {velocity_y}, vz: {velocity_z})")
+        
+    def reposition_copter(self, target_lat, target_lon, target_alt, ground_speed, yaw_angle):
+
+        lat_int = int(target_lat * 1e7)
+        lon_int = int(target_lon * 1e7)
+        alt = target_alt  # Assuming target_alt is in meters relative to home position
+
+        command_id = mavutil.mavlink.MAV_CMD_DO_REPOSITION
+        with self.ack_lock:
+            self.pending_commands[command_id] = 'Reposition'
+
+        self.master.mav.command_long_send(
+            self.master.target_system,  # Target system ID
+            self.master.target_component,  # Target component ID
+            mavutil.mavlink.MAV_CMD_DO_REPOSITION,  # Command ID for reposition
+            0,  # Confirmation (0 = First transmission)
+            lat_int,  # param1: Latitude in WGS84 format
+            lon_int,  # param2: Longitude in WGS84 format
+            alt,  # param3: Altitude (in meters above home position)
+            ground_speed,  # param4: Desired ground speed (in m/s)
+            yaw_angle,  # param5: Yaw angle in degrees
+            0, 0  # Unused parameters
+        )
+        print(f"Repositioning vehicle to (lat: {target_lat}, lon: {target_lon}, alt: {target_alt}) "
+            f"with ground speed: {ground_speed} m/s and yaw: {yaw_angle} degrees")
+
+    # Sends velocity targets to the drone in the body frame
+    def send_velocity(self, velocity_x, velocity_y, velocity_z):
+        # Set the target velocities in the body frame (FRD)
+        self.master.mav.set_position_target_local_ned_send(
+            0,  # time_boot_ms (not used)
+            self.master.target_system, self.master.target_component,
+            mavutil.mavlink.MAV_FRAME_BODY_FRD,  # Use the body frame (Forward-Right-Down)
+            0b0000111111000110,  # type_mask (ignore position, acceleration, yaw; enable velocity only)
+            0, 0, 0,  # x, y, z positions (ignored)
+            velocity_x, velocity_y, velocity_z,  # x, y, z velocities in body frame
+            0, 0, 0,  # x, y, z acceleration (not used)
+            0, 0  # yaw, yaw_rate (not used)
+        )
+        print(f"Commanding drone to move with velocity vx: {velocity_x} m/s, vy: {velocity_y} m/s, vz: {velocity_z} m/s")
+
 
     def takeoff(self, altitude):
-        # Send takeoff command
+        command_id = mavutil.mavlink.MAV_CMD_NAV_TAKEOFF
+        with self.ack_lock:
+            self.pending_commands[command_id] = 'Takeoff'
+
         self.master.mav.command_long_send(self.master.target_system, self.master.target_component,
-                                        mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 0, 0, 0, 0, 0, 0, 0, altitude)
+                                        command_id, 0, 0, 0, 0, 0, 0, 0, altitude)
         print(f"Takeoff command sent for altitude {altitude} meters")
+
+    # def takeoff(self, altitude):
+    #     # Send takeoff command
+    #     self.master.mav.command_long_send(self.master.target_system, self.master.target_component,
+    #                                     mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 0, 0, 0, 0, 0, 0, 0, altitude)
+    #     print(f"Takeoff command sent for altitude {altitude} meters")
         
-        while True:
-            # Receive the COMMAND_ACK message
-            msg = self.master.recv_match(type='COMMAND_ACK', blocking=True)
-            if msg:
-                command = msg.command
-                result = msg.result
-                progress = getattr(msg, 'progress', None)  # Progress can be 0-100, 255 if not available
+    #     while True:
+    #         # Receive the COMMAND_ACK message
+    #         msg = self.master.recv_match(type='COMMAND_ACK', blocking=True)
+    #         if msg:
+    #             command = msg.command
+    #             result = msg.result
+    #             progress = getattr(msg, 'progress', None)  # Progress can be 0-100, 255 if not available
 
-                # Check if the ACK is for the takeoff command
-                if command == mavutil.mavlink.MAV_CMD_NAV_TAKEOFF:
-                    if result == mavutil.mavlink.MAV_RESULT_IN_PROGRESS:
-                        # Report progress if available
-                        if progress is not None and progress != 255:
-                            print(f"Takeoff in progress: {progress}%")
-                        else:
-                            print("Takeoff in progress...")
-                    elif result == mavutil.mavlink.MAV_RESULT_ACCEPTED:
-                        print("Takeoff complete. Proceeding to next commands...")
-                        break  # Exit the loop and proceed with the mission
-                    elif result == mavutil.mavlink.MAV_RESULT_FAILED:
-                        print("Takeoff failed.")
-                        return
-                    else:
-                        print(f"Takeoff command resulted in {result}")
-
-
-    # Sets the flight mode of the drone
-    def set_flight_mode(self, mode_number):
-        mode_mapping = {
-            0: 'STABILIZE',
-            2: 'ALT_HOLD',
-            3: 'AUTO',
-            4: 'GUIDED',
-            5: 'LOITER',
-            6: 'RTL',
-            8: 'LAND',
-            12: 'AUTOTUNE',
-            13: 'POSHOLD',
-            18: 'SMART_RTL'
-        }
-
-        if mode_number not in mode_mapping:
-            print(f"Unknown mode number: {mode_number}")
-            print("Valid mode numbers:", list(mode_mapping.keys()))
-            return
-
-        mode = mode_mapping[mode_number]
-        mode_id = self.master.mode_mapping()[mode]
-        self.master.set_mode(mode_id)
-        print(f"Flight mode set to {mode} (mode number {mode_number})")
+    #             # Check if the ACK is for the takeoff command
+    #             if command == mavutil.mavlink.MAV_CMD_NAV_TAKEOFF:
+    #                 if result == mavutil.mavlink.MAV_RESULT_IN_PROGRESS:
+    #                     # Report progress if available
+    #                     if progress is not None and progress != 255:
+    #                         print(f"Takeoff in progress: {progress}%")
+    #                     else:
+    #                         print("Takeoff in progress...")
+    #                 elif result == mavutil.mavlink.MAV_RESULT_ACCEPTED:
+    #                     print("Takeoff complete. Proceeding to next commands...")
+    #                     break  # Exit the loop and proceed with the mission
+    #                 elif result == mavutil.mavlink.MAV_RESULT_FAILED:
+    #                     print("Takeoff failed.")
+    #                     return
+    #                 else:
+    #                     print(f"Takeoff command resulted in {result}")
 
 ############################################################################################################
 ########################################  MAVLINK MISSION COMMANDS #########################################
@@ -553,12 +585,9 @@ class FC_Controller:
 ######################################## MUTEX PROCESSING #########################################
 ###################################################################################################
 
-    def send_command(self, command_func, priority, command_id=None): #None, retries=3)
+    def send_command(self, command_func, priority):
         if self.command_processor_thread.is_alive():
             self.command_counter += 1
-            if command_id:
-                with self.ack_lock:
-                    self.pending_commands[command_id] = command_func.__name__ #(command_func.__name__,retries)
             self.command_queue.put((priority, self.command_counter, command_func))
             return True
         else:
@@ -566,39 +595,34 @@ class FC_Controller:
 
     def process_commands(self):
         while not self.abortMission and not self.isLanding:
-            try:
-                priority, counter, command_func = self.command_queue.get(block=True, timeout=1)
-                # print("Command in function ", command_func.__name__)
-                self.telemetry_event.clear()
-                with self.port_mutex:
-                    try:
-                        # print(command_func.__name__)
-                        command_func()
-                    except Exception as e:
-                        print(f"Error in command processing: {e}")
-                print("####################TASK DONE####################")
-                self.command_queue.task_done()
-            except queue.Empty:
-                continue
+            priority, counter, command_func = self.command_queue.get(block=True, timeout=None)
+            # print("Command in function ", command_func.__name__)
+            self.telemetry_event.clear()
+            with self.port_mutex:
+                try:
+                    # print(command_func.__name__)
+                    command_func()
+                except Exception as e:
+                    print(f"Error in command processing: {e}")
+            print("####################TASK DONE####################")
+            self.command_queue.task_done()
+
         print("PRCESS COMMAND THREAD STOPPED")
 
     def ack_listener(self):
         while True:
-            msg = self.master.recv_match(type='COMMAND_ACK', blocking=False)
+            msg = self.master.recv_match(type='COMMAND_ACK', blocking=True)
             if msg:
                 command = msg.command
                 result = msg.result
                 with self.ack_lock:
                     if command in self.pending_commands:
-                        command_name, retries_left = self.pending_commands.pop(command)
+                        command_name = self.pending_commands.pop(command)
                         if result == mavutil.mavlink.MAV_RESULT_ACCEPTED:
                             print(f"{command_name} command acknowleged and accepted.")
                         else:
                             print(f"{command_name} command not accepted. Result: {result}")
-                            if retries_left > 0:
-                                print(f"Retrying {command_name}, {retries_left} retries left")
-                                self.command_queue.put((1,self.command_counter, getattr(self, command_name)))
-            time.sleep(0.5)
+            time.sleep(0.1)
 ############################################################################################################
 ##################################################  TESTYYYYYYY ############################################
 ############################################################################################################
@@ -606,54 +630,55 @@ class FC_Controller:
     def do_testow(self):
         self.telemetry_event.wait()
         self.telemetry_event.clear()
-        self.send_command(lambda: self.set_flight_mode(0), priority=1,command_id=mavutil.mavlink.MAV_CMD_DO_SET_MODE) 
+        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
         time.sleep(1)
-        self.send_command(lambda: self.arm_disarm(1), priority=1,command_id=mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM)  
+        self.send_command(lambda: self.arm_disarm(1), priority=1)  
         time.sleep(1)
-        self.send_command(lambda: self.set_flight_mode(4), priority=1,command_id=mavutil.mavlink.MAV_CMD_DO_SET_MODE)  
+        self.send_command(lambda: self.set_flight_mode(4), priority=1)  
         time.sleep(2)
-        self.send_command(lambda: self.takeoff(2), priority=1, command_id=mavutil.mavlink.MAV_CMD_NAV_TAKEOFF)  
-        time.sleep(4)
-        # for i in range(100):
+        self.send_command(lambda: self.takeoff(3), priority=1)  
+        time.sleep(6)
+        # self.send_command(lambda: self.set_flight_mode(4), priority=1)  
+        # time.sleep(1)
+        for i in range(30):
+            self.send_command(lambda: self.send_global_position(52.2159343,21.0035504, 4,2,2,1), priority=1)  
+            time.sleep(0.1)
+        # for i in range(30):
         #     self.send_command(lambda: self.send_position(2,0,0,1,0,0), priority=1)
+        #     # time.sleep(0.1)
+        # for i in range(30):
+        #     self.send_command(lambda: self.send_position(0,2,0,0,1,0), priority=1)
+        #     # time.sleep(0.1)
+        # for i in range(30):
+        #     self.send_command(lambda: self.send_position(2,0,0,1,0,0), priority=1)
+        #     # time.sleep(0.1)
+        # for i in range(30):
+        #     self.send_command(lambda: self.send_position(0,2,0,0,1,0), priority=1)
+            # time.sleep(0.1)
+        # for i in range(100):
+        #     self.send_command(lambda: self.send_velocity(1,0,0), priority=1)
         #     time.sleep(0.1)
         # for i in range(100):
-        #     self.send_command(lambda: self.send_position(0,2,0,0,1,0), priority=1)
-        #     time.sleep(0.1)
-        # self.send_command(lambda: self.send_position(2,0,0,1,0,-0.2), priority=1)
-        # self.send_command(lambda: self.send_position(0,2,0,0,1,0.2), priority=1)
-        # self.send_command(lambda: self.send_velocity(1,0,0), priority=1)
-        # self.send_command(lambda: self.send_velocity(1,0,0), priority=1)
-        # self.send_command(lambda: self.send_velocity(1,0,0), priority=1)
-
-        # self.send_command(lambda: self.send_position(0,2,0,0,1,0.2), priority=1)
-        # for i in range(50):
-        #     self.send_command(lambda: self.send_velocity(0.5,0,0), priority=1)
-        #     time.sleep(0.1)
-        # for i in range(50):
-        #     self.send_command(lambda: self.send_velocity(0,0.5,0), priority=1)
+        #     self.send_command(lambda: self.send_velocity(0,1,0), priority=1)
         #     time.sleep(0.1)     
-        # for i in range(50):
-        #     self.send_command(lambda: self.send_velocity(-0.5,0,0), priority=1)
+        # for i in range(100):
+        #     self.send_command(lambda: self.send_velocity(-1,0,0), priority=1)
         #     time.sleep(0.1)
-        # for i in range(50):
-        #     self.send_command(lambda: self.send_velocity(0,-0.5,0), priority=1)
+        # for i in range(100):
+        #     self.send_command(lambda: self.send_velocity(0,1,0), priority=1)
         #     time.sleep(0.1)  
-        
-        self.send_command(lambda: self.set_flight_mode(6), priority=1,command_id=mavutil.mavlink.MAV_CMD_DO_SET_MODE)  
-        time.sleep(4)
-        self.send_command(lambda: self.arm_disarm(0), priority=1,command_id=mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM)  
-        time.sleep(1)
         # while not detector.large_contours: #while detected platforms == 0 (none detected)
         #     self.send_command(lambda: self.send_position(0.5,0,0,1,0,0), priority=1)
         #     time.sleep(0.1)
-        # self.send_command(lambda: self.set_flight_mode(8), priority=1)  
-        # time.sleep(1)
+        self.send_command(lambda: self.set_flight_mode(6), priority=1)  
+        time.sleep(1)
 ############################################################################################################
-########################################## ALGORYTM MISJI ##################################################
+############################## ALGORYTM MISJI - WERSJA 1 -> BEZ GPS ########################################
 ############################################################################################################
 
-    def mission_start(self):
+    #ZMIENNE GLOBALNE W MAIN CONTROLLER
+
+    def mission_start_v1(self):
         self.telemetry_event.wait()
         self.telemetry_event.clear()
         self.mission_phase_one()
@@ -663,13 +688,13 @@ class FC_Controller:
 
     def mission_phase_one(self):
         # Needs to be wrapped in while loop with flag isPhaseOneDone 
-        self.send_command(lambda: self.set_flight_mode(0), priority=1,command_id=mavutil.mavlink.MAV_CMD_DO_SET_MODE) 
+        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
         time.sleep(1)
-        self.send_command(lambda: self.arm_disarm(1), priority=1,command_id=mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM)  
+        self.send_command(lambda: self.arm_disarm(1), priority=1)  
         time.sleep(1)
-        self.send_command(lambda: self.set_flight_mode(4), priority=1,command_id=mavutil.mavlink.MAV_CMD_DO_SET_MODE)  
+        self.send_command(lambda: self.set_flight_mode(4), priority=1)  
         time.sleep(1)
-        self.send_command(lambda: self.takeoff(10), priority=1,command_id=mavutil.mavlink.MAV_CMD_NAV_TAKEOFF) 
+        self.send_command(lambda: self.takeoff(10), priority=1) 
         time.sleep(8)
         while not detector.large_contours: #while detected platforms == 0 (none detected)
             self.send_command(lambda: self.send_position(0.5,0,0,1,0,0), priority=1)
@@ -682,9 +707,9 @@ class FC_Controller:
         while not detector.is_platform_close:
             self.send_command(lambda: self.navigate_to_target('platform', 5), priority=1)
             time.sleep(0.1)
-        self.reset_position = fcc.get_coordinates() # Can be start safe starting position for another phases
+        self.reset_position = self.send_command(lambda: self.get_coordinates(), priority=1) # TODO I want value from get_coordinates, not from send_command 
         # Descend torward platform until altitde is 3 meters
-        while self.get_coordinates()[2] > self.start_position[2] - 3:
+        while self.get_coordinates()[2] > self.start_position[2] - 3: # TODO I want value from get_coordinates, not from send_command 
             self.send_command(lambda: self.send_velocity(0,0,1), priority=1)
             time.sleep(0.1)
             self.send_command(lambda: self.navigate_to_target('platform'), priority=1)
@@ -693,39 +718,246 @@ class FC_Controller:
         # isPhaseOneDone = True -> need to be as attribute of MainController
 
         
+    # def mission_phase_two(self):
+    #     reset_lat, reset_lon, reset_alt = self.reset_position
+    #     while detector.detect_ball_color is None:
+    #         self.send_command(lambda: self.send_velocity(0,0,1), priority=1)
+    #         time.sleep(0.1)
+    #         self.send_command(lambda: self.navigate_to_target('platform'), priority=1)
+    #         time.sleep(0.1)
+    #     platform_5_color = detector.detect_ball_color()
+    #     time.sleep(1)
+    #     while not len(detector.large_contours) == 9: # while not all platforms are detected, add altitude 
+    #         self.send_command(lambda: self.send_global_position(reset_lat, reset_lon, reset_alt, 2, 2, 2), priority=1)
+    #         time.sleep(0.1)
+    #     # Add tracking - same as TODO in CV and previous phase
+    #     while not detector.is_platform_close:
+    #         self.send_command(lambda: self.navigate_to_target('platform', 4), priority=1)
+    #         time.sleep(0.1)
+    #     # Descend torward platform until altitde is 3 meters
+    #     while self.get_coordinates()[2] > self.start_position[2] - 3:
+    #         self.send_command(lambda: self.send_velocity(0,0,1), priority=1)
+    #         time.sleep(0.1)
+    #         self.send_command(lambda: self.navigate_to_target('platform'), priority=1)
+    #         time.sleep(0.1)
+    #     platform_4_position = fcc.get_coordinates()
+
     def mission_phase_two(self):
         reset_lat, reset_lon, reset_alt = self.reset_position
-        detected_colors = set()
-        required_colors={'red','blue','purple'}
-        
-        while detector.detect_ball_color is None:
-            self.send_command(lambda: self.send_velocity(0,0,1), priority=1)
-            time.sleep(0.1)
-            self.send_command(lambda: self.navigate_to_target('platform'), priority=1)
-            time.sleep(0.1)
-        platform_5_color = detector.detect_ball_color()
+        detected_balls = {} 
+        platform_positions = {}
+
+        for platform_num in range(1, 9):
+            while not len(detector.large_contours) == 9: 
+                self.send_command(lambda: self.send_global_position(reset_lat, reset_lon, reset_alt, 2, 2, 2), priority=1)
+                time.sleep(0.1)
+
+            #add tracking
+            while not detector.is_platform_close:
+                self.send_command(lambda: self.navigate_to_target('platform', platform_num), priority=1)
+                time.sleep(0.1)
+
+            while self.get_coordinates()[2] > self.start_position[2] - 3:
+                self.send_command(lambda: self.send_velocity(0, 0, 1), priority=1)
+                time.sleep(0.1)
+                self.send_command(lambda: self.navigate_to_target('platform'), priority=1)
+                time.sleep(0.1)
+            
+            ball_color = detector.detect_ball_color()
+            if ball_color:
+                detected_balls[platform_num] = ball_color
+                platform_positions[platform_num] = fcc.get_coordinates()
+
+            
+            print(f"Detected ball on platform {platform_num}: {ball_color}")
+
+        print("Detected balls on platforms:", detected_balls)
+        # isPhaseTwoDone = True -> need to be as attribute of MainController
+
+    
+
+############################################################################################################
+######################### ALGORYTM MISJI - WERSJA 2 -> GPS: PLATFORM 5 AND BARREL ###########################
+############################################################################################################
+
+    #ZMIENNE GLOBALNE W MAIN CONTROLLER
+    is_phase_one_done = False
+    is_phase_two_done = False
+    is_phase_three_done = False
+    is_phase_four_done = False
+    is_phase_five_done = False
+
+    detected_balls = {} 
+    platform_positions = {}
+    required_balls = {'red','blue','purple'}
+    
+    platform_5_position = [52.12312312,13.32523423] #Mock data, also it is reset position but without alt parameter
+    barrel_position = [52.12314535,13.32522395] #Mock data
+    start_altitude = 6 # Starting takeoff altitude -6m
+    relase_position = []
+
+    retry_attempts = 3 # Retries of cathcing ball in phase 4 
+
+
+    def mission_start_v2(self):
+        self.telemetry_event.wait()
+        self.telemetry_event.clear()
+
+        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
         time.sleep(1)
-        while not len(detector.large_contours) == 9: # while not all platforms are detected, add altitude 
-            self.send_command(lambda: self.send_global_position(reset_lat, reset_lon, reset_alt, 2, 2, 2), priority=1)
-            time.sleep(0.1)
-        # Add tracking - same as TODO in CV and previous phase
-        while not detector.is_platform_close:
-            self.send_command(lambda: self.navigate_to_target('platform', 4), priority=1)
-            time.sleep(0.1)
-        # Descend torward platform until altitde is 3 meters
-        while self.get_coordinates()[2] > self.start_position[2] - 3:
-            self.send_command(lambda: self.send_velocity(0,0,1), priority=1)
-            time.sleep(0.1)
-            self.send_command(lambda: self.navigate_to_target('platform'), priority=1)
-            time.sleep(0.1)
-        platform_4_position = fcc.get_coordinates()
+        self.send_command(lambda: self.arm_disarm(1), priority=1)  
+        time.sleep(1)
+        self.send_command(lambda: self.set_flight_mode(4), priority=1)  
+        time.sleep(1)
+        self.send_command(lambda: self.takeoff(start_altitude), priority=1) 
+        time.sleep(5)
 
-        # TO MOŻNA BĘDZIE ZAUTOMATYZOWAĆ -> LECIEĆ W PĘTLI WHILE POMIĘDZY PLATFORMAMI 1-9 DOPOKI NIE ZOSTANIE WYKRYTA PILKA R,B,P
+        self.mission_phase_one()
+        time.sleep(1)
+        self.mission_phase_two()
+        time.sleep(1)
+        self.mission_phase_three()
+        time.sleep(1)
+        self.mission_phase_four()
+        time.sleep(1)
+        self.mission_phase_five()
 
- 
+    # FLY TO CENTER OF MISSION AREA AND DETECT 9 PLATFORMS
+    def mission_phase_one(self):
+        while not is_phase_one_done:
+            self.send_command(lambda: self.reposition_copter(platform_5_position[0],platform_5_position[1],start_altitude,2,0), priority=1)
+            
+            while not detector.large_contours: #while detected platforms == 0 (none detected)
+                self.send_command(lambda: self.change_altitude(self.latest_telemetry["Altitude"]+1,'up',1), priority=1)
+                time.sleep(0.1)
+
+            while not len(detector.large_contours) == 9: # while not all platforms are detected, add altitude
+                self.send_command(lambda: self.reposition_copter(platform_5_position[0],platform_5_position[1],0,1,0), priority=1)
+                self.send_command(lambda: self.change_altitude(self.latest_telemetry["Altitude"]+1,'up',1), priority=1)
+                time.sleep(0.1)
+
+            self.reset_position = [self.latest_telemetry["Latitude"],self.latest_telemetry["Longitude"],self.latest_telemetry["Altitude"]] # Can be start safe starting position for another phases
+            is_phase_one_done = True 
+
+
+    # GET POSITION OF BALLS OF INTEREST
+    def mission_phase_two(self):
+        reset_lat, reset_lon, reset_alt = self.reset_position
+
+        while not is_phase_two_done:
+            # TODO IF NOT ALL BALLS ARE FOUND -> CHECK ONLY PLATFORMS WHERE BALLS WERENT DETECTED
+            for platform_num in range(1, 10):
+                while len(detector.large_contours) != 9: 
+                    # self.send_command(lambda: self.send_global_position(reset_lat, reset_lon, reset_alt, 2, 2, 2), priority=1)
+                    self.send_command(lambda: self.reposition_copter(reset_lat, reset_lon, reset_alt,2,0), priority=1)
+                    time.sleep(0.1)
+
+                #add tracking in CV (in TODO)
+                while not detector.is_platform_close:
+                    self.send_command(lambda: self.navigate_to_target('platform', platform_num), priority=1)
+                    time.sleep(0.1)
+
+                while self.latest_telemetry["Altitude"] > self.start_position[2] + 2:
+                    self.send_command(lambda: self.change_altitude(self.latest_telemetry["Altitude"]-1,'down',1), priority=1)
+                    time.sleep(0.1)
+                    self.send_command(lambda: self.navigate_to_target('platform'), priority=1)
+                    time.sleep(0.1)
+                
+                # IF BALL NOT DETECTED -> NAVIGATE_TO_TARGET(TARGET)
+                ball_color = detector.detect_ball_color()
+                if ball_color:
+                    detected_balls[platform_num] = ball_color
+                    platform_positions[platform_num] = [self.latest_telemetry["Latitude"],self.latest_telemetry["Longitude"],self.latest_telemetry["Altitude"]]
+
+                print(f"Detected ball on platform {platform_num}: {ball_color}")
+                detected_colors = set(detected_balls.values())      
+                if 'red' in detected_colors and  'blue' in detected_colors and 'purple' in detected_colors:   
+                    print("All required colors detected: red, blue, purple")
+                    is_phase_two_done = True  
+                    break 
+
+            if is_phase_two_done:
+                # self.send_command(lambda: self.send_global_position(reset_lat, reset_lon, reset_alt, 2, 2, 2), priority=1)
+                self.send_command(lambda: self.reposition_copter(reset_lat, reset_lon, reset_alt,2,0), priority=1)
+                break 
+        print("Detected balls on platforms:", detected_balls)
+            
+    # GET POSITION OF BARREL AND ALTITUDE OF PAYLOAD DROP
+    def mission_phase_three(self):
+        while not is_phase_three_done:
+            while not detector.is_barrel_close: #TODO - add is_barrel_close and update method for it
+                self.send_command(lambda: self.reposition_copter(barrel_position[0], barrel_position[1], reset_alt,2,0), priority=1)
+                time.sleep(0.1)
+
+            while not is_barrel_size_enough: #TODO 
+                self.send_command(lambda: self.change_altitude(self.latest_telemetry["Altitude"]-0.5,'down',1), priority=1)
+                time.sleep(0.1)
+                self.send_command(lambda: self.navigate_to_target('barrel'), priority=1)
+                time.sleep(0.1)
+            
+            if is_barrel_size_enough and is_barrel_close:
+                release_position = [self.latest_telemetry["Latitude"],self.latest_telemetry["Longitude"],self.latest_telemetry["Altitude"]]
+                self.send_command(lambda: self.reposition_copter(reset_lat, reset_lon, reset_alt,2,0), priority=1)
+                is_phase_three_done = True
+
+    # MAIN TODO -> HOW TO KNOW DRONE IS STANDING IN GROUND? NOT ACC_Z, RATHER NOT ALTITUDE, PROLLY BALL SIZE???
+    def mission_phase_four(self):
+        while not is_phase_four_done:
+            for index, color in enumerate(detected_balls):
+                if color in required_balls:
+                    lat,lon,alt = platform_positions[index]
+                    # Reposition the copter to the target platform position
+                    print(f"Repositioning to {color} ball at position lat: {lat}, lon: {lon}, alt: {alt}")
+                
+                    # Retry loop
+                    for attempt in range(retry_attempts):
+                        while not detector.is_target_close:
+                            self.send_command(lambda: self.reposition_copter(lat, lon, alt, 2, 0), priority=1)
+                            time.sleep(0.1)
+                        while not is_on_ground:
+                            self.send_command(lambda: self.change_altitude(self.latest_telemetry["Altitude"]-0.2,'down',1), priority=1)
+                            time.sleep(0.1)
+                            self.send_command(lambda: self.navigate_to_target('target'), priority=1)
+                            time.sleep(0.1)
+
+                        #TODO - ADD GRIPPER CLOSE METHOD
+                        if detector.is_on_ground and detector.is_target_close:
+                            gripper.close_gripper()
+
+                        # TODO - DISTANCE SENSOR (is_ball_caught)
+                        if gripper.is_ball_caught:
+                            print(f"{color.capitalize()} ball successfully caught!")
+                            break
+
+                        if attempt == retry_attempts - 1:
+                            print(f"Failed to catch the {color} ball after {retry_attempts} attempts. Moving to the next target.")
+                            
+                    # NEED TO BE CHANGED - HAVENT GOT VISION THERE
+                    while not detector.is_barrel_close:
+                        self.send_command(lambda: self.reposition_copter(release_position[0], release_position[1], release_position[2],2,0), priority=1)
+                        time.sleep(0.1)
+                        self.send_command(lambda: self.navigate_to_target('barrel'), priority=1)
+                        time.sleep(0.1)
+                    
+                    gripper.open_gripper()
+
+            self.send_command(lambda: self.reposition_copter(reset_lat, reset_lon, reset_alt,2,0), priority=1)
+            is_phase_four_done = True
+
+    #RETURN TO HOME AND DISARM
+    def mission_phase_five(self):
+        while not is_phase_five_done:
+            while not is_platform_close:
+                self.send_command(lambda: self.reposition_copter(self.start_position[0], self.start_position[1], self.start_position[2]+2,2,0), priority=1)
+                time.sleep(0.1)
+            self.send_command(lambda: self.set_flight_mode(6), priority=1)
+            time.sleep(4)
+            is_phase_five_done = True
+
+
     # Function to start command thread 
     def start_mission_thread(self):
-        #command_thread = Thread(target=self.mission_start, daemon=True)
+        #command_thread = Thread(target=self.mission_start_v2, daemon=True)
         self.mission_thread = Thread(target=self.do_testow, daemon=True)
         self.mission_thread.start()
         self.mission_thread.join()
@@ -733,9 +965,9 @@ class FC_Controller:
 
 # Example usage
 if __name__ == "__main__":
+
     fcc = FC_Controller()
     detector = BallDetector()
-    # fcc.send_command(lambda: fcc.arm_disarm(1), priority=1)
     fcc.start_mission_thread()
 
     del fcc
