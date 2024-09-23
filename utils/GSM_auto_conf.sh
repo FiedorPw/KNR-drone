@@ -18,18 +18,31 @@ while true; do
         sleep 1
     fi
 done
-sudo mmcli -m "$modem_id" --simple-connect="apn=internet,ip-type=ipv4"
 
-# Step 3: Get bearer ID
-bearer_path=$(mmcli -m "$modem_id" | grep -m 1 'Bearer  |.*paths:' | grep -o '/org/freedesktop/ModemManager1/Bearer/[0-9]\+')
+# Step 2: Connect the modem
+echo "Connecting the modem..."
+if sudo mmcli -m "$modem_id" --simple-connect="apn=internet,ip-type=ipv4"; then
+    echo "Successfully connected the modem"
+else
+    echo "Failed to connect the modem"
+    exit 1
+fi
+
+# Step 3: Get bearer ID using --output-keyvalue
+echo "Getting bearer ID..."
+bearer_info=$(mmcli -m "$modem_id" --output-keyvalue | grep 'bearers')
+
+# Extract the bearer path
+bearer_path=$(echo "$bearer_info" | grep -o '/org/freedesktop/ModemManager1/Bearer/[0-9]\+')
 bearer_id=$(echo "$bearer_path" | grep -o '[0-9]\+')
 echo "Bearer ID: $bearer_id"
 
 if [ -z "$bearer_id" ]; then
-    # Create a new bearer if none exists
+    # Create a new bearer and capture the bearer path directly from the output
     echo "No bearer found. Creating a new bearer..."
-    sudo mmcli -m "$modem_id" --create-bearer="apn=internet"
-    bearer_path=$(mmcli -m "$modem_id" | grep -m 1 'Bearer  |.*paths:' | grep -o '/org/freedesktop/ModemManager1/Bearer/[0-9]\+')
+    bearer_output=$(sudo mmcli -m "$modem_id" --create-bearer="apn=internet" --output-keyvalue)
+    echo "$bearer_output"
+    bearer_path=$(echo "$bearer_output" | grep -o 'Bearer=.*' | cut -d'=' -f2)
     bearer_id=$(echo "$bearer_path" | grep -o '[0-9]\+')
     echo "New Bearer ID: $bearer_id"
 fi

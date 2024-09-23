@@ -42,8 +42,6 @@ def mission_start_v2():
     fcc.telemetry_event.wait()
     fcc.telemetry_event.clear()
 
-    fcc.send_command(lambda: fcc.set_flight_mode(0), priority=1) 
-    time.sleep(1)
     fcc.send_command(lambda: fcc.arm_disarm(1), priority=1)  
     time.sleep(1)
     fcc.send_command(lambda: fcc.set_flight_mode(4), priority=1)  
@@ -133,7 +131,7 @@ def mission_phase_three():
         while not detector.is_barrel_size_enough: 
             fcc.send_command(lambda: fcc.change_altitude(fcc.latest_telemetry["Altitude"]-0.5,'down',1), priority=1)
             time.sleep(0.1)
-            fcc.send_command(lambda: fcc.navigate_to_target('barrel'), priority=1) #TODO - CV barrel 
+            fcc.send_command(lambda: fcc.navigate_to_target('barrel'), priority=1) 
             time.sleep(0.1)
         
         if detector.is_barrel_size_enough and detector.is_barrel_close:
@@ -163,7 +161,6 @@ def mission_phase_four():
                         fcc.send_command(lambda: fcc.navigate_to_target('target'), priority=1)
                         time.sleep(0.1)
 
-                    #TODO - ADD GRIPPER CLOSE METHOD
                     if detector.is_on_ground and detector.is_target_close:
                         gripper.close_gripper()
 

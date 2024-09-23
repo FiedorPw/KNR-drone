@@ -15,13 +15,13 @@ SIZE_THRESHOLD = 1000  # NIE ZMIENIAĆ, NARAZIE DOBRZE DOSTROJONE
 # 2. [DONE] Add method to check if any ball is visible, if true - return its color (Ball)
 # 3. [DONE] Add method to detect barrel
 # 4. [DONE] Add method to return if any platform is detected
-# 5. Right now get_position_one_platform cant detect 3 rows - nedd to change rowThreshold parameter to fit our purpose
+# 5. [!!!] Right now get_position_one_platform cant detect 3 rows - nedd to change rowThreshold parameter to fit our purpose
 # 6. [DONE] Add method to make platform_vector from frame center to platform center
 # 7. [DONE] In process_frame_debug platform_vector is made from largest platform - should it be changed to closest to frame center?
 # 8. From some height platform will be not visible as square -> algorithm then needs to be switched to ball detection
 # 9. [DONE] Add class atribute isClose which tells if target/platform is near center
 # 10. Change mask for  purple ball - it is detected in dark areas
-# 11. Add method to follow target/platform - when 9 platforms are visible and drone is guided torwards one of them rest are not visible. 
+# 11. [!!!] Add method to follow target/platform - when 9 platforms are visible and drone is guided torwards one of them rest are not visible. 
 # Position of plaform that was chosen need to be followed
 # 12. In detect rectangles method switch finding contours order with white mask
 # 13. [DONE] Add to detect method is_barrel_close and add flag is_barrel_size_enough to tell if drone is close enough to release payload (process_frame_debug method)
@@ -90,7 +90,7 @@ class Ball:
 
 class BallDetector:
     def __init__(self):
-        self.aspect_ratio_tolerance = 0.8 # Parameter to detect more square-like or rectangular objects
+        self.aspect_ratio_tolerance = 0.5 # Parameter to detect more square-like or rectangular objects
         self.close_radius = 100
         self.row_threshold = 200 # Adjust based on expected platform size and spacing
         self.barrel_radius = 0
@@ -398,17 +398,17 @@ class BallDetector:
             self.platform_vector = None
             self.is_platform_close = False
 
-        # # Rysowanie prostokątów i numerów platform
-        # for platform_number, platform in self.platforms_by_number.items():
-        #     x, y, w, h = platform['x'], platform['y'], platform['w'], platform['h']
-        #     # Rysowanie prostokąta na oryginalnym obrazie
-        #     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)  # Zielony prostokąt
-        #     # Wyświetlanie numeru platformy
-        #     cv2.putText(frame, str(platform_number), (int(x + w/2), int(y + h/2)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+        # Rysowanie prostokątów i numerów platform
+        for platform_number, platform in self.platforms_by_number.items():
+            x, y, w, h = platform['x'], platform['y'], platform['w'], platform['h']
+            # Rysowanie prostokąta na oryginalnym obrazie
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)  # Zielony prostokąt
+            # Wyświetlanie numeru platformy
+            cv2.putText(frame, str(platform_number), (int(x + w/2), int(y + h/2)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
-        #     # Draw each ball with its updated properties
-        #     for ball in self.balls.values():
-        #         ball.draw(frame, screen_center)
+            # Draw each ball with its updated properties
+            for ball in self.balls.values():
+                ball.draw(frame, screen_center)
 
         # Calculate vector_to_center for the largest ball
         largest_ball = max(self.balls.values(), key=lambda b: b.size if b.size > 0 else 0)
@@ -461,6 +461,12 @@ class BallDetector:
             self.barrel_vector = None
             self.is_barrel_close = False
 
+          # Display the resulting frame with bounding boxes and circles
+        # cv2.imshow('Bounding Boxes and Ball Detection', frame)
+        # cv2.waitKey(0)  # Wait for a key press to close the window
+
+        # cv2.destroyAllWindows()
+
 if __name__ == "__main__":
     detector = BallDetector()
     # stream URL
@@ -475,17 +481,17 @@ if __name__ == "__main__":
             # print("Processing frame...")
             detector.process_frame_debug(frame)
 
-            # print(f"Detected platforms: {len(detector.large_contours)}")
-            # # Check if all platforms are detected
-            # platform_positions = detector.get_all_platform_positions()
-            # if platform_positions:
-            #     print("All platforms detected. Positions:")
-            #     for number, position in platform_positions.items():
-            #         print(f"Platform {number}: Position {position}")
-            # else:
-            #     print("Not all platforms detected or could not determine platform positions.")
+            print(f"Detected platforms: {len(detector.large_contours)}")
+            # Check if all platforms are detected
+            platform_positions = detector.get_all_platform_positions()
+            if platform_positions:
+                print("All platforms detected. Positions:")
+                for number, position in platform_positions.items():
+                    print(f"Platform {number}: Position {position}")
+            else:
+                print("Not all platforms detected or could not determine platform positions.")
         else:
             print("Failed to fetch frame")
 
-        time.sleep(10)
+        time.sleep(0.01)
 

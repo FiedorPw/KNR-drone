@@ -3,6 +3,8 @@ import sys
 import os
 from gpiozero import PWMOutputDevice, DigitalOutputDevice
 
+# TODO - implement distance sensor logic and create is_ball_caught flag as class attribute
+
 # Zadeklarowanie pinów dla mostka H
 pinForward = 24  # Pin do przodu (GPIO 24)
 pinBackward = 23 # Pin do tylu (GPIO 23)

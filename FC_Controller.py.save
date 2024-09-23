@@ -628,21 +628,21 @@ class FC_Controller:
         time.sleep(6)
         # self.send_command(lambda: self.set_flight_mode(4), priority=1)  
         # time.sleep(1)
-       # for i in range(30):
+        # for i in range(30):
         #    self.send_command(lambda: self.send_global_position(52.2159343,21.0035504, 4,2,2,1), priority=1)  
         #    time.sleep(0.1)
-        for i in range(30):
-            self.send_command(lambda: self.send_position(2,0,0,1,0,0), priority=1)
-            time.sleep(0.1)
-        for i in range(30):
-            self.send_command(lambda: self.send_position(0,2,0,0,1,0), priority=1)
-            time.sleep(0.1)
-        for i in range(30):
-            self.send_command(lambda: self.send_position(2,0,0,1,0,0), priority=1)
-            time.sleep(0.1)
-        for i in range(30):
-            self.send_command(lambda: self.send_position(0,2,0,0,1,0), priority=1)
-            time.sleep(0.1)
+        # for i in range(30):
+        #     self.send_command(lambda: self.send_position(2,0,0,1,0,0), priority=1)
+        #     # time.sleep(0.1)
+        # for i in range(30):
+        #     self.send_command(lambda: self.send_position(0,2,0,0,1,0), priority=1)
+        #     # time.sleep(0.1)
+        # for i in range(30):
+        #     self.send_command(lambda: self.send_position(2,0,0,1,0,0), priority=1)
+        #     # time.sleep(0.1)
+        # for i in range(30):
+        #     self.send_command(lambda: self.send_position(0,2,0,0,1,0), priority=1)
+            # time.sleep(0.1)
         # for i in range(100):
         #     self.send_command(lambda: self.send_velocity(1,0,0), priority=1)
         #     time.sleep(0.1)
@@ -659,7 +659,7 @@ class FC_Controller:
         #     self.send_command(lambda: self.send_position(0.5,0,0,1,0,0), priority=1)
         #     time.sleep(0.1)
         self.send_command(lambda: self.set_flight_mode(6), priority=1)  
-        time.sleep(5)
+        time.sleep(1)
 
     # Function to start command thread 
     def start_command_thread(self):

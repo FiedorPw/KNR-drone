@@ -1,0 +1,11 @@
+[Unit]
+Description=GSM auto reconnect service
+After=multi-user.target
+
+[Service]
+ExecStart=/home/KNR/KNR-dron/utils/GSM_auto_reconnect.sh
+Restart=always
+
+[Install]
+WantedBy=default.target
+RequiredBy=multi-user.target
