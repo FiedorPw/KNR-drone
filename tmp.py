@@ -178,9 +178,9 @@ class FC_Controller:
             battery_percentage = 0.0
             # Sprawdzamy czy napięcie nie wychodzi poza zakres
             if voltage < min_voltage:
-                return '0%'
+                return 0
             elif voltage > max_voltage:
-                return '100%'
+                return  100
             # Obliczamy procent naładowania baterii
             battery_percentage = f'{round(((voltage - min_voltage) / (max_voltage - min_voltage)) * 100, 1)}%'
             #print(f'{self.battery_percentage}%')
@@ -837,7 +837,7 @@ class FC_Controller:
 
     def test_lotu_xz(self):
         self.begin_flight()
-        
+
         self.send_command(lambda: self.takeoff(4), priority=1)  
         time.sleep(3)
 
