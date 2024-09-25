@@ -161,7 +161,7 @@ def mission_phase_four():
                         fcc.send_command(lambda: fcc.navigate_to_target('target'), priority=1)
                         time.sleep(0.1)
 
-                    if detector.is_on_ground and detector.is_target_close:
+                    if fcc.is_on_ground and detector.is_target_close:
                         gripper.close_gripper()
 
                     # TODO - DISTANCE SENSOR (is_ball_caught)

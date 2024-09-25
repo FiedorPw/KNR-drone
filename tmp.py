@@ -5,6 +5,7 @@ import time
 import math
 from datetime import datetime
 import shutil
+import logging
 
 from threading import Thread, Lock, Event
 import queue
@@ -44,6 +45,10 @@ from CV_Controller import BallDetector
 # 14. [DONE? CHECK IF CORRECTLY IMPLEMENTED] Implement current telemetry method to use it in algorithm
 # 15. Add some interruptions - i.e. when drone is 1m above and going down, send commands to stay in place
 # 16. Telemetry must be send way faster to command complition checks work
+# 17. Add waint_until_command methods to check if commands are done - then do next command
+# 18. Implement COMMAND_ACK
+# 19.  Ensure that the flight controller is set up to maintain altitude when no vertical movement is commanded.
+
 
 class FC_Controller:
     def __init__(self, connection_string='/dev/ttyACM0', baud_rate=115200, log_dir="/home/KNR/KNR-dron/LOGS/"):
@@ -69,13 +74,6 @@ class FC_Controller:
         self.is_armed = False
         self.isLanding = False
         self.is_on_ground = False
-        self.iteration_count = 0
-        self.last_flight_mode = None
-        self.last_HDOP = None
-        self.last_VDOP = None
-        self.last_Satelites = None
-        self.last_Voltage = None
-        self.last_Current = None
 
         self.latest_telemetry = None
         
@@ -99,7 +97,13 @@ class FC_Controller:
         # self.ack_listener_thread = Thread(target=self.ack_listener)
         # self.ack_listener_thread.start()
 
-        self.mission_thread = None
+        # Configure logging
+        logging.basicConfig(
+            filename='drone_mission.log',
+            level=logging.INFO,
+            format='%(asctime)s [%(threadName)s] %(levelname)s: %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S'
+        )
 
     def __del__(self):
         # Safe cleanup of threads in case of program termination
@@ -139,9 +143,6 @@ class FC_Controller:
             "HDOP": [],
             "VDOP": [],
             "Satellites": [],
-            "Vx": [],
-            "Vy": [],
-            "Vz": [],
             "Flight_Mode": [],
             "Voltage": [],
             "Current": [],
@@ -161,6 +162,22 @@ class FC_Controller:
             self.log_filename = self.create_log_filename()
             self.telemetry_data = self.reset_telemetry_data()
 
+    # def initLogConfig(self):
+
+    #     # Define the log directory and file
+    #     log_dir = os.path.expanduser('~/KNR-dron/LOGS/command-logs')
+    #     log_file = os.path.join(log_dir, 'drone_commands.log')
+
+    #     # Create the directory if it doesn't exist
+    #     if not os.path.exists(log_dir):
+    #         os.makedirs(log_dir)
+    #     # Configure logging
+    #     logging.basicConfig(
+    #         filename=log_file,  # Log file path
+    #         level=logging.INFO,             # Log level
+    #         format='%(asctime)s %(levelname)s:%(message)s',  # Log format
+    #         datefmt='%Y-%m-%d %H:%M:%S'     # Date format
+    #     )
 ############################################################################################################
 ######################################   RECIEVING TELEMETRY  ##############################################
 ############################################################################################################
@@ -220,17 +237,16 @@ class FC_Controller:
             print("No GPS position data received")
             return None
         
-     # Retrieves GPS position data
     def get_coordinates(self):
-        msg = self.master.recv_match(type='GPS_RAW_INT', blocking=True)
-        if msg:
-            lat = msg.lat / 1e7
-            lon = msg.lon / 1e7
-            alt = msg.alt / 1e3
-            return [lat, lon, alt]
-        else:
-            print("No GPS position data received")
-            return None
+        # Assuming latest_telemetry contains 'Latitude', 'Longitude', 'Altitude'
+        with self.telemetry_lock:
+            gps_data = (
+                self.latest_telemetry.get("Latitude"),
+                self.latest_telemetry.get("Longitude"),
+                self.latest_telemetry.get("Altitude")
+            )
+        return gps_data if all(gps_data) else None
+
 
     # Retrieves attitude data (roll, pitch, yaw)
     def get_attitude(self):
@@ -273,111 +289,85 @@ class FC_Controller:
             print("No heartbeat message received")
             return False
 
-    # Retrieves speed data (Vx, Vy, Vz) from GLOBAL_POSITION_INT
-    def get_global_position(self):
-        msg = self.master.recv_match(type='GLOBAL_POSITION_INT', blocking=True)
-        if msg:
-            vx = msg.vx / 100.0  # Prędkość w osi X w m/s
-            vy = msg.vy / 100.0  # Prędkość w osi Y w m/s
-            vz = msg.vz / 100.0  # Prędkość w osi Z w m/s
-            return {
-                "Vx": vx,
-                "Vy": vy,
-                "Vz": vz
-            }
-        else:
-            print("No global position data received")
-            return None
-
-   # Collects all telemetry data and appends to the telemetry data structure
+    # Collects all telemetry data and appends to the telemetry data structure
     def get_all_telemetry(self):
         with self.telemetry_lock:
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.telemetry_data["Timestamp"].append(timestamp)
 
-            # Pobieranie danych attitude
             attitude_data = self.get_attitude()
             if attitude_data:
                 self.telemetry_data["Roll"].append(attitude_data["Roll"])
                 self.telemetry_data["Pitch"].append(attitude_data["Pitch"])
                 self.telemetry_data["Yaw"].append(attitude_data["Yaw"])
 
-            # Pobieranie danych GPS
             gps_data = self.get_gps_position()
             if gps_data:
                 self.telemetry_data["Latitude"].append(gps_data["Latitude"])
                 self.telemetry_data["Longitude"].append(gps_data["Longitude"])
                 self.telemetry_data["Altitude"].append(gps_data["Altitude"])
-                if self.iteration_count % 10 == 0:
-                    if gps_data:
-                        self.telemetry_data["HDOP"].append(gps_data["HDOP"])
-                        self.telemetry_data["VDOP"].append(gps_data["VDOP"])
-                        self.telemetry_data["Satellites"].append(gps_data["Satellites"])
-                        self.last_HDOP = gps_data["HDOP"]
-                        self.last_VDOP = gps_data["VDOP"]
-                        self.last_Satelites = gps_data["Satellites"]
-                else:
-                    if self.last_HDOP and self.last_VDOP and self.last_Satelites is not None:
-                        self.telemetry_data["HDOP"].append(self.last_HDOP)
-                        self.telemetry_data["VDOP"].append(self.last_VDOP)
-                        self.telemetry_data["Satellites"].append(self.last_Satelites)
-                    else:
-                        self.telemetry_data["HDOP"].append('UNKNOWN HDOP')
-                        self.telemetry_data["VDOP"].append('UNKNOWN VDOP')
-                        self.telemetry_data["Satellites"].append('UNKNOWN SATELlITES')
-            
+                self.telemetry_data["HDOP"].append(gps_data["HDOP"])
+                self.telemetry_data["VDOP"].append(gps_data["VDOP"])
+                self.telemetry_data["Satellites"].append(gps_data["Satellites"])
 
-            if self.iteration_count % 5 == 0:
-                flight_mode = self.get_flight_mode()
-                if flight_mode:
-                    self.telemetry_data["Flight_Mode"].append(flight_mode)
-                    self.last_flight_mode = flight_mode
-            else:
-                if self.last_flight_mode is not None:
-                    self.telemetry_data["Flight_Mode"].append(self.last_flight_mode)
-                else:
-                    self.telemetry_data["Flight_Mode"].append('UNKNOWN FLIGHT MODE')
-
-            # Pobieranie prędkości z GLOBAL_POSITION_INT
-            global_position_data = self.get_global_position()
-            if global_position_data:
-                self.telemetry_data["Vx"].append(global_position_data["Vx"])
-                self.telemetry_data["Vy"].append(global_position_data["Vy"])
-                self.telemetry_data["Vz"].append(global_position_data["Vz"])
-            else:
-                self.telemetry_data["Vx"].append('UNKNOWN Vx')
-                self.telemetry_data["Vy"].append('UNKNOWN Vy')
-                self.telemetry_data["Vz"].append('UNKNOWN Vz')
-
-            # # Pobieranie prędkości
-            # speed_data = self.get_speed()
-            # if speed_data:
-            #     self.telemetry_data["Airspeed"].append(speed_data["Airspeed"])
-            #     self.telemetry_data["Groundspeed"].append(speed_data["Groundspeed"])
-            # else:
-            #     self.telemetry_data["Airspeed"].append('UNKNOWN AIRSPEED')
-            #     self.telemetry_data["Groundspeed"].append('UNKNOWN GROUND SPEED')
+            flight_mode = self.get_flight_mode()
+            if flight_mode:
+                self.telemetry_data["Flight_Mode"].append(flight_mode)
 
             battery_data = self.get_battery_status()
-            self.telemetry_data["Voltage"].append(battery_data["Voltage"])
-            if self.iteration_count % 10 == 0:
-                if battery_data:
-                    self.telemetry_data["Current"].append(battery_data["Current"])
-                    self.last_Current = battery_data["Current"]
-            else:
-                if self.last_Current is not None:
-                    self.telemetry_data["Current"].append(self.last_Current)
-                else:
-                    self.telemetry_data["Current"].append('UNKNOWN CURRENT')
+            if battery_data:
+                self.telemetry_data["Voltage"].append(battery_data["Voltage"])
+                self.telemetry_data["Current"].append(battery_data["Current"])
+                # self.telemetry_data["Percentage"].append(battery_data["Percentage"])
 
-            # Pobieranie statusu uzbrojenia co kilka iteracji (np. co 5 iteracji)
-            if self.iteration_count % 10 == 0:
-                armed_status = self.get_arm_status()
-                self.telemetry_data["Armed"].append(armed_status)
+            armed_status = self.get_arm_status()
+            self.telemetry_data["Armed"].append(armed_status)
 
-            # Inkrementacja licznika iteracji
-            self.iteration_count += 1
+            #Drone start position
+            if armed_status and not self.is_armed:
+                self.start_position = [gps_data["Latitude"],gps_data["Longitude"],gps_data["Altitude"]]
+                print(f'Drone Start Position {self.start_position}')
+                self.is_armed = True
 
+            # Update latest_telemetry with only the latest data point
+            self.latest_telemetry = {
+                "Timestamp": timestamp,
+                "Roll": attitude_data["Roll"] if attitude_data else None,
+                "Pitch": attitude_data["Pitch"] if attitude_data else None,
+                "Yaw": attitude_data["Yaw"] if attitude_data else None,
+                "Latitude": gps_data["Latitude"] if gps_data else None,
+                "Longitude": gps_data["Longitude"] if gps_data else None,
+                "Altitude": gps_data["Altitude"] if gps_data else None,
+                "HDOP": gps_data["HDOP"] if gps_data else None,
+                "VDOP": gps_data["VDOP"] if gps_data else None,
+                "Satellites": gps_data["Satellites"] if gps_data else None,
+                "Flight_Mode": flight_mode,
+                "Voltage": battery_data["Voltage"] if battery_data else None,
+                "Current": battery_data["Current"] if battery_data else None,
+                "Armed": armed_status
+            }
+
+    # Method to handle telemetry updates
+    def on_telemetry_update(self, telemetry_data):
+        with self.telemetry_lock:
+            self.telemetry_data = telemetry_data.copy()
+            # Update latest_telemetry with only the latest data point
+            self.latest_telemetry = {
+                "Timestamp": telemetry_data.get("Timestamp", [])[-1] if telemetry_data.get("Timestamp") else None,
+                "Roll": telemetry_data.get("Roll", [])[-1] if telemetry_data.get("Roll") else None,
+                "Pitch": telemetry_data.get("Pitch", [])[-1] if telemetry_data.get("Pitch") else None,
+                "Yaw": telemetry_data.get("Yaw", [])[-1] if telemetry_data.get("Yaw") else None,
+                "Latitude": telemetry_data.get("Latitude", [])[-1] if telemetry_data.get("Latitude") else None,
+                "Longitude": telemetry_data.get("Longitude", [])[-1] if telemetry_data.get("Longitude") else None,
+                "Altitude": telemetry_data.get("Altitude", [])[-1] if telemetry_data.get("Altitude") else None,
+                "HDOP": telemetry_data.get("HDOP", [])[-1] if telemetry_data.get("HDOP") else None,
+                "VDOP": telemetry_data.get("VDOP", [])[-1] if telemetry_data.get("VDOP") else None,
+                "Satellites": telemetry_data.get("Satellites", [])[-1] if telemetry_data.get("Satellites") else None,
+                "Flight_Mode": telemetry_data.get("Flight_Mode", [])[-1] if telemetry_data.get("Flight_Mode") else None,
+                "Voltage": telemetry_data.get("Voltage", [])[-1] if telemetry_data.get("Voltage") else None,
+                "Current": telemetry_data.get("Current", [])[-1] if telemetry_data.get("Current") else None,
+                "Armed": telemetry_data.get("Armed", [])[-1] if telemetry_data.get("Armed") else False
+            }
 
     # Collects telemetry data and saves it periodically
     def telemetry_collection(self):
@@ -387,16 +377,17 @@ class FC_Controller:
                 # print("Requesting data streams...")
                     self.master.mav.request_data_stream_send(self.master.target_system,
                                                     self.master.target_component,
-                                                    mavutil.mavlink.MAV_DATA_STREAM_ALL, 100, 1)
+                                                    mavutil.mavlink.MAV_DATA_STREAM_ALL, 5, 1)
                     # print("Getting telemetry data...")
                     #TODO 2 functions below can be modified to be out of mutex zone
                     self.get_all_telemetry()
-                self.save_to_json()
-                print(f"Telemetry data saved to {self.log_filename}")
-                self.telemetry_event.set()
+                    self.save_to_json()
+                    print(f"Telemetry data saved to {self.log_filename}")
+                    self.telemetry_event.set()
             except Exception as e:
                 print(f"Error in telemetry collection: {e}")
-            time.sleep(0.1)
+            time.sleep(0.5)
+
 
 # TODO -> SAVE TO JSON OUT OF MUTEX
     # def save_recieved_data(self):
@@ -588,38 +579,82 @@ class FC_Controller:
 ####################################  MAVLINK COMMANDS COMPLITION CHECK ####################################
 ############################################################################################################
 
-    def wait_until_altitude(self, target_altitude, tolerance=0.2):
+    def wait_until_altitude(self, target_altitude, tolerance=0.3, timeout=30):
+        start_time = time.time()
         while True:
-            current_altitude = self.latest_telemetry["Altitude"]  # Implement this method
+            with self.telemetry_lock:
+                current_altitude = float(self.latest_telemetry.get("Altitude"))  # Ensure this returns a float
             if abs(current_altitude - target_altitude) <= tolerance:
+                print(f"# Target altitude reached: {current_altitude} #")
+                break
+            if time.time() - start_time > timeout:
+                print(f"# Timeout waiting for target altitude: Target = {target_altitude}, Current = {current_altitude} #")
                 break
             time.sleep(0.1)
-            print("Drone changing altitude...")
-        print("#Target altitude reached#")
+            print(f"Drone changing altitude... Current altitude: {current_altitude}")
 
-    def wait_until_position(self, target_x, target_y, target_z, tolerance=0.2):
+    # def wait_until_altitude(self, target_altitude, tolerance=0.3, timeout=30):
+    #     start_time = time.time()
+    #     while True:
+    #         current_altitude = float(self.latest_telemetry["Altitude"][-1])  # Ensure this returns a float
+    #         if abs(current_altitude - target_altitude) <= tolerance:
+    #             logging.info(f"# Target altitude reached: {current_altitude} #")
+    #             break
+    #         if time.time() - start_time > timeout:
+    #             logging.warning(f"# Timeout waiting for target altitude: Target = {target_altitude}, Current = {current_altitude} #")
+    #             break
+    #         time.sleep(0.1)
+    #         logging.info(f"Drone changing altitude... Current altitude: {current_altitude}")
+
+
+    def gps_to_frd(self, current_position, start_position):
+        lat_diff = (current_position[0] - start_position[0]) * 111320  # meters per degree of latitude
+        lon_diff = (current_position[1] - start_position[1]) * 111320 * math.cos(math.radians(start_position[0]))  # meters per degree of longitude
+        alt_diff = (start_position[2] - current_position[2])  # Altitude in meters (downward, so start_alt - current_alt)
+        
+        return lat_diff, lon_diff, alt_diff  # x = lat_diff, y = lon_diff, z = alt_diff (FRD)
+      
+
+    def wait_until_position(self, target_x, target_y, target_z, tolerance=0.5, timeout=30):
+        start_time = time.time()
         while True:
-            current_position = self.get_current_position()  # Implement this method
-            dx = abs(current_position.x - target_x)
-            dy = abs(current_position.y - target_y)
-            dz = abs(current_position.z - target_z)
+            with self.telemetry_lock:
+                current_gps = self.get_coordinates()
+
+            if current_gps is None:
+                print("No current GPS data, retrying...")
+                time.sleep(0.1)
+                continue
+            current_frd = self.gps_to_frd(current_gps, self.start_position)
+            dx = abs(current_frd[0] - target_x)
+            dy = abs(current_frd[1] - target_y)
+            dz = abs(current_frd[2] - target_z)
+
+            print(f"Current position (FRD): x={current_frd[0]}, y={current_frd[1]}, z={current_frd[2]}")
+            print(f"Target position: x={target_x}, y={target_y}, z={target_z}")
+            print("Drone changing position...")
+
+            if dx <= tolerance and dy <= tolerance and dz <= tolerance:
+                logging.info("# Target position reached #")
+                break
+
+            if time.time() - start_time > timeout:
+                logging.warning("# Timeout waiting for target position #")
+                break
+            time.sleep(0.1)
+        print("# Target position reached #")
+    
+    def wait_until_GPSposition(self, target_lat, target_lon, target_alt, tolerance=0.2):
+        while True:
+            current_gps = self.get_coordinates()  # Implement this method
+            dx = abs(current_gps[0] - target_lat)
+            dy = abs(current_gps[1] - target_lon)
+            dz = abs(current_gps[2] - target_alt)
             if dx <= tolerance and dy <= tolerance and dz <= tolerance:
                 break
             time.sleep(0.1)
-    
-    # def wait_until_GPSposition(self, target_lat, target_lon, target_alt, tolerance=0.2):
-    #     while True:
-    #         current_position = self.get_current_position()  # Implement this method
-    #         dx = abs(current_position.x - target_x)
-    #         dy = abs(current_position.y - target_y)
-    #         dz = abs(current_position.z - target_z)
-    #         if dx <= tolerance and dy <= tolerance and dz <= tolerance:
-    #             break
-    #         time.sleep(0.1)
 
         
-
-
 ############################################################################################################
 ########################################  MAVLINK MISSION COMMANDS #########################################
 ############################################################################################################
@@ -682,7 +717,11 @@ class FC_Controller:
 ######################################## MUTEX PROCESSING #########################################
 ###################################################################################################
 
-    def send_command(self, command_func, priority):
+    def send_command(self, command_func, priority, command_name=None):
+        # Log command being send
+        if command_name is None:
+            command_name = command_func.__name__ if hasattr(command_func, '__name__') else 'lambda'
+        logging.info(f"Sending command: {command_name}")
         if self.command_processor_thread.is_alive():
             self.command_counter += 1
             self.command_queue.put((priority, self.command_counter, command_func))
@@ -738,70 +777,44 @@ class FC_Controller:
         time.sleep(6)
         # self.send_command(lambda: self.set_flight_mode(4), priority=1)  
         # time.sleep(1)
-       # for i in range(30):
-        #    self.send_command(lambda: self.send_global_position(52.2159343,21.0035504, 4,2,2,1), priority=1)  
-        #    time.sleep(0.1)
 
-        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
-        # TEGO NIGDY PRE NIGDY TAK NIE WYSYŁAĆ BO SIĘ SKONCZY TAK W KONCU ZE KOGOS ZABIJE TEN DRON XDDDD
-        for i in range(30):
-            self.send_command(lambda: self.send_position(2,0,0,1,0,0), priority=1)
-            time.sleep(0.1)
-        for i in range(30):
-            self.send_command(lambda: self.send_position(0,2,0,0,1,0), priority=1)
-            time.sleep(0.1)
-        for i in range(30):
-            self.send_command(lambda: self.send_position(2,0,0,1,0,0), priority=1)
-            time.sleep(0.1)
-        for i in range(30):
-            self.send_command(lambda: self.send_position(0,2,0,0,1,0), priority=1)
-            time.sleep(0.1)
-        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
-
-        # for i in range(100):
-        #     self.send_command(lambda: self.send_velocity(1,0,0), priority=1)
-        #     time.sleep(0.1)
-        # for i in range(100):
-        #     self.send_command(lambda: self.send_velocity(0,1,0), priority=1)
-        #     time.sleep(0.1)     
-        # for i in range(100):
-        #     self.send_command(lambda: self.send_velocity(-1,0,0), priority=1)
-        #     time.sleep(0.1)
-        # for i in range(100):
-        #     self.send_command(lambda: self.send_velocity(0,1,0), priority=1)
-        #     time.sleep(0.1)  
-        # while not detector.large_contours: #while detected platforms == 0 (none detected)
-        #     self.send_command(lambda: self.send_position(0.5,0,0,1,0,0), priority=1)
-        #     time.sleep(0.1)
-        self.send_command(lambda: self.set_flight_mode(6), priority=1)  
-        time.sleep(5)
 
     def test_lotu_xy(self):
         self.telemetry_event.wait()
         self.telemetry_event.clear()
-        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
-        time.sleep(1)
-        self.send_command(lambda: self.arm_disarm(1), priority=1)  
-        time.sleep(1)
-        self.send_command(lambda: self.set_flight_mode(4), priority=1)  
-        time.sleep(2)
-        self.send_command(lambda: self.takeoff(3), priority=1)  
-        time.sleep(2)
+        self.send_command(lambda: self.set_flight_mode(0), priority=1, command_name='set_flight_mode_STABILIZE')
+        self.send_command(lambda: self.arm_disarm(1), priority=1, command_name='arm_disarm')
+        self.send_command(lambda: self.set_flight_mode(4), priority=1, command_name='set_flight_mode_GUIDED')
+        self.send_command(lambda: self.takeoff(3), priority=1, command_name='takeoff')
+        # self.wait_until_altitude(3)
 
-        # FLY SQUARE
-        self.send_command(lambda: self.send_position(3, 0, 0, 0.5, 0, 0), priority=1) 
-        time.sleep(4)
-        self.send_command(lambda: self.send_position(0, 3, 0, 0, 0.5, 0), priority=1) 
-        time.sleep(4)
-        self.send_command(lambda: self.send_position(-3, 0, 0, 0.5, 0, 0), priority=1) 
-        time.sleep(4)
-        self.send_command(lambda: self.send_position(0, -3, 0, 0, 0.5,0), priority=1) 
-        time.sleep(4)
+        waypoints = [
+            (3, 0, 0),
+            (3, 3, 0),
+            (0, 3, 0),
+            (0, 0, 0)
+        ]
+    
 
-        self.send_command(lambda: self.set_flight_mode(8), priority=1)  
-        time.sleep(6)
-        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
+        for x,y,z in waypoints:
+            self.send_command(lambda: self.send_position(x,y,z,0.5,0.5,0), priority=1, command_name='fly_to_point_1')
+            self.wait_until_position(x, y, z)
+
+        # # FLY SQUARE
+        # self.send_command(lambda: self.send_position(3, 0, 0, 0.5, 0, 0), priority=1, command_name='fly_to_point_1')
+        # self.wait_until_position(3, 0, 3)
+        # self.send_command(lambda: self.send_position(0, 3, 0, 0, 0.5, 0), priority=1, command_name='fly_to_point_2')
+        # self.wait_until_position(0, 3, 3)
+        # self.send_command(lambda: self.send_position(-3, 0, 0, 0.5, 0, 0), priority=1, command_name='fly_to_point_3')
+        # self.wait_until_position(-3, 0, 3)
+        # self.send_command(lambda: self.send_position(0, -3, 0, 0, 0.5,0), priority=1, command_name='fly_to_point_4')
+        # self.wait_until_position(0, -3, 3)
+
+        self.send_command(lambda: self.set_flight_mode(8), priority=1, command_name='set_flight_mode_LAND')
+        self.wait_until_altitude(0.1)
+        self.send_command(lambda: self.set_flight_mode(0), priority=1, command_name='set_flight_mode_STABILIZE')
         time.sleep(1)
+
 
     def test_lotu_xz(self):
         self.telemetry_event.wait()
@@ -927,22 +940,10 @@ class FC_Controller:
         self.send_command(lambda: self.set_flight_mode(0), priority=1) 
         time.sleep(1)
 
-    def TEST_XD(self):
-        self.telemetry_event.wait()
-        self.telemetry_event.clear()
-        # self.send_command(lambda: self.arm_disarm(1), priority=1)  
-        # time.sleep(4)
-        self.send_command(lambda: self.set_flight_mode(4), priority=1)  
-        time.sleep(8)
-        self.send_command(lambda: self.set_flight_mode(0), priority=1)  
-        time.sleep(8)
-        # self.send_command(lambda: self.arm_disarm(0), priority=1)  
-        # time.sleep(4)
-
     # Function to start command thread 
     def start_command_thread(self):
         #command_thread = Thread(target=self.mission_start_v2, daemon=True)
-        self.command_thread = Thread(target=self.TEST_XD, daemon=True)
+        self.command_thread = Thread(target=self.test_lotu_xy, daemon=True)
         self.command_thread.start()
         self.command_thread.join()
 
@@ -953,7 +954,6 @@ if __name__ == "__main__":
     detector = BallDetector()
     fcc.start_command_thread()
     
-
     del fcc
 
 
