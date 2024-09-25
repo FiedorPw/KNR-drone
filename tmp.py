@@ -55,55 +55,56 @@ class FC_Controller:
         self.master = mavutil.mavlink_connection(connection_string, baud=baud_rate)
         self.log_dir = log_dir
 
-        # self.pending_commands = {}
-        # self.ack_lock = Lock()
-
         self.file_lock = Lock()
         self.save_count = 0
+        self.log_filename = self.create_log_filename()        
+
+        self.telemetry_lock = Lock()  # Mutex for telemetry
+        self.telemetry_event = Event()  # Event to signal when telemetry collection is done
+        self.telemetry_data = self.reset_telemetry_data()
+        self.latest_telemetry = None
 
         self.port_mutex = Lock()
-        self.telemetry_data = self.reset_telemetry_data()
-        self.log_filename = self.create_log_filename()
-        self.command_queue = queue.PriorityQueue()
+        self.command_queue = queue.PriorityQueue() 
+
+        self.ack_event = Event()      
+
         self.command_counter = 0
         self.lowBatteryCounter = 0
         self.failsafeVoltageThreshold = 13
-        self.abortMission = False
         self.start_position = [0.0,0.0,0.0] #lat, lon, alt
         self.reset_position = [0.0,0.0,0.0]
         self.is_armed = False
         self.isLanding = False
         self.is_on_ground = False
+        self.abortMission = False
 
-        self.latest_telemetry = None
-        
-        # Start the connection by waiting for heartbeat
+        self.current_altitude = None
+        self.current_latitude = None
+        self.current_longitude = None  
+
         self._wait_for_heartbeat()
 
         # Set arming check parameter to 0 - disable all arming flags
         self.set_param('ARMING_CHECK', 0)
         self.set_flight_mode(0)
 
-        self.telemetry_lock = Lock()  # Mutex for telemetry
-        self.telemetry_event = Event()  # Event to signal when telemetry collection is done
-
-        # Start telemetry collection in a separate thread
-        self.telemetry_thread = Thread(target=self.telemetry_collection)
-        self.telemetry_thread.start()
-
-        self.command_processor_thread = Thread(target=self.process_commands)
-        self.command_processor_thread.start()
-
-        # self.ack_listener_thread = Thread(target=self.ack_listener)
-        # self.ack_listener_thread.start()
-
         # Configure logging
         logging.basicConfig(
-            filename='drone_mission.log',
             level=logging.INFO,
             format='%(asctime)s [%(threadName)s] %(levelname)s: %(message)s',
-            datefmt='%Y-%m-%d %H:%M:%S'
+            datefmt='%Y-%m-%d %H:%M:%S',
+            handlers=[
+                logging.FileHandler("drone_log.log"),
+                logging.StreamHandler()
+            ]
         )
+
+        self.command_processor_thread = Thread(target=self.process_commands)
+        self.command_processor_thread.start() 
+
+        self.telemetry_thread = Thread(target=self.telemetry_collection)
+        self.telemetry_thread.start()
 
     def __del__(self):
         # Safe cleanup of threads in case of program termination
@@ -162,22 +163,6 @@ class FC_Controller:
             self.log_filename = self.create_log_filename()
             self.telemetry_data = self.reset_telemetry_data()
 
-    # def initLogConfig(self):
-
-    #     # Define the log directory and file
-    #     log_dir = os.path.expanduser('~/KNR-dron/LOGS/command-logs')
-    #     log_file = os.path.join(log_dir, 'drone_commands.log')
-
-    #     # Create the directory if it doesn't exist
-    #     if not os.path.exists(log_dir):
-    #         os.makedirs(log_dir)
-    #     # Configure logging
-    #     logging.basicConfig(
-    #         filename=log_file,  # Log file path
-    #         level=logging.INFO,             # Log level
-    #         format='%(asctime)s %(levelname)s:%(message)s',  # Log format
-    #         datefmt='%Y-%m-%d %H:%M:%S'     # Date format
-    #     )
 ############################################################################################################
 ######################################   RECIEVING TELEMETRY  ##############################################
 ############################################################################################################
@@ -310,6 +295,10 @@ class FC_Controller:
                 self.telemetry_data["VDOP"].append(gps_data["VDOP"])
                 self.telemetry_data["Satellites"].append(gps_data["Satellites"])
 
+                self.current_latitude = gps_data["Latitude"]
+                self.current_longitude = gps_data["Longitude"]
+                self.current_altitude = gps_data["Altitude"]
+
             flight_mode = self.get_flight_mode()
             if flight_mode:
                 self.telemetry_data["Flight_Mode"].append(flight_mode)
@@ -329,63 +318,26 @@ class FC_Controller:
                 print(f'Drone Start Position {self.start_position}')
                 self.is_armed = True
 
-            # Update latest_telemetry with only the latest data point
-            self.latest_telemetry = {
-                "Timestamp": timestamp,
-                "Roll": attitude_data["Roll"] if attitude_data else None,
-                "Pitch": attitude_data["Pitch"] if attitude_data else None,
-                "Yaw": attitude_data["Yaw"] if attitude_data else None,
-                "Latitude": gps_data["Latitude"] if gps_data else None,
-                "Longitude": gps_data["Longitude"] if gps_data else None,
-                "Altitude": gps_data["Altitude"] if gps_data else None,
-                "HDOP": gps_data["HDOP"] if gps_data else None,
-                "VDOP": gps_data["VDOP"] if gps_data else None,
-                "Satellites": gps_data["Satellites"] if gps_data else None,
-                "Flight_Mode": flight_mode,
-                "Voltage": battery_data["Voltage"] if battery_data else None,
-                "Current": battery_data["Current"] if battery_data else None,
-                "Armed": armed_status
-            }
-
-    # Method to handle telemetry updates
-    def on_telemetry_update(self, telemetry_data):
-        with self.telemetry_lock:
-            self.telemetry_data = telemetry_data.copy()
-            # Update latest_telemetry with only the latest data point
-            self.latest_telemetry = {
-                "Timestamp": telemetry_data.get("Timestamp", [])[-1] if telemetry_data.get("Timestamp") else None,
-                "Roll": telemetry_data.get("Roll", [])[-1] if telemetry_data.get("Roll") else None,
-                "Pitch": telemetry_data.get("Pitch", [])[-1] if telemetry_data.get("Pitch") else None,
-                "Yaw": telemetry_data.get("Yaw", [])[-1] if telemetry_data.get("Yaw") else None,
-                "Latitude": telemetry_data.get("Latitude", [])[-1] if telemetry_data.get("Latitude") else None,
-                "Longitude": telemetry_data.get("Longitude", [])[-1] if telemetry_data.get("Longitude") else None,
-                "Altitude": telemetry_data.get("Altitude", [])[-1] if telemetry_data.get("Altitude") else None,
-                "HDOP": telemetry_data.get("HDOP", [])[-1] if telemetry_data.get("HDOP") else None,
-                "VDOP": telemetry_data.get("VDOP", [])[-1] if telemetry_data.get("VDOP") else None,
-                "Satellites": telemetry_data.get("Satellites", [])[-1] if telemetry_data.get("Satellites") else None,
-                "Flight_Mode": telemetry_data.get("Flight_Mode", [])[-1] if telemetry_data.get("Flight_Mode") else None,
-                "Voltage": telemetry_data.get("Voltage", [])[-1] if telemetry_data.get("Voltage") else None,
-                "Current": telemetry_data.get("Current", [])[-1] if telemetry_data.get("Current") else None,
-                "Armed": telemetry_data.get("Armed", [])[-1] if telemetry_data.get("Armed") else False
-            }
-
     # Collects telemetry data and saves it periodically
     def telemetry_collection(self):
         while True:
             try:
                 with self.port_mutex:
-                # print("Requesting data streams...")
                     self.master.mav.request_data_stream_send(self.master.target_system,
                                                     self.master.target_component,
                                                     mavutil.mavlink.MAV_DATA_STREAM_ALL, 5, 1)
-                    # print("Getting telemetry data...")
-                    #TODO 2 functions below can be modified to be out of mutex zone
-                    self.get_all_telemetry()
+  
+                    self.get_all_telemetry()                 
                     self.save_to_json()
-                    print(f"Telemetry data saved to {self.log_filename}")
+
+                    ack_msg = self.master.recv_match(type='COMMAND_ACK', blocking=False)
+                    if ack_msg:
+                        self.handle_command_ack(ack_msg)
+
+                    logging.info(f"Telemetry data saved to {self.log_filename}")
                     self.telemetry_event.set()
             except Exception as e:
-                print(f"Error in telemetry collection: {e}")
+                logging.error(f"Error in telemetry collection: {e}")
             time.sleep(0.5)
 
 
@@ -578,33 +530,23 @@ class FC_Controller:
 ############################################################################################################
 ####################################  MAVLINK COMMANDS COMPLITION CHECK ####################################
 ############################################################################################################
-
-    def wait_until_altitude(self, target_altitude, tolerance=0.3, timeout=30):
+    def wait_until_altitude(self, target_altitude, tolerance=0.2, timeout=60):
         start_time = time.time()
+        logging.info(f"Waiting to reach altitude: {target_altitude}m with tolerance {tolerance}m")
+
         while True:
             with self.telemetry_lock:
-                current_altitude = float(self.latest_telemetry.get("Altitude"))  # Ensure this returns a float
-            if abs(current_altitude - target_altitude) <= tolerance:
-                print(f"# Target altitude reached: {current_altitude} #")
+                current_altitude = self.current_altitude
+
+            if current_altitude is not None and abs(current_altitude - target_altitude) <= tolerance:
+                logging.info(f"Target altitude reached: {current_altitude}m")
                 break
             if time.time() - start_time > timeout:
-                print(f"# Timeout waiting for target altitude: Target = {target_altitude}, Current = {current_altitude} #")
+                logging.warning(f"Timeout waiting for target altitude: Current = {current_altitude}m, Target = {target_altitude}m")
                 break
             time.sleep(0.1)
-            print(f"Drone changing altitude... Current altitude: {current_altitude}")
+            logging.info(f"Drone changing altitude... Current altitude: {current_altitude}m")
 
-    # def wait_until_altitude(self, target_altitude, tolerance=0.3, timeout=30):
-    #     start_time = time.time()
-    #     while True:
-    #         current_altitude = float(self.latest_telemetry["Altitude"][-1])  # Ensure this returns a float
-    #         if abs(current_altitude - target_altitude) <= tolerance:
-    #             logging.info(f"# Target altitude reached: {current_altitude} #")
-    #             break
-    #         if time.time() - start_time > timeout:
-    #             logging.warning(f"# Timeout waiting for target altitude: Target = {target_altitude}, Current = {current_altitude} #")
-    #             break
-    #         time.sleep(0.1)
-    #         logging.info(f"Drone changing altitude... Current altitude: {current_altitude}")
 
 
     def gps_to_frd(self, current_position, start_position):
@@ -619,7 +561,7 @@ class FC_Controller:
         start_time = time.time()
         while True:
             with self.telemetry_lock:
-                current_gps = self.get_coordinates()
+                current_gps = [self.current_altitude,self.current_latitude,self.current_longitude]
 
             if current_gps is None:
                 print("No current GPS data, retrying...")
@@ -645,19 +587,72 @@ class FC_Controller:
         print("# Target position reached #")
     
     def wait_until_GPSposition(self, target_lat, target_lon, target_alt, tolerance=0.2):
+        logging.info(f"Waiting to reach GPS position: ({target_lat}, {target_lon}, {target_alt}) with tolerance {tolerance}")
+        
         while True:
-            current_gps = self.get_coordinates()  # Implement this method
+            current_gps = [self.current_altitude,self.current_latitude,self.current_longitude]
             dx = abs(current_gps[0] - target_lat)
             dy = abs(current_gps[1] - target_lon)
             dz = abs(current_gps[2] - target_alt)
+            logging.info(f"Current GPS position: ({current_gps[0]}, {current_gps[1]}, {current_gps[2]})")
+
             if dx <= tolerance and dy <= tolerance and dz <= tolerance:
+                logging.info(f"Reached target GPS position: ({target_lat}, {target_lon}, {target_alt})")
                 break
             time.sleep(0.1)
+            logging.info("Drone moving towards target GPS position...")
 
+
+    def handle_command_ack(self, ack_msg):
+        command = ack_msg.command
+        result = ack_msg.result
+
+        if result == mavutil.mavlink.MAV_RESULT_ACCEPTED:
+            logging.info(f"Command {command} executed successfully.")
+            self.ack_event.set()
+        elif result == mavutil.mavlink.MAV_RESULT_TEMPORARILY_REJECTED:
+            logging.warning(f"Command {command} temporarily rejected.")
+            self.ack_event.set()
+        elif result == mavutil.mavlink.MAV_RESULT_DENIED:
+            logging.error(f"Command {command} denied.")
+            self.ack_event.set()
+        elif result == mavutil.mavlink.MAV_RESULT_UNSUPPORTED:
+            logging.error(f"Command {command} unsupported.")
+            self.ack_event.set()
+        elif result == mavutil.mavlink.MAV_RESULT_FAILED:
+            logging.error(f"Command {command} failed.")
+            self.ack_event.set()
+
+
+
+
+    # def on_command_ack(self, msg):
+    #     command = msg.command
+    #     result = msg.result
+
+    #     # Map result codes to human-readable strings
+    #     result_map = {
+    #         0: 'Accepted',
+    #         1: 'Temporary Rejection',
+    #         2: 'Denied',
+    #         3: 'Unsupported',
+    #         4: 'Failed',
+    #         5: 'In Progress'
+    #     }
+    #     result_str = result_map.get(result, 'Unknown')
+    #     # Log the acknowledgment
+    #     logging.info(f"COMMAND_ACK received: Command={command}, Result={result_str} ({result})")
         
 ############################################################################################################
 ########################################  MAVLINK MISSION COMMANDS #########################################
 ############################################################################################################
+
+    def begin_flight(self):
+        self.telemetry_event.wait()
+        self.telemetry_event.clear()
+        self.send_command(lambda: self.set_flight_mode(0), priority=1, command_name='set_flight_mode_STABILIZE')
+        self.send_command(lambda: self.arm_disarm(1), priority=1, command_name='arm_disarm')
+        self.send_command(lambda: self.set_flight_mode(4), priority=1, command_name='set_flight_mode_GUIDED')
 
     def navigate_to_target(self, item, platform_numer):
         detector = BallDetector()
@@ -718,32 +713,45 @@ class FC_Controller:
 ###################################################################################################
 
     def send_command(self, command_func, priority, command_name=None):
-        # Log command being send
         if command_name is None:
             command_name = command_func.__name__ if hasattr(command_func, '__name__') else 'lambda'
-        logging.info(f"Sending command: {command_name}")
+        logging.info(f"Sending command: {command_name} with priority {priority}")
+        
         if self.command_processor_thread.is_alive():
             self.command_counter += 1
             self.command_queue.put((priority, self.command_counter, command_func))
+            logging.info(f"Command {command_name} queued with counter {self.command_counter}")
             return True
         else:
+            logging.error(f"Failed to send command: {command_name} - command processor thread not alive")
             return False
+
 
     def process_commands(self):
         while not self.abortMission and not self.isLanding:
             priority, counter, command_func = self.command_queue.get(block=True, timeout=None)
-            # print("Command in function ", command_func.__name__)
+
+            logging.info(f"Processing command with counter {counter} and priority {priority}")
             self.telemetry_event.clear()
+            self.ack_event.clear()
+
             with self.port_mutex:
                 try:
-                    # print(command_func.__name__)
                     command_func()
                 except Exception as e:
-                    print(f"Error in command processing: {e}")
-            print("####################TASK DONE####################")
+                    logging.error(f"Error processing command: {e}")
+            
+            if not self.telemetry_event.wait(timeout=5):
+                logging.warning("Timeout waiting for telemetry update.")
+            
+            if not self.ack_event.wait(timeout=10):
+                logging.warning("Timeout waiting for command ACK.")
+            
+            logging.info(f"Command {counter} processed successfully.")
             self.command_queue.task_done()
 
-        print("PRCESS COMMAND THREAD STOPPED")
+        logging.info("Command processing thread stopped.")
+
 
     # def ack_listener(self):
     #     while True:
@@ -764,6 +772,7 @@ class FC_Controller:
 ###########################################  TESTYYYYYYY ###################################################
 ############################################################################################################
 
+    
     def do_testow(self):
         self.telemetry_event.wait()
         self.telemetry_event.clear()
@@ -772,19 +781,30 @@ class FC_Controller:
         self.send_command(lambda: self.arm_disarm(1), priority=1)  
         time.sleep(1)
         self.send_command(lambda: self.set_flight_mode(4), priority=1)  
-        time.sleep(6)
+        time.sleep(2)
         self.send_command(lambda: self.takeoff(3), priority=1)  
-        time.sleep(6)
+        time.sleep(2)
         # self.send_command(lambda: self.set_flight_mode(4), priority=1)  
         # time.sleep(1)
 
+    def test_podstawowy(self):
+        self.begin_flight()
+        self.send_command(lambda: self.takeoff(4), priority=1, command_name='takeoff')
+        self.wait_until_altitude(4)
+
+        self.send_command(lambda: self.send_position(0, 0, -1, 0, 0, 0.2), priority=1, command_name='fly_to_point_1')
+        self.wait_until_position(0, 0, -1)
+        self.send_command(lambda: self.send_position(0, 0, 1, 0, 0, 0.2), priority=1, command_name='fly_to_point_1')
+        self.wait_until_position(0, 0, 1)
+ 
+
+        self.send_command(lambda: self.set_flight_mode(8), priority=1, command_name='set_flight_mode_LAND')
+        self.wait_until_altitude(0.1)
+        self.send_command(lambda: self.set_flight_mode(0), priority=1, command_name='set_flight_mode_STABILIZE')
+        time.sleep(1)
 
     def test_lotu_xy(self):
-        self.telemetry_event.wait()
-        self.telemetry_event.clear()
-        self.send_command(lambda: self.set_flight_mode(0), priority=1, command_name='set_flight_mode_STABILIZE')
-        self.send_command(lambda: self.arm_disarm(1), priority=1, command_name='arm_disarm')
-        self.send_command(lambda: self.set_flight_mode(4), priority=1, command_name='set_flight_mode_GUIDED')
+        self.begin_flight()
         self.send_command(lambda: self.takeoff(3), priority=1, command_name='takeoff')
         # self.wait_until_altitude(3)
 
@@ -795,7 +815,6 @@ class FC_Controller:
             (0, 0, 0)
         ]
     
-
         for x,y,z in waypoints:
             self.send_command(lambda: self.send_position(x,y,z,0.5,0.5,0), priority=1, command_name='fly_to_point_1')
             self.wait_until_position(x, y, z)
@@ -817,14 +836,8 @@ class FC_Controller:
 
 
     def test_lotu_xz(self):
-        self.telemetry_event.wait()
-        self.telemetry_event.clear()
-        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
-        time.sleep(1)
-        self.send_command(lambda: self.arm_disarm(1), priority=1)  
-        time.sleep(1)
-        self.send_command(lambda: self.set_flight_mode(4), priority=1)  
-        time.sleep(6)
+        self.begin_flight()
+        
         self.send_command(lambda: self.takeoff(4), priority=1)  
         time.sleep(3)
 
@@ -955,6 +968,3 @@ if __name__ == "__main__":
     fcc.start_command_thread()
     
     del fcc
-
-
-
