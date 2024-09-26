@@ -5,6 +5,7 @@ import time
 import math
 from datetime import datetime
 import shutil
+import logging
 
 from threading import Thread, Lock, Event
 import queue
@@ -96,10 +97,27 @@ class FC_Controller:
         self.command_processor_thread = Thread(target=self.process_commands)
         self.command_processor_thread.start()
 
+        # self.ack_event = Event() 
+
+        self.current_altitude = None
+        self.current_latitude = None
+        self.current_longitude = None      
+
         # self.ack_listener_thread = Thread(target=self.ack_listener)
         # self.ack_listener_thread.start()
 
         self.mission_thread = None
+
+        # Configure logging
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(asctime)s [%(threadName)s] %(levelname)s: %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S',
+            handlers=[
+                logging.FileHandler("drone_log.log"),
+                logging.StreamHandler()
+            ]
+        )
 
     def __del__(self):
         # Safe cleanup of threads in case of program termination
@@ -169,19 +187,24 @@ class FC_Controller:
     def get_battery_status(self):
         msg = self.master.recv_match(type='BATTERY_STATUS', blocking=True)
         if msg:
-            voltage = msg.voltages[0] / 1000.0
+            if isinstance(msg.voltages, list) and len(msg.voltages) > 0:
+                voltage = msg.voltages[0] / 1000.0  # Napięcie w V
+            else:
+                print("Invalid voltage data format")
+                return None
             current = msg.current_battery / 100.0
             min_voltage = 12.8
             max_voltage = 16.8
-            battery_percentage = 0.0
-            # Sprawdzamy czy napięcie nie wychodzi poza zakres
+
+            # Sprawdzamy, czy napięcie nie wychodzi poza zakres
             if voltage < min_voltage:
-                return '0%'
+                battery_percentage = 0  # Zwracamy 0% jako integer
             elif voltage > max_voltage:
-                return '100%'
-            # Obliczamy procent naładowania baterii
-            battery_percentage = f'{round(((voltage - min_voltage) / (max_voltage - min_voltage)) * 100, 1)}%'
-            #print(f'{self.battery_percentage}%')
+                battery_percentage = 100  # Zwracamy 100% jako integer
+            else:
+                # Obliczamy procent naładowania baterii jako wartość numeryczną (bez znaku "%")
+                battery_percentage = round(((voltage - min_voltage) / (max_voltage - min_voltage)) * 100)
+
 
             if voltage < self.failsafeVoltageThreshold and voltage > 5:
                 self.lowBatteryCounter+=1
@@ -189,10 +212,10 @@ class FC_Controller:
                 self.send_command(lambda: self.set_flight_mode(8), priority=2) # Always highest priority command
                 self.abortMission = True # Need to be set after sending command
                 print("@@@@@@@@@@@@@@@@@@@@@ ABORT MISSION - BATTERY FAILSAFE TRIGGERED @@@@@@@@@@@@@@@@@@@@@")
+
             return {
-                "Voltage": [voltage, battery_percentage],
-                "Current": current
-                # "Percentage": battery_percentage
+                "Voltage": [round(voltage, 2), battery_percentage],  # Zwracamy napięcie jako float oraz procent jako integer.
+                "Current": round(current, 2)  # Zwracamy prąd jako float z dwoma miejscami po przecinku.
             }
         else:
             print("No battery status data received")
@@ -381,6 +404,7 @@ class FC_Controller:
 
     # Collects telemetry data and saves it periodically
     def telemetry_collection(self):
+        print_counter = 0
         while True:
             try:
                 with self.port_mutex:
@@ -391,12 +415,19 @@ class FC_Controller:
                     # print("Getting telemetry data...")
                     #TODO 2 functions below can be modified to be out of mutex zone
                     self.get_all_telemetry()
+                    # ack_msg = self.master.recv_match(type='COMMAND_ACK', blocking=False)
+                    # if ack_msg:
+                    #     self.handle_command_ack(ack_msg)
+                    # if print_counter%50 == 0:
+                    #     print(f"Telemetry data saved to {self.log_filename}")
+                    # logging.info(f"Telemetry data saved to {self.log_filename}")
+                    self.telemetry_event.set()
                 self.save_to_json()
-                print(f"Telemetry data saved to {self.log_filename}")
-                self.telemetry_event.set()
+                print_counter += 1
+
             except Exception as e:
                 print(f"Error in telemetry collection: {e}")
-            time.sleep(0.1)
+            time.sleep(0.2)
 
 # TODO -> SAVE TO JSON OUT OF MUTEX
     # def save_recieved_data(self):
@@ -587,220 +618,382 @@ class FC_Controller:
 ############################################################################################################
 ####################################  MAVLINK COMMANDS COMPLITION CHECK ####################################
 ############################################################################################################
-
-    def wait_until_altitude(self, target_altitude, tolerance=0.2):
-        while True:
-            current_altitude = self.latest_telemetry["Altitude"]  # Implement this method
-            if abs(current_altitude - target_altitude) <= tolerance:
-                break
-            time.sleep(0.1)
-            print("Drone changing altitude...")
-        print("#Target altitude reached#")
-
-    def wait_until_position(self, target_x, target_y, target_z, tolerance=0.2):
-        while True:
-            current_position = self.get_current_position()  # Implement this method
-            dx = abs(current_position.x - target_x)
-            dy = abs(current_position.y - target_y)
-            dz = abs(current_position.z - target_z)
-            if dx <= tolerance and dy <= tolerance and dz <= tolerance:
-                break
-            time.sleep(0.1)
     
-    # def wait_until_GPSposition(self, target_lat, target_lon, target_alt, tolerance=0.2):
-    #     while True:
-    #         current_position = self.get_current_position()  # Implement this method
-    #         dx = abs(current_position.x - target_x)
-    #         dy = abs(current_position.y - target_y)
-    #         dz = abs(current_position.z - target_z)
-    #         if dx <= tolerance and dy <= tolerance and dz <= tolerance:
-    #             break
-    #         time.sleep(0.1)
+    def wait_until_altitude(self, target_altitude, tolerance=0.2, timeout=30):
+        start_time = time.time()
+        logging.info(f"Waiting to reach altitude: {target_altitude}m with tolerance {tolerance}m")
+        log_counter=0
+        while not self.abortMission and not self.isLanding:
+            with self.telemetry_lock:
+                current_altitude = self.current_altitude
 
+            if current_altitude is not None and abs(current_altitude - target_altitude) <= tolerance:
+                logging.info(f"Target altitude reached: {current_altitude}m")
+                break
+            if time.time() - start_time > timeout:
+                logging.warning(f"Timeout waiting for target altitude: Current = {current_altitude}m, Target = {target_altitude}m")
+                break
+            time.sleep(0.1)
+            if log_counter%10 == 0:
+                logging.info(f"Drone changing altitude... Current altitude: {current_altitude}m")
+            log_counter += 1
+
+
+
+
+    def gps_to_frd(self, current_position, start_position):
+        lat_diff = (current_position[0] - start_position[0]) * 111320  # meters per degree of latitude
+        lon_diff = (current_position[1] - start_position[1]) * 111320 * math.cos(math.radians(start_position[0]))  # meters per degree of longitude
+        alt_diff = (start_position[2] - current_position[2])  # Altitude in meters (downward, so start_alt - current_alt)
         
+        return lat_diff, lon_diff, alt_diff  # x = lat_diff, y = lon_diff, z = alt_diff (FRD)
+      
+
+    def wait_until_position(self, target_x, target_y, target_z, tolerance=0.5, timeout=30):
+        start_time = time.time()
+        while not self.abortMission and not self.isLanding:
+            with self.telemetry_lock:
+                current_gps = [self.current_altitude,self.current_latitude,self.current_longitude]
+
+            if current_gps is None:
+                print("No current GPS data, retrying...")
+                time.sleep(0.1)
+                continue
+            current_frd = self.gps_to_frd(current_gps, self.start_position)
+            dx = abs(current_frd[0] - target_x)
+            dy = abs(current_frd[1] - target_y)
+            dz = abs(current_frd[2] - target_z)
+
+            print(f"Current position (FRD): x={current_frd[0]}, y={current_frd[1]}, z={current_frd[2]}")
+            print(f"Target position: x={target_x}, y={target_y}, z={target_z}")
+            print("Drone changing position...")
+
+            if dx <= tolerance and dy <= tolerance and dz <= tolerance:
+                logging.info("# Target position reached #")
+                break
+
+            if time.time() - start_time > timeout:
+                logging.warning("# Timeout waiting for target position #")
+                break
+            time.sleep(0.1)
+        print("# Target position reached #")
+    
+    def wait_until_GPSposition(self, target_lat, target_lon, target_alt, tolerance=0.5, timeout=30):
+        start_time = time.time()
+        logging.info(f"Waiting to reach GPS position: ({target_lat}, {target_lon}, {target_alt}) with tolerance {tolerance}")
+        while not self.abortMission and not self.isLanding:
+            with self.telemetry_lock:
+                current_gps = [self.current_altitude,self.current_latitude,self.current_longitude]
+            dx = abs(current_gps[0] - target_lat)
+            dy = abs(current_gps[1] - target_lon)
+            dz = abs(current_gps[2] - target_alt)
+            logging.info(f"Current GPS position: ({current_gps[0]}, {current_gps[1]}, {current_gps[2]})")
+
+            if dx <= tolerance and dy <= tolerance and dz <= tolerance:
+                logging.info(f"Reached target GPS position: ({target_lat}, {target_lon}, {target_alt})")
+                break
+            if time.time() - start_time > timeout:
+                logging.warning("# Timeout waiting for target position #")
+                break
+            time.sleep(0.1)
+            logging.info("Drone moving towards target GPS position...")
+
+
+    # def handle_command_ack(self, ack_msg):
+    #     command = ack_msg.command
+    #     result = ack_msg.result
+
+    #     if result == mavutil.mavlink.MAV_RESULT_ACCEPTED:
+    #         logging.info(f"Command {command} executed successfully.")
+    #         self.ack_event.set()
+    #     elif result == mavutil.mavlink.MAV_RESULT_TEMPORARILY_REJECTED:
+    #         logging.warning(f"Command {command} temporarily rejected.")
+    #         self.ack_event.set()
+    #     elif result == mavutil.mavlink.MAV_RESULT_DENIED:
+    #         logging.error(f"Command {command} denied.")
+    #         self.ack_event.set()
+    #     elif result == mavutil.mavlink.MAV_RESULT_UNSUPPORTED:
+    #         logging.error(f"Command {command} unsupported.")
+    #         self.ack_event.set()
+    #     elif result == mavutil.mavlink.MAV_RESULT_FAILED:
+    #         logging.error(f"Command {command} failed.")
+    #         self.ack_event.set()
+
+
 
 
 ############################################################################################################
 ########################################  MAVLINK MISSION COMMANDS #########################################
 ############################################################################################################
 
-    def navigate_to_target(self, item, platform_numer):
+    def begin_flight(self):
+        self.telemetry_event.wait()
+        self.telemetry_event.clear()
+        self.send_command(lambda: self.set_flight_mode(0), priority=1, command_name='set_flight_mode_STABILIZE')
+        self.send_command(lambda: self.arm_disarm(1), priority=1, command_name='arm_disarm')
+        self.send_command(lambda: self.set_flight_mode(4), priority=1, command_name='set_flight_mode_GUIDED')
+
+    def navigate_to_target(self, item, platform_numer=None):
         detector = BallDetector()
         mjpeg_url = 'http://127.0.0.1:8080/?action=snapshot'
         frame = detector.fetch_frame(mjpeg_url)
         balls = detector.process_frame_debug(frame)
-        multV = 2 
+        multV = 2  # Mnożnik prędkości
 
+        # Ustalanie wektora prędkości na podstawie przedmiotu
         if item == 'target':
-            if detector.target_vector is None:
-                vx=vy=0
-            else:
-                vector = detector.target_vector 
-                # camera_dims = detector.frame_dims
-                vx = vector[0]/960*multV
-                vy = vector[1]/540*multV
-            self.send_command(lambda: self.send_velocity(vx,vy,0), priority=1) 
-            print(f"Target vector: {detector.target_vector[0]}, {detector.target_vector[1]}")
-            print(f"Prędkość w osi X: {vx}, Prędkość w osi Y: {vy}")
-
+            vector = detector.target_vector
         elif item == 'platform':
-            if detector.platform_vector is None:
-                vx=vy=0
-            else:
-                vector = detector.get_platform_vector(platform_numer) 
-                vx = vector[0]/960*multV
-                vy = vector[1]/540*multV
-            self.send_command(lambda: self.send_velocity(vx,vy,0), priority=1) 
-            print(f"Target vector: {detector.platform_vector[0]}, {detector.platform_vector[1]}")
-            print(f"Prędkość w osi X: {vx}, Prędkość w osi Y: {vy}")
-
+            vector = detector.get_platform_vector(platform_numer)
         elif item == 'barrel':
-            if detector.barrel_vector is None:
-                vx=vy=0
-            else:
-                vector = detector.barrel_vector
-                vx = vector[0]/960*multV
-                vy = vector[1]/540*multV
-            self.send_command(lambda: self.send_velocity(vx,vy,0), priority=1) 
-            print(f"Target vector: {detector.barrel_vector[0]}, {detector.barrel_vector[1]}")
-            print(f"Prędkość w osi X: {vx}, Prędkość w osi Y: {vy}")
+            vector = detector.barrel_vector
         else:
             print("Wrong item name")
+            return  # Zakończ funkcję, jeśli nie rozpoznano przedmiotu
+
+        # Jeśli wektor nie istnieje, ustaw prędkości na 0
+        if vector is None:
+            vx = vy = 0
+            logging.info(f"No vector detected for {item}. Holding position.")
+        else:
+            # Przeliczanie prędkości w osiach X i Y
+            vx = vector[0] / 960 * multV
+            vy = vector[1] / 540 * multV
+            logging.info(f"{item.capitalize()} vector: {vector[0]}, {vector[1]}")
+            logging.info(f"Calculated speed in X: {vx}, Y: {vy}")
+
+        # Wysyłanie komendy sterowania prędkością
+        self.send_command(lambda: self.send_velocity(vx, vy, 0), priority=1)
 
     # Vz - absolute value, direction is handled here
     def change_altitude(self, target_altitude, dir, vz):
         if dir == 'up':
-            while self.get_coordinates()[2] < (self.start_position[2]+target_altitude):
+            while self.current_altitude < (self.start_position[2]+target_altitude):
                 self.send_command(lambda: self.send_velocity(0,0,-vz), priority=1)
                 time.sleep(0.1)
  
         else:
-            while self.get_coordinates()[2] > (self.start_position[2]+target_altitude):
+            while self.current_altitude > (self.start_position[2]+target_altitude):
                 self.send_command(lambda: self.send_velocity(0,0,vz), priority=1)
                 time.sleep(0.1)
+
+
+    def smooth_landing_with_detection(self, target, detected_balls, platform_positions, final_altitude=0.1, threshold=8.0):
+        detector = BallDetector()  # Inicjalizacja detektora
+        detected_balls = {} 
+        platform_positions = {}
+        multV = 2  # Współczynnik prędkości do `navigate_to_target`
+
+        while True:
+            with self.telemetry_lock:
+                current_altitude = self.current_altitude
+                velocity_z = self.current_velocity_z
+
+            if current_altitude is None:
+                logging.warning("No altitude data available.")
+                break
+
+            # Gdy dron jest powyżej progu (np. 8 metrów)
+            if current_altitude > threshold:
+                new_altitude = max(final_altitude, current_altitude - 0.5)  # Obniżanie o 0.5m
+                logging.info(f"Reducing altitude from {current_altitude}m to {new_altitude}m")
+                self.send_command(lambda: self.change_altitude(new_altitude, 'down', 1), priority=1, command_name='change_altitude_large')
+
+            # Gdy dron jest poniżej progu (np. 8 metrów) - zaczynamy sprawdzać platformę lub beczkę
+            elif current_altitude > 1.0:
+                new_altitude = max(final_altitude, current_altitude - 0.2)  # Mniejsze schodzenie o 0.2m
+                logging.info(f"Reducing altitude from {current_altitude}m to {new_altitude}m (small decrement)")
+                self.send_command(lambda: self.change_altitude(new_altitude, 'down', 0.8), priority=1, command_name='change_altitude_small')
+
+                # nie mamy tu wektora - trzeba zmienic
+                if len(detector.large_contours) != 0:
+                    logging.info(f"{target.capitalize()} detected, navigating to {target}.")
+                    self.send_command(lambda: self.navigate_to_target(target), priority=1, command_name=f'navigate_to_{target}')
+                else:
+                    logging.info(f"{target.capitalize()} not detected yet.")
+
+            # Gdy dron jest poniżej 1 metra, kontynuujemy schodzenie z mniejszą prędkością
+            elif current_altitude <= 1.0:
+                new_altitude = max(final_altitude, current_altitude - 0.1)  # Bardzo małe schodzenie
+                logging.info(f"Reducing altitude from {current_altitude}m to {new_altitude}m (very small decrement)")
+                self.send_command(lambda: self.change_altitude(new_altitude, 'down', 0.2), priority=1, command_name='change_altitude_very_small')
+    
+                ball_color = detector.detect_ball_color()
+                if ball_color:
+                    logging.info(f"Ball detected on {target}: {ball_color}. Navigating to target.")
+                    self.send_command(lambda: self.navigate_to_target(target), priority=1, command_name=f'navigate_to_{target}')
+
+                    # Zapis wykrytego koloru piłki i pozycji
+                    detected_balls[target] = ball_color
+                    platform_positions[target] = [
+                        self.latest_telemetry["Latitude"],
+                        self.latest_telemetry["Longitude"],
+                        self.latest_telemetry["Altitude"]
+                    ]
+                    logging.info(f"Ball color {ball_color} detected and saved for {target}.")
+                    break
+
+                # # Sprawdzenie, czy dron już wylądował
+                # if abs(current_altitude - final_altitude) <= 0.05 and abs(velocity_z) < 0.1:
+                #     logging.info("Drone has landed.")
+
+                #     # Sprawdzenie, czy piłka jest nadal w polu widzenia
+                #     ball_color = detector.detect_ball_color()
+                #     if ball_color:
+                #         logging.info(f"Ball detected on the ground: {ball_color}. Closing gripper.")
+                        
+                #         # Zamknięcie chwytaka
+                #         self.close_gripper()
+                        
+                #         # Utrzymywanie silników na niskich obrotach
+                #         while self.is_gripper_closing():
+                #             logging.info("Keeping motors active while closing the gripper.")
+                #             self.send_command(lambda: self.set_flight_mode(4), priority=1, command_name='set_flight_mode_GUIDED')  # GUIDED mode
+                #             time.sleep(0.1)  # Krótkie opóźnienie, aby nie przeciążać komend
+
+                #     break  # Zakończenie pętli po zakończeniu operacji chwytaka
+
+            time.sleep(0.4)  # Krótkie opóźnienie przed następnym krokiem schodzenia
 ###################################################################################################
 ######################################## MUTEX PROCESSING #########################################
 ###################################################################################################
 
-    def send_command(self, command_func, priority):
+    def send_command(self, command_func, priority, command_name=None):
+        if command_name is None:
+            command_name = command_func.__name__ if hasattr(command_func, '__name__') else 'lambda'
+        logging.info(f"Sending command: {command_name} with priority {priority}")
+        
         if self.command_processor_thread.is_alive():
             self.command_counter += 1
             self.command_queue.put((priority, self.command_counter, command_func))
+            logging.info(f"Command {command_name} queued with counter {self.command_counter}")
             return True
         else:
+            logging.error(f"Failed to send command: {command_name} - command processor thread not alive")
             return False
+        
+    def send_command_and_wait(self, command_func, wait_func, wait_params, priority=1, command_name=None):
+        # Wysyła komendę i automatycznie czeka na jej realizację
+        # - command_func: funkcja wysyłająca komendę (np. takeoff, send_position)
+        # - wait_func: funkcja czekająca na realizację (np. wait_until_altitude, wait_until_position)
+        # - wait_params: parametry do funkcji oczekiwania
+        self.send_command(command_func, priority, command_name)
+        
+        # Automatyczne czekanie na realizację komendy
+        wait_func(*wait_params)
+    
+
 
     def process_commands(self):
         while not self.abortMission and not self.isLanding:
             priority, counter, command_func = self.command_queue.get(block=True, timeout=None)
-            # print("Command in function ", command_func.__name__)
+
+            logging.info(f"Processing command with counter {counter} and priority {priority}")
             self.telemetry_event.clear()
+            # self.ack_event.clear()
+
             with self.port_mutex:
                 try:
-                    # print(command_func.__name__)
                     command_func()
                 except Exception as e:
-                    print(f"Error in command processing: {e}")
-            print("####################TASK DONE####################")
+                    logging.error(f"Error processing command: {e}")
+            
+            if not self.telemetry_event.wait(timeout=5):
+                logging.warning("Timeout waiting for telemetry update.")
+            
+            # if not self.ack_event.wait(timeout=10):
+            #     logging.warning("Timeout waiting for command ACK.")
+            
+            logging.info(f"Command {counter} processed successfully.")
             self.command_queue.task_done()
 
-        print("PRCESS COMMAND THREAD STOPPED")
-
-    # def ack_listener(self):
-    #     while True:
-    #         msg = self.master.recv_match(type='COMMAND_ACK', blocking=True)
-    #         if msg:
-    #             command = msg.command
-    #             result = msg.result
-    #             with self.ack_lock:
-    #                 if command in self.pending_commands:
-    #                     command_name = self.pending_commands.pop(command)
-    #                     if result == mavutil.mavlink.MAV_RESULT_ACCEPTED:
-    #                         print(f"{command_name} command acknowleged and accepted.")
-    #                     else:
-    #                         print(f"{command_name} command not accepted. Result: {result}")
-    #         time.sleep(0.1)
+        logging.info("Command processing thread stopped.")
 
 ############################################################################################################
 ###########################################  TESTYYYYYYY ###################################################
 ############################################################################################################
 
+    
     def do_testow(self):
         self.telemetry_event.wait()
         self.telemetry_event.clear()
-        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
+        self.send_command(lambda: self.set_flight_mode(0), priority=1, command_name='set_flight_mode_STABILIZE') 
         time.sleep(1)
-        self.send_command(lambda: self.arm_disarm(1), priority=1)  
+        self.send_command(lambda: self.arm_disarm(1), priority=1, command_name='ARM')  
         time.sleep(1)
-        self.send_command(lambda: self.set_flight_mode(4), priority=1)  
-        time.sleep(6)
-        self.send_command(lambda: self.takeoff(3), priority=1)  
-        time.sleep(6)
-        # self.send_command(lambda: self.set_flight_mode(4), priority=1)  
-        # time.sleep(1)
-       # for i in range(30):
-        #    self.send_command(lambda: self.send_global_position(52.2159343,21.0035504, 4,2,2,1), priority=1)  
-        #    time.sleep(0.1)
+        self.send_command(lambda: self.set_flight_mode(4), priority=1, command_name='set_flight_mode_GUIDED')  
+        time.sleep(2)
+        self.send_command(lambda: self.takeoff(3), priority=1, command_name='takeoff')  
+        self.wait_until_altitude(4)
+        self.send_command(lambda: self.set_flight_mode(8), priority=1, command_name='set_flight_mode_LAND')
+        time.sleep(1)
 
-        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
-        # TEGO NIGDY PRE NIGDY TAK NIE WYSYŁAĆ BO SIĘ SKONCZY TAK W KONCU ZE KOGOS ZABIJE TEN DRON XDDDD
-        for i in range(30):
-            self.send_command(lambda: self.send_position(2,0,0,1,0,0), priority=1)
-            time.sleep(0.1)
-        for i in range(30):
-            self.send_command(lambda: self.send_position(0,2,0,0,1,0), priority=1)
-            time.sleep(0.1)
-        for i in range(30):
-            self.send_command(lambda: self.send_position(2,0,0,1,0,0), priority=1)
-            time.sleep(0.1)
-        for i in range(30):
-            self.send_command(lambda: self.send_position(0,2,0,0,1,0), priority=1)
-            time.sleep(0.1)
-        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
+    def test_podstawowy(self):
+        self.begin_flight()
+        self.send_command(lambda: self.takeoff(4), priority=1, command_name='takeoff')
+        self.wait_until_altitude(4)
 
-        # for i in range(100):
-        #     self.send_command(lambda: self.send_velocity(1,0,0), priority=1)
-        #     time.sleep(0.1)
-        # for i in range(100):
-        #     self.send_command(lambda: self.send_velocity(0,1,0), priority=1)
-        #     time.sleep(0.1)     
-        # for i in range(100):
-        #     self.send_command(lambda: self.send_velocity(-1,0,0), priority=1)
-        #     time.sleep(0.1)
-        # for i in range(100):
-        #     self.send_command(lambda: self.send_velocity(0,1,0), priority=1)
-        #     time.sleep(0.1)  
-        # while not detector.large_contours: #while detected platforms == 0 (none detected)
-        #     self.send_command(lambda: self.send_position(0.5,0,0,1,0,0), priority=1)
-        #     time.sleep(0.1)
-        self.send_command(lambda: self.set_flight_mode(6), priority=1)  
-        time.sleep(5)
+        # self.send_command(lambda: self.send_position(0, 0, -1, 0, 0, 0.2), priority=1, command_name='fly_to_point_1')
+        # self.wait_until_position(0, 0, -1)
+        # self.send_command(lambda: self.send_position(0, 0, 1, 0, 0, 0.2), priority=1, command_name='fly_to_point_2')
+        # self.wait_until_position(0, 0, 1)
+
+        # self.send_command(lambda: self.send_position(2, 0, -1, 0, 0, 0.2), priority=1, command_name='fly_to_point_1')
+        # self.wait_until_position(2, 0, -1)
+        # self.send_command(lambda: self.send_position(-2, 0, 1, 0, 0, 0.2), priority=1, command_name='fly_to_point_1')
+        # self.wait_until_position(-2, 0, 1)
+ 
+        self.send_command(lambda: self.set_flight_mode(8), priority=1, command_name='set_flight_mode_LAND')
+        self.wait_until_altitude(0.1)
+        time.sleep(2)
+        self.send_command(lambda: self.set_flight_mode(0), priority=1, command_name='set_flight_mode_STABILIZE')
+        time.sleep(1)
+
+    def test_podstawowy2(self):
+        self.begin_flight()
+        self.send_command(lambda: self.takeoff(4), priority=1, command_name='takeoff')
+        self.wait_until_altitude(4)
+
+        self.send_command(lambda: self.send_position(0, 0, -1, 0, 0, 0.2), priority=1, command_name='fly_to_point_1')
+        self.wait_until_position(0, 0, -1)
+        self.send_command(lambda: self.send_position(0, 0, 1, 0, 0, 0.2), priority=1, command_name='fly_to_point_1')
+        self.wait_until_position(0, 0, 1)
+ 
+
+        self.send_command(lambda: self.set_flight_mode(8), priority=1, command_name='set_flight_mode_LAND')
+        self.wait_until_altitude(0.1)
+        self.send_command(lambda: self.set_flight_mode(0), priority=1, command_name='set_flight_mode_STABILIZE')
+        time.sleep(1)
 
     def test_lotu_xy(self):
-        self.telemetry_event.wait()
-        self.telemetry_event.clear()
-        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
-        time.sleep(1)
-        self.send_command(lambda: self.arm_disarm(1), priority=1)  
-        time.sleep(1)
-        self.send_command(lambda: self.set_flight_mode(4), priority=1)  
-        time.sleep(2)
-        self.send_command(lambda: self.takeoff(3), priority=1)  
-        time.sleep(2)
+        self.begin_flight()
+        self.send_command(lambda: self.takeoff(3), priority=1, command_name='takeoff')
+        self.wait_until_altitude(3)
 
-        # FLY SQUARE
-        self.send_command(lambda: self.send_position(3, 0, 0, 0.5, 0, 0), priority=1) 
-        time.sleep(4)
-        self.send_command(lambda: self.send_position(0, 3, 0, 0, 0.5, 0), priority=1) 
-        time.sleep(4)
-        self.send_command(lambda: self.send_position(-3, 0, 0, 0.5, 0, 0), priority=1) 
-        time.sleep(4)
-        self.send_command(lambda: self.send_position(0, -3, 0, 0, 0.5,0), priority=1) 
-        time.sleep(4)
+        waypoints = [
+            (3, 0, 0),
+            (3, 3, 0),
+            (0, 3, 0),
+            (0, 0, 0)
+        ]
+    
+        for x,y,z in waypoints:
+            self.send_command(lambda: self.send_position(x,y,z,0.5,0.5,0), priority=1, command_name='fly_to_point_1')
+            self.wait_until_position(x, y, z)
 
-        self.send_command(lambda: self.set_flight_mode(8), priority=1)  
-        time.sleep(6)
-        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
+        # # FLY SQUARE
+        # self.send_command(lambda: self.send_position(3, 0, 0, 0.5, 0, 0), priority=1, command_name='fly_to_point_1')
+        # self.wait_until_position(3, 0, 3)
+        # self.send_command(lambda: self.send_position(0, 3, 0, 0, 0.5, 0), priority=1, command_name='fly_to_point_2')
+        # self.wait_until_position(0, 3, 3)
+        # self.send_command(lambda: self.send_position(-3, 0, 0, 0.5, 0, 0), priority=1, command_name='fly_to_point_3')
+        # self.wait_until_position(-3, 0, 3)
+        # self.send_command(lambda: self.send_position(0, -3, 0, 0, 0.5,0), priority=1, command_name='fly_to_point_4')
+        # self.wait_until_position(0, -3, 3)
+
+        self.send_command(lambda: self.set_flight_mode(8), priority=1, command_name='set_flight_mode_LAND')
+        self.wait_until_altitude(0.1)
+        self.send_command(lambda: self.set_flight_mode(0), priority=1, command_name='set_flight_mode_STABILIZE')
         time.sleep(1)
 
     def test_lotu_xz(self):
@@ -927,22 +1120,10 @@ class FC_Controller:
         self.send_command(lambda: self.set_flight_mode(0), priority=1) 
         time.sleep(1)
 
-    def TEST_XD(self):
-        self.telemetry_event.wait()
-        self.telemetry_event.clear()
-        # self.send_command(lambda: self.arm_disarm(1), priority=1)  
-        # time.sleep(4)
-        self.send_command(lambda: self.set_flight_mode(4), priority=1)  
-        time.sleep(8)
-        self.send_command(lambda: self.set_flight_mode(0), priority=1)  
-        time.sleep(8)
-        # self.send_command(lambda: self.arm_disarm(0), priority=1)  
-        # time.sleep(4)
-
     # Function to start command thread 
     def start_command_thread(self):
         #command_thread = Thread(target=self.mission_start_v2, daemon=True)
-        self.command_thread = Thread(target=self.TEST_XD, daemon=True)
+        self.command_thread = Thread(target=self.test_podstawowy, daemon=True)
         self.command_thread.start()
         self.command_thread.join()
 

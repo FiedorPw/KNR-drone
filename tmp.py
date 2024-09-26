@@ -806,7 +806,7 @@ class FC_Controller:
     def test_lotu_xy(self):
         self.begin_flight()
         self.send_command(lambda: self.takeoff(3), priority=1, command_name='takeoff')
-        # self.wait_until_altitude(3)
+        self.wait_until_altitude(3)
 
         waypoints = [
             (3, 0, 0),

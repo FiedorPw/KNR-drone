@@ -5,6 +5,7 @@ import time
 import math
 from datetime import datetime
 import shutil
+import logging
 
 from threading import Thread, Lock, Event
 import queue
@@ -96,10 +97,27 @@ class FC_Controller:
         self.command_processor_thread = Thread(target=self.process_commands)
         self.command_processor_thread.start()
 
+        self.ack_event = Event() 
+
+        self.current_altitude = None
+        self.current_latitude = None
+        self.current_longitude = None      
+
         # self.ack_listener_thread = Thread(target=self.ack_listener)
         # self.ack_listener_thread.start()
 
         self.mission_thread = None
+
+        # Configure logging
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(asctime)s [%(threadName)s] %(levelname)s: %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S',
+            handlers=[
+                logging.FileHandler("drone_log.log"),
+                logging.StreamHandler()
+            ]
+        )
 
     def __del__(self):
         # Safe cleanup of threads in case of program termination
@@ -391,9 +409,15 @@ class FC_Controller:
                     # print("Getting telemetry data...")
                     #TODO 2 functions below can be modified to be out of mutex zone
                     self.get_all_telemetry()
+                    ack_msg = self.master.recv_match(type='COMMAND_ACK', blocking=False)
+                    if ack_msg:
+                        self.handle_command_ack(ack_msg)
+
+                    logging.info(f"Telemetry data saved to {self.log_filename}")
+                    self.telemetry_event.set()
                 self.save_to_json()
                 print(f"Telemetry data saved to {self.log_filename}")
-                self.telemetry_event.set()
+
             except Exception as e:
                 print(f"Error in telemetry collection: {e}")
             time.sleep(0.1)

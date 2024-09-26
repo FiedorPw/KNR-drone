@@ -1,0 +1,1241 @@
+2024-09-26 01:30:54 [Thread-2 (telemetry_collection)] ERROR: Error in telemetry collection: string indices must be integers, not 'str'
+2024-09-26 01:30:55 [Thread-2 (telemetry_collection)] ERROR: Error in telemetry collection: string indices must be integers, not 'str'
+2024-09-26 01:30:56 [Thread-2 (telemetry_collection)] ERROR: Error in telemetry collection: string indices must be integers, not 'str'
+2024-09-26 01:30:57 [Thread-2 (telemetry_collection)] ERROR: Error in telemetry collection: string indices must be integers, not 'str'
+2024-09-26 01:30:58 [Thread-2 (telemetry_collection)] ERROR: Error in telemetry collection: string indices must be integers, not 'str'
+2024-09-26 01:30:59 [Thread-2 (telemetry_collection)] ERROR: Error in telemetry collection: string indices must be integers, not 'str'
+2024-09-26 01:31:00 [Thread-2 (telemetry_collection)] ERROR: Error in telemetry collection: string indices must be integers, not 'str'
+2024-09-26 01:31:01 [Thread-2 (telemetry_collection)] ERROR: Error in telemetry collection: string indices must be integers, not 'str'
+2024-09-26 01:31:02 [Thread-2 (telemetry_collection)] ERROR: Error in telemetry collection: string indices must be integers, not 'str'
+2024-09-26 01:33:46 [Thread-2 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_01-33-44.json
+2024-09-26 01:33:46 [Thread-3 (test_lotu_xy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 01:33:46 [Thread-3 (test_lotu_xy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 01:33:46 [Thread-1 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 01:33:46 [Thread-3 (test_lotu_xy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 01:33:46 [Thread-3 (test_lotu_xy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 01:33:46 [Thread-3 (test_lotu_xy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 01:33:46 [Thread-3 (test_lotu_xy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 01:33:46 [Thread-3 (test_lotu_xy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 01:33:46 [Thread-3 (test_lotu_xy)] INFO: Command takeoff queued with counter 4
+2024-09-26 01:33:46 [Thread-3 (test_lotu_xy)] INFO: Sending command: fly_to_point_1 with priority 1
+2024-09-26 01:33:47 [Thread-3 (test_lotu_xy)] INFO: Command fly_to_point_1 queued with counter 5
+2024-09-26 01:33:48 [Thread-2 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_01-33-44.json
+2024-09-26 01:37:01 [Thread-2 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_01-37-00.json
+2024-09-26 01:37:01 [Thread-3 (test_lotu_xy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 01:37:01 [Thread-3 (test_lotu_xy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 01:37:01 [Thread-3 (test_lotu_xy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 01:37:01 [Thread-1 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 01:37:01 [Thread-3 (test_lotu_xy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 01:37:01 [Thread-3 (test_lotu_xy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 01:37:01 [Thread-3 (test_lotu_xy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 01:37:01 [Thread-3 (test_lotu_xy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 01:37:01 [Thread-3 (test_lotu_xy)] INFO: Command takeoff queued with counter 4
+2024-09-26 01:37:01 [Thread-3 (test_lotu_xy)] INFO: Waiting to reach altitude: 3m with tolerance 0.2m
+2024-09-26 01:37:01 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:01 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:01 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:01 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:01 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:03 [Thread-2 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_01-37-00.json
+2024-09-26 01:37:03 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:03 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:03 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:03 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:03 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:05 [Thread-2 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_01-37-00.json
+2024-09-26 01:37:05 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:05 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:05 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:05 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:05 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:07 [Thread-2 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_01-37-00.json
+2024-09-26 01:37:07 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:07 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:07 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:07 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 01:37:07 [Thread-3 (test_lotu_xy)] INFO: Drone changing altitude... Current altitude: -17.0m
+2024-09-26 12:13:45 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:45 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:46 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:46 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:46 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:46 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:46 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:47 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:47 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:47 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:48 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:48 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:49 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:49 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:49 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:49 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:49 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:50 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:50 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:50 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:51 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:51 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:52 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:52 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:52 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:52 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:52 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:53 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:53 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 12:13:53 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_12-13-43.json
+2024-09-26 13:02:03 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:03 [Thread-3 (do_testow)] INFO: Sending command: <lambda> with priority 1
+2024-09-26 13:02:03 [Thread-3 (do_testow)] INFO: Command <lambda> queued with counter 1
+2024-09-26 13:02:03 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:02:03 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:03 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:03 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:03 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:04 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:04 [Thread-3 (do_testow)] INFO: Sending command: <lambda> with priority 1
+2024-09-26 13:02:04 [Thread-3 (do_testow)] INFO: Command <lambda> queued with counter 2
+2024-09-26 13:02:04 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:04 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:04 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:04 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:05 [Thread-3 (do_testow)] INFO: Sending command: <lambda> with priority 1
+2024-09-26 13:02:05 [Thread-3 (do_testow)] INFO: Command <lambda> queued with counter 3
+2024-09-26 13:02:06 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:06 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:06 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:06 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:06 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:07 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:07 [Thread-3 (do_testow)] INFO: Sending command: <lambda> with priority 1
+2024-09-26 13:02:07 [Thread-3 (do_testow)] INFO: Command <lambda> queued with counter 4
+2024-09-26 13:02:07 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:02:07 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:02:07 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:07 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:02:07 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:02:07 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:07 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:02:07 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:07 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:02:07 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:02:07 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:07 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:02:08 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:02:09 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:09 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:02:09 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:09 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:02:09 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:02:09 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:09 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:02:09 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:09 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:02:09 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:02:09 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:02:09 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:02:10 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:02:10 [Thread-1 (telemetry_collection)] INFO: Telemetry data saved to /home/KNR/KNR-dron/LOGS/dane_telemetryczne_2024-09-26_13-02-01.json
+2024-09-26 13:03:22 [Thread-3 (do_testow)] INFO: Sending command: <lambda> with priority 1
+2024-09-26 13:03:22 [Thread-3 (do_testow)] INFO: Command <lambda> queued with counter 1
+2024-09-26 13:03:22 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:03:23 [Thread-3 (do_testow)] INFO: Sending command: <lambda> with priority 1
+2024-09-26 13:03:23 [Thread-3 (do_testow)] INFO: Command <lambda> queued with counter 2
+2024-09-26 13:03:24 [Thread-3 (do_testow)] INFO: Sending command: <lambda> with priority 1
+2024-09-26 13:03:24 [Thread-3 (do_testow)] INFO: Command <lambda> queued with counter 3
+2024-09-26 13:03:26 [Thread-3 (do_testow)] INFO: Sending command: <lambda> with priority 1
+2024-09-26 13:03:26 [Thread-3 (do_testow)] INFO: Command <lambda> queued with counter 4
+2024-09-26 13:03:26 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:03:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:27 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:27 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:27 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:29 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:29 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:29 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:29 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:29 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:29 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:29 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:29 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:30 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:30 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:03:30 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:46 [Thread-3 (do_testow)] INFO: Sending command: <lambda> with priority 1
+2024-09-26 13:05:46 [Thread-3 (do_testow)] INFO: Command <lambda> queued with counter 1
+2024-09-26 13:05:46 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:05:47 [Thread-3 (do_testow)] INFO: Sending command: <lambda> with priority 1
+2024-09-26 13:05:47 [Thread-3 (do_testow)] INFO: Command <lambda> queued with counter 2
+2024-09-26 13:05:48 [Thread-3 (do_testow)] INFO: Sending command: <lambda> with priority 1
+2024-09-26 13:05:48 [Thread-3 (do_testow)] INFO: Command <lambda> queued with counter 3
+2024-09-26 13:05:50 [Thread-3 (do_testow)] INFO: Sending command: <lambda> with priority 1
+2024-09-26 13:05:50 [Thread-3 (do_testow)] INFO: Command <lambda> queued with counter 4
+2024-09-26 13:05:50 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:05:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:56 [Thread-2 (process_commands)] WARNING: Timeout waiting for command ACK.
+2024-09-26 13:05:56 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:05:56 [Thread-2 (process_commands)] INFO: Command processing thread stopped.
+2024-09-26 13:05:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:57 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:57 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:57 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:57 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:58 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:58 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:05:58 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:43 [Thread-3 (do_testow)] INFO: Sending command: <lambda> with priority 1
+2024-09-26 13:06:43 [Thread-3 (do_testow)] INFO: Command <lambda> queued with counter 1
+2024-09-26 13:06:43 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:06:44 [Thread-3 (do_testow)] INFO: Sending command: <lambda> with priority 1
+2024-09-26 13:06:44 [Thread-3 (do_testow)] INFO: Command <lambda> queued with counter 2
+2024-09-26 13:06:45 [Thread-3 (do_testow)] INFO: Sending command: <lambda> with priority 1
+2024-09-26 13:06:45 [Thread-3 (do_testow)] INFO: Command <lambda> queued with counter 3
+2024-09-26 13:06:47 [Thread-3 (do_testow)] INFO: Sending command: <lambda> with priority 1
+2024-09-26 13:06:47 [Thread-3 (do_testow)] INFO: Command <lambda> queued with counter 4
+2024-09-26 13:06:47 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:06:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:06:52 [Thread-3 (do_testow)] WARNING: Timeout waiting for target altitude: Current = Nonem, Target = 4m
+2024-09-26 13:06:53 [Thread-2 (process_commands)] WARNING: Timeout waiting for command ACK.
+2024-09-26 13:06:53 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:06:53 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:10:21 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:10:21 [Thread-3 (do_testow)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:10:21 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:10:22 [Thread-3 (do_testow)] INFO: Sending command: arm with priority 1
+2024-09-26 13:10:22 [Thread-3 (do_testow)] INFO: Command arm queued with counter 2
+2024-09-26 13:10:23 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:10:23 [Thread-3 (do_testow)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:10:25 [Thread-3 (do_testow)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:10:25 [Thread-3 (do_testow)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:10:25 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:10:25 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:25 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:25 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:25 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:25 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:27 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:27 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:27 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:27 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:27 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:27 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:29 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:29 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:29 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:30 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:30 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:30 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:30 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:30 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:30 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:31 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:31 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:31 [Thread-2 (process_commands)] WARNING: Timeout waiting for command ACK.
+2024-09-26 13:10:31 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:10:31 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:10:31 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:31 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:31 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:31 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:31 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:32 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:32 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:32 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:32 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:32 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:32 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:32 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:32 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:32 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:33 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:33 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:33 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:33 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:33 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:33 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:33 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:33 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:33 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:33 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:34 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:34 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:34 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:34 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:34 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:34 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:34 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:34 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:34 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:34 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:35 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:35 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:35 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:35 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:35 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:35 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:35 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:35 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:35 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:35 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:36 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:36 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:36 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:36 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:36 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:36 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:36 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:36 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:36 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:36 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:37 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:37 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:37 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:37 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:37 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:37 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:37 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:37 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:37 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:37 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:38 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:38 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:38 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:38 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:38 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:38 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:38 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:38 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:38 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:38 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:39 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:39 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:39 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:39 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:39 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:39 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:39 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:39 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:39 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:39 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:40 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:40 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:40 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:40 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:40 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:40 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:40 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:40 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:40 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:40 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:41 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:41 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:41 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:41 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:41 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:41 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:41 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:41 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:41 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:41 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:42 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:42 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:42 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:42 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:42 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:42 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:42 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:42 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:42 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:42 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:43 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:43 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:43 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:43 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:43 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:43 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:43 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:43 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:43 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:43 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:44 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:44 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:44 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:44 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:44 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:44 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:44 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:44 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:44 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:44 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:45 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:45 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:45 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:45 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:45 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:45 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:45 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:45 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:45 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:46 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:46 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:46 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:46 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:46 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:46 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:46 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:46 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:46 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:46 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:10:55 [Thread-3 (do_testow)] WARNING: Timeout waiting for target altitude: Current = Nonem, Target = 4m
+2024-09-26 13:13:19 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:13:19 [Thread-3 (do_testow)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:13:19 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:13:20 [Thread-3 (do_testow)] INFO: Sending command: arm with priority 1
+2024-09-26 13:13:20 [Thread-3 (do_testow)] INFO: Command arm queued with counter 2
+2024-09-26 13:13:21 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:13:21 [Thread-3 (do_testow)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:13:23 [Thread-3 (do_testow)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:13:23 [Thread-3 (do_testow)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:13:23 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:13:23 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:23 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:23 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:23 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:24 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:24 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:24 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:24 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:25 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:25 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:25 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:25 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:25 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:27 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:27 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:27 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:13:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:06 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:14:06 [Thread-3 (do_testow)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:14:06 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:14:07 [Thread-3 (do_testow)] INFO: Sending command: arm with priority 1
+2024-09-26 13:14:07 [Thread-3 (do_testow)] INFO: Command arm queued with counter 2
+2024-09-26 13:14:08 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:14:08 [Thread-3 (do_testow)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:14:10 [Thread-3 (do_testow)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:14:10 [Thread-3 (do_testow)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:14:10 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:14:12 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:16 [Thread-2 (process_commands)] WARNING: Timeout waiting for command ACK.
+2024-09-26 13:14:16 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:14:16 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:14:19 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:19 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:19 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:19 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:19 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:20 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:20 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:20 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:20 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:20 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:21 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:21 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:21 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:21 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:21 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:22 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:22 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:22 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:22 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:22 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:23 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:23 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:14:23 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:15:48 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:15:48 [Thread-3 (do_testow)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:15:48 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:15:49 [Thread-3 (do_testow)] INFO: Sending command: ARM with priority 1
+2024-09-26 13:15:49 [Thread-3 (do_testow)] INFO: Command ARM queued with counter 2
+2024-09-26 13:15:50 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:15:50 [Thread-3 (do_testow)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:15:52 [Thread-3 (do_testow)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:15:52 [Thread-3 (do_testow)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:15:52 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:15:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:15:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:15:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:15:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:15:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:15:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:15:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:16:44 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:16:44 [Thread-3 (do_testow)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:16:44 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:16:45 [Thread-3 (do_testow)] INFO: Sending command: ARM with priority 1
+2024-09-26 13:16:45 [Thread-3 (do_testow)] INFO: Command ARM queued with counter 2
+2024-09-26 13:16:46 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:16:46 [Thread-3 (do_testow)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:16:48 [Thread-3 (do_testow)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:16:48 [Thread-3 (do_testow)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:16:48 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:16:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:16:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:16:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:17:18 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:17:18 [Thread-3 (do_testow)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:17:18 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:17:19 [Thread-3 (do_testow)] INFO: Sending command: ARM with priority 1
+2024-09-26 13:17:19 [Thread-3 (do_testow)] INFO: Command ARM queued with counter 2
+2024-09-26 13:17:20 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:17:20 [Thread-3 (do_testow)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:17:22 [Thread-3 (do_testow)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:17:22 [Thread-3 (do_testow)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:17:22 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:17:23 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:17:24 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:17:24 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:17:24 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:17:25 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:17:25 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:17:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:17:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:17:27 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:17:27 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:17:41 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:17:41 [Thread-3 (do_testow)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:17:41 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:17:42 [Thread-3 (do_testow)] INFO: Sending command: ARM with priority 1
+2024-09-26 13:17:42 [Thread-3 (do_testow)] INFO: Command ARM queued with counter 2
+2024-09-26 13:17:43 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:17:43 [Thread-3 (do_testow)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:17:45 [Thread-3 (do_testow)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:17:45 [Thread-3 (do_testow)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:17:45 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:22:50 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:22:50 [Thread-3 (do_testow)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:22:50 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:22:50 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:22:51 [Thread-3 (do_testow)] INFO: Sending command: ARM with priority 1
+2024-09-26 13:22:51 [Thread-3 (do_testow)] INFO: Command ARM queued with counter 2
+2024-09-26 13:22:51 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:22:52 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:22:52 [Thread-3 (do_testow)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:22:52 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 13:22:52 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 13:22:52 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 13:22:54 [Thread-3 (do_testow)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:22:54 [Thread-3 (do_testow)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:22:54 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:22:54 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 13:22:54 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 13:22:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:57 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:58 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:58 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:58 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:58 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:58 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:59 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:59 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:59 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:59 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:22:59 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:23:00 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:23:01 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:23:01 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:23:01 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:26:00 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:26:00 [Thread-3 (do_testow)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:26:00 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:26:01 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:26:01 [Thread-3 (do_testow)] INFO: Sending command: ARM with priority 1
+2024-09-26 13:26:01 [Thread-3 (do_testow)] INFO: Command ARM queued with counter 2
+2024-09-26 13:26:01 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:26:02 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:26:02 [Thread-3 (do_testow)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:26:03 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 13:26:03 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 13:26:04 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 13:26:04 [Thread-3 (do_testow)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:26:04 [Thread-3 (do_testow)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:26:04 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 13:26:04 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:26:05 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:26:05 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 13:26:06 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:26:06 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:26:06 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:26:06 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:26:06 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:26:07 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:26:07 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:26:07 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:26:07 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:29:33 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:29:33 [Thread-3 (do_testow)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:29:33 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:29:33 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:29:34 [Thread-3 (do_testow)] INFO: Sending command: ARM with priority 1
+2024-09-26 13:29:34 [Thread-3 (do_testow)] INFO: Command ARM queued with counter 2
+2024-09-26 13:29:34 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:29:35 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_ALTHOLD with priority 1
+2024-09-26 13:29:35 [Thread-3 (do_testow)] INFO: Command set_flight_mode_ALTHOLD queued with counter 3
+2024-09-26 13:32:50 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:32:50 [Thread-3 (do_testow)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:32:50 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:32:50 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:32:51 [Thread-3 (do_testow)] INFO: Sending command: ARM with priority 1
+2024-09-26 13:32:51 [Thread-3 (do_testow)] INFO: Command ARM queued with counter 2
+2024-09-26 13:32:51 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:32:52 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_ALTHOLD with priority 1
+2024-09-26 13:32:52 [Thread-3 (do_testow)] INFO: Command set_flight_mode_ALTHOLD queued with counter 3
+2024-09-26 13:32:53 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 13:32:53 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 13:32:53 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 13:32:54 [Thread-3 (do_testow)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:32:54 [Thread-3 (do_testow)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:32:54 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 13:32:54 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:32:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:32:55 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 13:32:55 [Thread-2 (process_commands)] INFO: Command processing thread stopped.
+2024-09-26 13:32:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:32:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:32:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:32:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:32:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:32:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:32:57 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:32:57 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:32:57 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:32:57 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:32:57 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:32:58 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:43 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:33:43 [Thread-3 (do_testow)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:33:44 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:33:44 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:33:44 [Thread-2 (process_commands)] INFO: Command processing thread stopped.
+2024-09-26 13:33:45 [Thread-3 (do_testow)] INFO: Sending command: ARM with priority 1
+2024-09-26 13:33:45 [Thread-3 (do_testow)] ERROR: Failed to send command: ARM - command processor thread not alive
+2024-09-26 13:33:46 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_ALTHOLD with priority 1
+2024-09-26 13:33:46 [Thread-3 (do_testow)] ERROR: Failed to send command: set_flight_mode_ALTHOLD - command processor thread not alive
+2024-09-26 13:33:48 [Thread-3 (do_testow)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:33:48 [Thread-3 (do_testow)] ERROR: Failed to send command: takeoff - command processor thread not alive
+2024-09-26 13:33:48 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:33:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:48 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:49 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:50 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:51 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:52 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:53 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:54 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:55 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:33:56 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:35 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:34:35 [Thread-3 (do_testow)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:34:35 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:34:36 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:34:36 [Thread-3 (do_testow)] INFO: Sending command: ARM with priority 1
+2024-09-26 13:34:36 [Thread-3 (do_testow)] INFO: Command ARM queued with counter 2
+2024-09-26 13:34:36 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:34:37 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_ALTHOLD with priority 1
+2024-09-26 13:34:37 [Thread-3 (do_testow)] INFO: Command set_flight_mode_ALTHOLD queued with counter 3
+2024-09-26 13:34:38 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 13:34:38 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 13:34:39 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 13:34:39 [Thread-3 (do_testow)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:34:39 [Thread-3 (do_testow)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:34:39 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 13:34:39 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:34:40 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:40 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 13:34:41 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:41 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:41 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:41 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:41 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:42 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:42 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:42 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:42 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:42 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:43 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:44 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:44 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:44 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:44 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:44 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:45 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:45 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:45 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:45 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:45 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:46 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:34:47 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:22 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:37:22 [Thread-3 (do_testow)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:37:22 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:37:22 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:37:23 [Thread-3 (do_testow)] INFO: Sending command: ARM with priority 1
+2024-09-26 13:37:23 [Thread-3 (do_testow)] INFO: Command ARM queued with counter 2
+2024-09-26 13:37:23 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:37:24 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_ALTHOLD with priority 1
+2024-09-26 13:37:24 [Thread-3 (do_testow)] INFO: Command set_flight_mode_ALTHOLD queued with counter 3
+2024-09-26 13:37:25 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 13:37:25 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 13:37:25 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 13:37:26 [Thread-3 (do_testow)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:37:26 [Thread-3 (do_testow)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:37:26 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:37:26 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 13:37:26 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:27 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 13:37:27 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:28 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:29 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:29 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:29 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:29 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:29 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:30 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:30 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:30 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:30 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:30 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:31 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:37:31 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:44:58 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:44:58 [Thread-3 (do_testow)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:44:58 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:44:58 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:44:59 [Thread-3 (do_testow)] INFO: Sending command: ARM with priority 1
+2024-09-26 13:44:59 [Thread-3 (do_testow)] INFO: Command ARM queued with counter 2
+2024-09-26 13:44:59 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:45:00 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_ALTHOLD with priority 1
+2024-09-26 13:45:00 [Thread-3 (do_testow)] INFO: Command set_flight_mode_ALTHOLD queued with counter 3
+2024-09-26 13:45:01 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 13:45:01 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 13:45:01 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 13:45:02 [Thread-3 (do_testow)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:45:02 [Thread-3 (do_testow)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:45:02 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 13:45:02 [Thread-3 (do_testow)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:45:02 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:03 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 13:45:03 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:04 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:04 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:04 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:04 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:04 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:05 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:05 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:05 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:05 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:05 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:06 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:07 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:07 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:07 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:07 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:07 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:08 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:08 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:08 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:08 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:08 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:09 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:09 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:09 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:09 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:10 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:10 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:10 [Thread-3 (do_testow)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:45:10 [Thread-3 (do_testow)] INFO: Sending command: set_flight_mode_LAND with priority 1
+2024-09-26 13:45:10 [Thread-3 (do_testow)] INFO: Command set_flight_mode_LAND queued with counter 5
+2024-09-26 13:45:10 [Thread-2 (process_commands)] INFO: Processing command with counter 5 and priority 1
+2024-09-26 13:45:10 [Thread-2 (process_commands)] INFO: Command 5 processed successfully.
+2024-09-26 13:45:10 [Thread-2 (process_commands)] INFO: Command processing thread stopped.
+2024-09-26 13:48:47 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:48:47 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:48:47 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:48:47 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 13:48:47 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 13:48:47 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:48:47 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:48:47 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:48:47 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:48:47 [Thread-3 (test_podstawowy)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:48:47 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_LAND with priority 1
+2024-09-26 13:48:47 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_LAND queued with counter 5
+2024-09-26 13:48:47 [Thread-3 (test_podstawowy)] INFO: Waiting to reach altitude: 0.1m with tolerance 0.2m
+2024-09-26 13:48:48 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:48:48 [Thread-2 (process_commands)] INFO: Command processing thread stopped.
+2024-09-26 13:49:01 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:49:01 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:49:01 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 13:49:01 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:49:01 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 13:49:01 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:49:01 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:49:01 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:49:01 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:49:01 [Thread-3 (test_podstawowy)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:49:02 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:02 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:49:02 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:49:02 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:02 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:02 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:02 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:03 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 13:49:03 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 13:49:03 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:03 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 13:49:03 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 13:49:03 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:03 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 13:49:03 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:03 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:04 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:04 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:04 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:04 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:04 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:05 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:06 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:06 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:06 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:06 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:06 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:07 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:07 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:07 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:07 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:07 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:08 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:08 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:08 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:09 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:09 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:09 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:09 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:49:09 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:54 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:50:54 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:50:54 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:50:54 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 13:50:54 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 13:50:54 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:50:54 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:50:54 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:50:54 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:50:54 [Thread-3 (test_podstawowy)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:50:54 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:54 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:50:54 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:50:54 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:54 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:54 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:55 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:55 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 13:50:55 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 13:50:55 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:55 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 13:50:55 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 13:50:55 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:55 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 13:50:55 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:55 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:56 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:56 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:56 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:56 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:57 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:57 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:58 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:58 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:58 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:58 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:59 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:59 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:59 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:59 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:50:59 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:51:32 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:51:32 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:51:32 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:51:32 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 13:51:32 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 13:51:32 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:51:32 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:51:32 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:51:32 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:51:32 [Thread-3 (test_podstawowy)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:51:32 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:51:32 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:51:32 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:51:33 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:51:33 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:51:33 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:51:33 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:51:33 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 13:51:33 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 13:51:33 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:51:33 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 13:51:33 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 13:51:34 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:51:34 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 13:51:34 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:51:34 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:51:34 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:51:35 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:51:35 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:51:35 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:51:35 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:51:35 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:52:37 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:52:37 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:52:37 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 13:52:37 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:52:37 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 13:52:37 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:52:37 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:52:37 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:52:37 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:52:37 [Thread-3 (test_podstawowy)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:52:37 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:52:37 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:52:37 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:52:38 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 13:52:38 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 13:52:38 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 13:52:38 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 13:52:38 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 13:53:40 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:53:40 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:53:40 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:53:40 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 13:53:40 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 13:53:40 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:53:40 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:53:40 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:53:40 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:53:40 [Thread-3 (test_podstawowy)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:53:40 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:53:40 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:53:40 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:53:41 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 13:53:41 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 13:53:41 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 13:53:41 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 13:53:41 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 13:53:47 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:54:44 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:54:44 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:54:44 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:54:44 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 13:54:44 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 13:54:44 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:54:44 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:54:44 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:54:44 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:54:44 [Thread-3 (test_podstawowy)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:54:44 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:54:44 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:54:44 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:54:45 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 13:54:45 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 13:54:45 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 13:54:45 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 13:54:45 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 13:54:46 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:54:49 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:54:52 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:54:55 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:54:58 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:55:00 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:55:03 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:55:41 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:55:41 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:55:41 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:55:41 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 13:55:41 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 13:55:41 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:55:41 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:55:41 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:55:41 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:55:41 [Thread-3 (test_podstawowy)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:55:41 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:55:41 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:55:41 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:55:42 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 13:55:42 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 13:55:42 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:55:42 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 13:55:42 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 13:55:42 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 13:55:43 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:55:45 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:55:46 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:55:48 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:55:49 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:55:50 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:55:52 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:55:53 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:59:43 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 13:59:43 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 13:59:43 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 13:59:43 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 13:59:43 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 13:59:43 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 13:59:43 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 13:59:43 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 13:59:43 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-26 13:59:43 [Thread-3 (test_podstawowy)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 13:59:43 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:59:43 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 13:59:43 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 13:59:44 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 13:59:44 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 13:59:44 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:59:44 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 13:59:44 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 13:59:44 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 13:59:45 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:59:47 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:59:48 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:59:50 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:59:51 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:59:52 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:59:54 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 13:59:55 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:02:12 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 14:02:12 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 14:02:12 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 14:02:12 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 14:02:12 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 14:02:12 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 14:02:12 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 14:02:12 [Thread-3 (test_podstawowy)] INFO: Sending command: fly_to_point_1 with priority 1
+2024-09-26 14:02:12 [Thread-3 (test_podstawowy)] INFO: Command fly_to_point_1 queued with counter 4
+2024-09-26 14:02:12 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 14:02:12 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 14:02:13 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 14:02:13 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 14:02:13 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 14:02:13 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
