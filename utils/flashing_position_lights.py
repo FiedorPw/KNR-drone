@@ -1,30 +1,18 @@
+import RPi.GPIO as GPIO
 import time
-from rpi_ws281x import PixelStrip, Color
 
-# czerwony do 5v niebieski do masy
-# Konfiguracja parametrów
-LED_COUNT = 4         # Liczba diod PL9823
-LED_PIN = 12          # GPIO pin (zielony kabel) (musi wspierać PWM, w Raspberry Pi GPIO 12)
-LED_FREQ_HZ = 800000  # Częstotliwość sygnału PWM
-LED_DMA = 10          # Kanał DMA
-LED_BRIGHTNESS = 255  # Jasność (0-255)
-LED_INVERT = False    # Odwrócenie sygnału (jeśli używasz NPN transistora)
+# Ustawienia
+GPIO_PIN = 13
 
-# Inicjalizacja diod
-strip = PixelStrip(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS)
-strip.begin()
+# Ustawienie trybu numeracji pinów (BCM) i pinu jako wyjście
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(GPIO_PIN, GPIO.OUT)
 
-def setColor(color):
-    for i in range(LED_COUNT):
-        strip.setPixelColor(i, color)
-    strip.show()
+# Ustawienie stanu pinu na HIGH
+GPIO.output(GPIO_PIN, GPIO.HIGH)
 
-try:
-    while True:
-        setColor(Color(255, 0, 0))  # Zielony
-        time.sleep(1)
-        setColor(Color(0, 0, 255))  # Wyłączenie diod
-        time.sleep(1)
-except KeyboardInterrupt:
-    setColor(Color(0, 0, 0))  # Wyłączenie diod przy przerwaniu programu
- 
+# Poczekaj chwilę, aby pin pozostał w stanie HIGH
+time.sleep(5)
+
+# Wyczyść ustawienia GPIO
+GPIO.cleanup()

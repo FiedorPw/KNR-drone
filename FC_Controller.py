@@ -84,7 +84,7 @@ class FC_Controller:
         self._wait_for_heartbeat()
 
         # Set arming check parameter to 0 - disable all arming flags
-        self.set_param('ARMING_CHECK', 0)
+        # self.set_param('ARMING_CHECK', 0)
         self.set_flight_mode(0)
 
         self.telemetry_lock = Lock()  # Mutex for telemetry
@@ -621,24 +621,49 @@ class FC_Controller:
     
     def wait_until_altitude(self, target_altitude, tolerance=0.2, timeout=30):
         start_time = time.time()
-        logging.info(f"Waiting to reach altitude: {target_altitude}m with tolerance {tolerance}m")
-        log_counter=0
+        time.sleep(2)
+        logging.info(f"Oczekiwanie na osiągnięcie wysokości: {target_altitude}m z tolerancją {tolerance}m")
+        log_counter = 0
+
+        # **Krok 1: Kalibracja - Ustalenie bazowej wysokości z pozycji startowej**
+        with self.telemetry_lock:
+            if not self.start_position or len(self.start_position) < 3:
+                logging.error("Start position is not set or incomplete. Cannot calibrate altitude.")
+                raise ValueError("Start position is not set or incomplete.")
+            
+            base_altitude = self.start_position[2]  # Założenie: self.start_position = [lat, lon, alt]
+            logging.info(f"Skalibrowana bazowa wysokość: {base_altitude}m")
+
         while not self.abortMission and not self.isLanding:
             with self.telemetry_lock:
                 current_altitude = self.current_altitude
 
-            if current_altitude is not None and abs(current_altitude - target_altitude) <= tolerance:
-                logging.info(f"Target altitude reached: {current_altitude}m")
-                break
+            if current_altitude is not None:
+                # **Krok 2: Obliczenie względnej wysokości**
+                relative_altitude = current_altitude - base_altitude
+                logging.debug(f"Względna wysokość: {relative_altitude}m (Bieżąca: {current_altitude}m, Bazowa: {base_altitude}m)")
+
+                # **Krok 3: Sprawdzenie, czy osiągnięto docelową wysokość**
+                if abs(relative_altitude - target_altitude) <= tolerance:
+                    logging.info(f"Docelowa wysokość osiągnięta: {relative_altitude}m")
+                    break
+            else:
+                relative_altitude = None
+                logging.warning("Bieżąca wysokość jest niezdefiniowana.")
+
+            # **Krok 4: Sprawdzenie przekroczenia limitu czasu**
             if time.time() - start_time > timeout:
-                logging.warning(f"Timeout waiting for target altitude: Current = {current_altitude}m, Target = {target_altitude}m")
+                logging.warning(f"Przekroczono czas oczekiwania na wysokość docelową: Bieżąca = {relative_altitude}m, Docelowa = {target_altitude}m")
                 break
+
+            # **Krok 5: Opóźnienie i logowanie postępu**
             time.sleep(0.1)
-            if log_counter%10 == 0:
-                logging.info(f"Drone changing altitude... Current altitude: {current_altitude}m")
+            if log_counter % 10 == 0:
+                if relative_altitude is not None:
+                    logging.info(f"Dron zmienia wysokość... Bieżąca wysokość: {relative_altitude}m")
+                else:
+                    logging.info("Dron zmienia wysokość... Bieżąca wysokość: N/D")
             log_counter += 1
-
-
 
 
     def gps_to_frd(self, current_position, start_position):
@@ -681,15 +706,19 @@ class FC_Controller:
     def wait_until_GPSposition(self, target_lat, target_lon, target_alt, tolerance=0.5, timeout=30):
         start_time = time.time()
         logging.info(f"Waiting to reach GPS position: ({target_lat}, {target_lon}, {target_alt}) with tolerance {tolerance}")
+        
         while not self.abortMission and not self.isLanding:
             with self.telemetry_lock:
                 current_gps = [self.current_altitude,self.current_latitude,self.current_longitude]
             dx = abs(current_gps[0] - target_lat)
             dy = abs(current_gps[1] - target_lon)
             dz = abs(current_gps[2] - target_alt)
+            meters_per_degree = 111000
+            tolerance_lat=tolerance/meters_per_degree
+            tolerance_lon=tolerance/(meters_per_degree*math.cos(math.radians(self.current_gps[1])))
             logging.info(f"Current GPS position: ({current_gps[0]}, {current_gps[1]}, {current_gps[2]})")
 
-            if dx <= tolerance and dy <= tolerance and dz <= tolerance:
+            if dx <= tolerance_lat and dy <= tolerance_lon and dz <= tolerance:
                 logging.info(f"Reached target GPS position: ({target_lat}, {target_lon}, {target_alt})")
                 break
             if time.time() - start_time > timeout:
@@ -923,15 +952,15 @@ class FC_Controller:
         time.sleep(1)
         self.send_command(lambda: self.set_flight_mode(4), priority=1, command_name='set_flight_mode_GUIDED')  
         time.sleep(2)
-        self.send_command(lambda: self.takeoff(3), priority=1, command_name='takeoff')  
-        self.wait_until_altitude(4)
+        self.send_command(lambda: self.takeoff(1), priority=1, command_name='takeoff')  
+        self.wait_until_altitude(1)
         self.send_command(lambda: self.set_flight_mode(8), priority=1, command_name='set_flight_mode_LAND')
         time.sleep(1)
 
     def test_podstawowy(self):
         self.begin_flight()
-        self.send_command(lambda: self.takeoff(4), priority=1, command_name='takeoff')
-        self.wait_until_altitude(4)
+        self.send_command(lambda: self.takeoff(1), priority=1, command_name='takeoff')
+        self.wait_until_altitude(1)
 
         # self.send_command(lambda: self.send_position(0, 0, -1, 0, 0, 0.2), priority=1, command_name='fly_to_point_1')
         # self.wait_until_position(0, 0, -1)
@@ -981,143 +1010,107 @@ class FC_Controller:
             self.send_command(lambda: self.send_position(x,y,z,0.5,0.5,0), priority=1, command_name='fly_to_point_1')
             self.wait_until_position(x, y, z)
 
-        # # FLY SQUARE
-        # self.send_command(lambda: self.send_position(3, 0, 0, 0.5, 0, 0), priority=1, command_name='fly_to_point_1')
-        # self.wait_until_position(3, 0, 3)
-        # self.send_command(lambda: self.send_position(0, 3, 0, 0, 0.5, 0), priority=1, command_name='fly_to_point_2')
-        # self.wait_until_position(0, 3, 3)
-        # self.send_command(lambda: self.send_position(-3, 0, 0, 0.5, 0, 0), priority=1, command_name='fly_to_point_3')
-        # self.wait_until_position(-3, 0, 3)
-        # self.send_command(lambda: self.send_position(0, -3, 0, 0, 0.5,0), priority=1, command_name='fly_to_point_4')
-        # self.wait_until_position(0, -3, 3)
-
         self.send_command(lambda: self.set_flight_mode(8), priority=1, command_name='set_flight_mode_LAND')
         self.wait_until_altitude(0.1)
         self.send_command(lambda: self.set_flight_mode(0), priority=1, command_name='set_flight_mode_STABILIZE')
         time.sleep(1)
 
     def test_lotu_xz(self):
-        self.telemetry_event.wait()
-        self.telemetry_event.clear()
-        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
-        time.sleep(1)
-        self.send_command(lambda: self.arm_disarm(1), priority=1)  
-        time.sleep(1)
-        self.send_command(lambda: self.set_flight_mode(4), priority=1)  
-        time.sleep(6)
-        self.send_command(lambda: self.takeoff(4), priority=1)  
-        time.sleep(3)
+        self.begin_flight()
+        self.send_command(lambda: self.takeoff(4), priority=1, command_name='takeoff')
+        self.wait_until_altitude(4)
 
         # FLY SQUARE
-        self.send_command(lambda: self.send_position(-3, 0, 0, 0.5, 0, 0), priority=1) 
-        time.sleep(4)
-        self.send_command(lambda: self.send_position(0, 0, -3, 0, 0, 0.5), priority=1) 
-        time.sleep(4)
-        self.send_command(lambda: self.send_position(3, 0, 0, 0.5, 0, 0), priority=1) 
-        time.sleep(4)
-        self.send_command(lambda: self.send_position(0, 0, 2, 0, 0, 0.5), priority=1) 
-        time.sleep(4)
+        self.send_command(lambda: self.send_position(-3, 0, 0, 0.5, 0, 0), priority=1, command_name='fly_left')
+        self.wait_until_position(-3, 0, 0)
+        self.send_command(lambda: self.send_position(0, 0, -3, 0, 0, 0.5), priority=1, command_name='fly_down')
+        self.wait_until_position(0, 0, -3)
+        self.send_command(lambda: self.send_position(3, 0, 0, 0.5, 0, 0), priority=1, command_name='fly_right')
+        self.wait_until_position(3, 0, 0)
+        self.send_command(lambda: self.send_position(0, 0, 2, 0, 0, 0.5), priority=1, command_name='fly_up')
+        self.wait_until_position(0, 0, 2)
 
-        self.send_command(lambda: self.set_flight_mode(8), priority=1)  
-        time.sleep(6)
-        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
+        self.send_command(lambda: self.set_flight_mode(8), priority=1, command_name='set_flight_mode_LAND')
+        self.wait_until_altitude(0.1)
+        self.send_command(lambda: self.set_flight_mode(0), priority=1, command_name='set_flight_mode_STABILIZE')
         time.sleep(1)
+
 
     def test_lotu_VxVy(self):
-        self.telemetry_event.wait()
-        self.telemetry_event.clear()
-        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
-        time.sleep(1)
-        self.send_command(lambda: self.arm_disarm(1), priority=1)  
-        time.sleep(1)
-        self.send_command(lambda: self.set_flight_mode(4), priority=1)  
-        time.sleep(6)
-        self.send_command(lambda: self.takeoff(3), priority=1)  
-        time.sleep(3)
+        self.begin_flight()
+        self.send_command(lambda: self.takeoff(3), priority=1, command_name='takeoff')
+        self.wait_until_altitude(3)
 
-        # POSTAWIĆ DRONA DALEKO OD LUDZI I BYĆ W GOTOWOŚCI Z PILOTEM, NIE WIEM JAK TO DZIAŁA W REALU
-        self.send_command(lambda: self.send_velocity(0.5,0,0), priority=1) 
+        self.send_command(lambda: self.send_velocity(0.5, 0, 0), priority=1, command_name='velocity_x_positive')
         time.sleep(4)
-        self.send_command(lambda: self.send_position(0,0,-0.5), priority=1) 
+        self.send_command(lambda: self.send_velocity(0, 0, -0.5), priority=1, command_name='velocity_z_negative')
         time.sleep(4)
-        self.send_command(lambda: self.send_velocity(-0.5,0,0), priority=1) 
+        self.send_command(lambda: self.send_velocity(-0.5, 0, 0), priority=1, command_name='velocity_x_negative')
         time.sleep(4)
-        self.send_command(lambda: self.send_velocity(0,0,0.5), priority=1) 
+        self.send_command(lambda: self.send_velocity(0, 0, 0.5), priority=1, command_name='velocity_z_positive')
         time.sleep(4)
 
-        self.send_command(lambda: self.set_flight_mode(8), priority=1)  
-        time.sleep(6)
-        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
+        self.send_command(lambda: self.set_flight_mode(8), priority=1, command_name='set_flight_mode_LAND')
+        self.wait_until_altitude(0.1)
+        self.send_command(lambda: self.set_flight_mode(0), priority=1, command_name='set_flight_mode_STABILIZE')
         time.sleep(1)
 
-    #JEŚLI DZIAŁAJĄ KOMENDY DO LOTU XYZ TO MOŻNA TESTOWAĆ TE 
+
     def test_lotu_gps(self):
-        self.telemetry_event.wait()
-        self.telemetry_event.clear()
-        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
-        time.sleep(1)
-        self.send_command(lambda: self.arm_disarm(1), priority=1)  
-        time.sleep(1)
-        self.send_command(lambda: self.set_flight_mode(4), priority=1)  
-        time.sleep(6)
-        self.send_command(lambda: self.takeoff(4), priority=1)  
-        time.sleep(3)
-        [curr_lat, curr_lon, curr_alt] = self.send_command(lambda: self.get_coordinates())
+        self.begin_flight()
+        self.send_command(lambda: self.takeoff(4), priority=1, command_name='takeoff')
+        self.wait_until_altitude(4)
 
-        # NAJPIERW POLEĆ LEĆ GDZIEŚ W PIZDU 
-        self.send_command(lambda: self.send_position(6, 0, 0, 0.5, 0, 0), priority=1) 
-        time.sleep(4)
-        self.send_command(lambda: self.send_position(0, 0, -3, 0, 0, 0.5), priority=1) 
-        time.sleep(4)
-        self.send_command(lambda: self.send_position(0, 4, 0, 0.5, 0, 0), priority=1) 
-        time.sleep(4)
+        [curr_lat, curr_lon, curr_alt] = self.get_coordinates()
 
-        # WRÓC NA KORDY KTÓRE ZAPISAŁEŚ PO TAKEOFF (BADANIE DOKLADNOSCI POWROTU NA KORDY GPS)
-        self.send_command(lambda: self.send_global_position(curr_lat,curr_lon, curr_alt, 0.5,0.5,0.5), priority=1) 
-        time.sleep(4)
+        # Leć gdzieś dalej
+        self.send_command(lambda: self.send_position(6, 0, 0, 0.5, 0, 0), priority=1, command_name='fly_forward_6m')
+        self.wait_until_position(6, 0, 0)
+        self.send_command(lambda: self.send_position(0, 0, -3, 0, 0, 0.5), priority=1, command_name='fly_down_3m')
+        self.wait_until_position(0, 0, -3)
+        self.send_command(lambda: self.send_position(0, 4, 0, 0.5, 0, 0), priority=1, command_name='fly_right_4m')
+        self.wait_until_position(0, 4, 0)
 
-        self.send_command(lambda: self.set_flight_mode(8), priority=1)  
-        time.sleep(6)
-        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
+        # Powrót na pierwotne kordy GPS
+        self.send_command(lambda: self.send_global_position(curr_lat, curr_lon, curr_alt, 0.5, 0.5, 0.5), priority=1, command_name='fly_to_original_gps_coords')
+        self.wait_until_position(curr_lat, curr_lon, curr_alt)
+
+        self.send_command(lambda: self.set_flight_mode(8), priority=1, command_name='set_flight_mode_LAND')
+        self.wait_until_altitude(0.1)
+        self.send_command(lambda: self.set_flight_mode(0), priority=1, command_name='set_flight_mode_STABILIZE')
         time.sleep(1)
 
-    #DRONA POSTAWIĆ TROCHE PRZED (2-4 M) BIALA PLANSZA Z PILKA I ODPALIC TEST - DRON MA BYĆ SKIEROWANY PRZODEM DO PLANSZY
+
     def test_navigate_to_target(self):
+        self.begin_flight()
+        self.send_command(lambda: self.takeoff(4), priority=1, command_name='takeoff')
+        self.wait_until_altitude(4)
+
+        self.send_command(lambda: self.send_position(4, 0, 0, 0.5, 0, 0), priority=1, command_name='fly_forward_4m')
+        self.wait_until_position(4, 0, 0)
+
         test_done = False
-
-        self.telemetry_event.wait()
-        self.telemetry_event.clear()
-        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
-        time.sleep(1)
-        self.send_command(lambda: self.arm_disarm(1), priority=1)  
-        time.sleep(1)
-        self.send_command(lambda: self.set_flight_mode(4), priority=1)  
-        time.sleep(6)
-        self.send_command(lambda: self.takeoff(4), priority=1)  
-        time.sleep(3)
-        self.send_command(lambda: self.send_position(4, 0, 0, 0.5, 0, 0), priority=1) 
-
         while not test_done:
-            if len(detector.large_contours != 0):
-                #  NAKIEROWYWUJ DRONA NA PLATFORME DOPÓKI PIŁKA NIE JEST W ŚRODKU KADRU 
-                while not len(detector.balls) == 0:
-                    self.send_command(lambda: fcc.navigate_to_target('platform'), priority=1)
+            if len(detector.large_contours) != 0:
+                # Nakierowywanie na platformę
+                while len(detector.balls) != 0:
+                    self.send_command(lambda: fcc.navigate_to_target('platform'), priority=1, command_name='navigate_to_platform')
                     time.sleep(0.2)
-                    self.send_command(lambda: self.send_velocity(0,0,0.2), priority=1) 
+                    self.send_command(lambda: self.send_velocity(0, 0, 0.2), priority=1, command_name='velocity_z_up')
                     time.sleep(0.2)
                 
-                #  NAKIEROWYWUJ DRONA NA PIŁKĘ DOPÓKI PIŁKA NIE JEST W ŚRODKU KADRU LUB GDY DRON JEST POWYŻEJ 1 METRA
+                # Nakierowywanie na piłkę
                 while not detector.is_target_close or (self.latest_telemetry["Altitude"] > self.start_position[2] + 1):
-                    self.send_command(lambda: fcc.navigate_to_target('target'), priority=1)
+                    self.send_command(lambda: fcc.navigate_to_target('target'), priority=1, command_name='navigate_to_target')
                     time.sleep(0.2)
-                    self.send_command(lambda: self.send_velocity(0,0,0.2), priority=1) 
+                    self.send_command(lambda: self.send_velocity(0, 0, 0.2), priority=1, command_name='velocity_z_up')
                     time.sleep(0.2)
                 
                 test_done = True
-        
-        self.send_command(lambda: self.set_flight_mode(8), priority=1)  
-        time.sleep(4)
-        self.send_command(lambda: self.set_flight_mode(0), priority=1) 
+
+        self.send_command(lambda: self.set_flight_mode(8), priority=1, command_name='set_flight_mode_LAND')
+        self.wait_until_altitude(0.1)
+        self.send_command(lambda: self.set_flight_mode(0), priority=1, command_name='set_flight_mode_STABILIZE')
         time.sleep(1)
 
     # Function to start command thread 
@@ -1134,7 +1127,6 @@ if __name__ == "__main__":
     detector = BallDetector()
     fcc.start_command_thread()
     
-
     del fcc
 
 

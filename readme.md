@@ -1,3 +1,22 @@
+# RPI 5
+## Kamera
+komenda do robienia foty(chat i net mówią żle)
+rpicam-jpeg --nopreview --output test.jpg
+
+*opis libki do pytonga która obsługuje dobrze naszą kamerę* 
+https://datasheets.raspberrypi.com/camera/picamera2-manual.pdf
+
+
+##
+Active cooler(chłodzenie)
+
+Kontrolowanie prędkości przez pisanie 0-3 do tego pliku tą komendą:
+echo "1" | sudo tee /sys/class/thermal/cooling_device0/cur_state
+Odczyt:
+cat /sys/class/thermal/cooling_device0/cur_state
+
+
+
 # Konfiguracja i przygotowanie do działania
 
 ## Quick start

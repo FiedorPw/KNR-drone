@@ -32,6 +32,8 @@ required_balls = {'red','blue','purple'}
 release_position = []
 
 retry_attempts = 3 # Retries of cathcing ball in phase 4
+
+ball_status = "" 
 ####################################
 
 ############################################################################################################
@@ -105,6 +107,7 @@ def mission_phase_two():
             if ball_color:
                 detected_balls[platform_num] = ball_color
                 platform_positions[platform_num] = [fcc.latest_telemetry["Latitude"],fcc.latest_telemetry["Longitude"],fcc.latest_telemetry["Altitude"]]
+            ball_status = f'{ball_color} ball detected.'
 
             print(f"Detected ball on platform {platform_num}: {ball_color}")
             detected_colors = set(detected_balls.values())      
@@ -163,6 +166,7 @@ def mission_phase_four():
 
                     if fcc.is_on_ground and detector.is_target_close:
                         gripper.close_gripper()
+                        ball_status = f'{color} ball taken up.'
 
                     # TODO - DISTANCE SENSOR (is_ball_caught)
                     if gripper.is_ball_caught:
@@ -180,6 +184,7 @@ def mission_phase_four():
                     time.sleep(0.1)
                 
                 gripper.open_gripper()
+                ball_status = f'{color} ball dropped.'
 
         fcc.send_command(lambda: fcc.reposition_copter(reset_lat, reset_lon, reset_alt,2,0), priority=1)
         is_phase_four_done = True

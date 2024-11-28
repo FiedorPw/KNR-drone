@@ -5,6 +5,8 @@ import numpy as np
 # Static threshold for size (area) of white squares
 SIZE_THRESHOLD = 500  # Adjust this value as needed
 
+white_threshold = 222
+
 class Ball:
     def __init__(self, color, lower_bound, upper_bound):
         self.color = color
@@ -95,7 +97,7 @@ class BallDetector:
             _, binary_mask = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY)
 
             # Define lower and upper range for white color in BGR format
-            lower_white = np.array([200, 200, 200])
+            lower_white = np.array([white_threshold, white_threshold, white_threshold])
             upper_white = np.array([255, 255, 255])
 
             # Create a mask for white regions using the BGR frame

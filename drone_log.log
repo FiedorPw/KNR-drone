@@ -1239,3 +1239,434 @@
 2024-09-26 14:02:13 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
 2024-09-26 14:02:13 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
 2024-09-26 14:02:13 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 14:10:58 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 14:10:58 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 14:10:58 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 14:10:58 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 14:10:58 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 14:10:58 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 14:10:58 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 14:10:58 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 14:10:58 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-26 14:10:58 [Thread-3 (test_podstawowy)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 14:10:58 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:10:58 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 14:10:58 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 14:10:59 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 14:10:59 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 14:10:59 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:10:59 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 14:10:59 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 14:10:59 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 14:11:00 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:11:02 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:11:03 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:11:04 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:11:06 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:52:14 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 14:52:14 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 14:52:14 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 14:52:14 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 14:52:14 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 14:52:14 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 14:52:14 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 14:52:14 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 14:52:14 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-26 14:52:14 [Thread-3 (test_podstawowy)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 14:52:14 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:52:14 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 14:52:14 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 14:52:15 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:52:16 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:52:17 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:52:18 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:52:19 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:52:25 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 14:52:25 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 14:52:25 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 14:52:25 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 14:52:25 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 14:52:25 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 14:52:25 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 14:52:25 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 14:52:25 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-26 14:52:25 [Thread-3 (test_podstawowy)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 14:52:25 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:52:25 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 14:52:25 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 14:52:26 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 14:52:26 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 14:52:26 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:52:26 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 14:52:26 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 14:52:26 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 14:52:27 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:52:29 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 14:52:30 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 16:02:46 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 16:02:46 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 16:02:46 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 16:02:46 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 16:02:46 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 16:02:46 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 16:02:46 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 16:02:46 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 16:02:46 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-26 16:02:46 [Thread-3 (test_podstawowy)] INFO: Waiting to reach altitude: 4m with tolerance 0.2m
+2024-09-26 16:02:46 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 16:02:46 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 16:02:46 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 16:02:47 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 16:02:47 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 16:02:47 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 16:02:47 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 16:02:47 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 16:02:47 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 16:02:48 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 16:02:50 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 16:02:51 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 16:02:52 [Thread-3 (test_podstawowy)] INFO: Drone changing altitude... Current altitude: Nonem
+2024-09-26 16:02:52 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_LAND with priority 1
+2024-09-26 16:02:52 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_LAND queued with counter 5
+2024-09-26 16:02:52 [Thread-2 (process_commands)] INFO: Processing command with counter 5 and priority 1
+2024-09-26 16:02:52 [Thread-3 (test_podstawowy)] INFO: Waiting to reach altitude: 0.1m with tolerance 0.2m
+2024-09-26 16:02:52 [Thread-2 (process_commands)] INFO: Command 5 processed successfully.
+2024-09-26 16:02:52 [Thread-2 (process_commands)] INFO: Command processing thread stopped.
+2024-09-26 23:05:56 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 23:05:56 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 23:05:56 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 23:05:56 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 23:05:56 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 23:05:56 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 23:05:56 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 23:05:56 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 23:05:56 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-26 23:05:56 [Thread-3 (test_podstawowy)] INFO: Oczekiwanie na osiągnięcie wysokości: 1m z tolerancją 0.2m
+2024-09-26 23:05:56 [Thread-3 (test_podstawowy)] INFO: Skalibrowana bazowa wysokość: 0.0m
+2024-09-26 23:05:56 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:56 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-26 23:05:56 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:57 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:57 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 23:05:57 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 23:05:57 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:57 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:57 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:57 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:57 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:57 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:57 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:57 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:57 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-26 23:05:57 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:58 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:58 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:58 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:58 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:58 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:58 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:58 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:58 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:58 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:58 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-26 23:05:58 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:59 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:59 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:59 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:59 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:59 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:59 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:59 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:59 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:59 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:05:59 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-26 23:05:59 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:00 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:00 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:00 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:00 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:00 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:00 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-26 23:06:34 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] INFO: Oczekiwanie na osiągnięcie wysokości: 1m z tolerancją 0.2m
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] INFO: Skalibrowana bazowa wysokość: 0.0m
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:34 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-26 23:06:34 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:34 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:35 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:35 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:35 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-26 23:06:35 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-26 23:06:35 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:35 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-26 23:06:35 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:35 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:35 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-26 23:06:35 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-26 23:06:35 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:35 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:35 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-26 23:06:35 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:35 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:36 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:36 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:36 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:36 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:36 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-26 23:06:36 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:36 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:36 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:36 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:37 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:37 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:37 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:38 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-26 23:06:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:39 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-26 23:06:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:40 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:40 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:40 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-26 23:06:40 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-27 00:41:09 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] INFO: Oczekiwanie na osiągnięcie wysokości: 1.5m z tolerancją 0.2m
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] INFO: Skalibrowana bazowa wysokość: 0.0m
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:09 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:09 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:09 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:10 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:10 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-27 00:41:10 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-27 00:41:10 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:10 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-27 00:41:10 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:10 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-27 00:41:10 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-27 00:41:10 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:10 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:10 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:10 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:10 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:10 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:10 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:11 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:11 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:11 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-27 00:41:11 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:11 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:11 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-27 00:41:11 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:11 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:11 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:11 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:11 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:12 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:12 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:12 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:12 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-27 00:41:12 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:12 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:12 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:12 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:12 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:12 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:12 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:13 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:13 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:13 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:13 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-27 00:41:13 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:13 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:13 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:13 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:13 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:13 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:13 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:14 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:14 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:14 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:14 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-27 00:41:14 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:14 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:15 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:15 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:15 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:15 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:15 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:15 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:16 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:16 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:16 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-27 00:41:16 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:16 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:16 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:16 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:16 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:17 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:17 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:17 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:17 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:17 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:17 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-27 00:41:17 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:17 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:17 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:17 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:17 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:18 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:18 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:18 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:18 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:18 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:18 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-27 00:41:18 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:18 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:18 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:18 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:19 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:19 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:19 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:19 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:19 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 00:41:20 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_LAND with priority 1
+2024-09-27 00:41:20 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_LAND queued with counter 5
+2024-09-27 00:41:20 [Thread-2 (process_commands)] INFO: Processing command with counter 5 and priority 1
+2024-09-27 00:41:20 [Thread-3 (test_podstawowy)] INFO: Oczekiwanie na osiągnięcie wysokości: 0.1m z tolerancją 0.2m
+2024-09-27 00:41:20 [Thread-3 (test_podstawowy)] INFO: Skalibrowana bazowa wysokość: 0.0m
+2024-09-27 00:41:20 [Thread-2 (process_commands)] INFO: Command 5 processed successfully.
+2024-09-27 00:41:20 [Thread-2 (process_commands)] INFO: Command processing thread stopped.
+2024-09-27 00:41:22 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-27 00:41:22 [Thread-3 (test_podstawowy)] ERROR: Failed to send command: set_flight_mode_STABILIZE - command processor thread not alive
+2024-09-27 01:48:37 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_STABILIZE with priority 1
+2024-09-27 01:48:37 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_STABILIZE queued with counter 1
+2024-09-27 01:48:37 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 1
+2024-09-27 01:48:37 [Thread-3 (test_podstawowy)] INFO: Sending command: arm_disarm with priority 1
+2024-09-27 01:48:37 [Thread-3 (test_podstawowy)] INFO: Command arm_disarm queued with counter 2
+2024-09-27 01:48:37 [Thread-3 (test_podstawowy)] INFO: Sending command: set_flight_mode_GUIDED with priority 1
+2024-09-27 01:48:37 [Thread-3 (test_podstawowy)] INFO: Command set_flight_mode_GUIDED queued with counter 3
+2024-09-27 01:48:37 [Thread-3 (test_podstawowy)] INFO: Sending command: takeoff with priority 1
+2024-09-27 01:48:37 [Thread-3 (test_podstawowy)] INFO: Command takeoff queued with counter 4
+2024-09-27 01:48:37 [Thread-3 (test_podstawowy)] INFO: Oczekiwanie na osiągnięcie wysokości: 1.5m z tolerancją 0.2m
+2024-09-27 01:48:37 [Thread-3 (test_podstawowy)] INFO: Skalibrowana bazowa wysokość: 2589.13m
+2024-09-27 01:48:37 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:37 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-27 01:48:37 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:37 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:37 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-09-27 01:48:37 [Thread-2 (process_commands)] INFO: Processing command with counter 2 and priority 1
+2024-09-27 01:48:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:38 [Thread-2 (process_commands)] INFO: Command 2 processed successfully.
+2024-09-27 01:48:38 [Thread-2 (process_commands)] INFO: Processing command with counter 3 and priority 1
+2024-09-27 01:48:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:38 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-27 01:48:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:38 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:38 [Thread-2 (process_commands)] INFO: Command 3 processed successfully.
+2024-09-27 01:48:38 [Thread-2 (process_commands)] INFO: Processing command with counter 4 and priority 1
+2024-09-27 01:48:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:39 [Thread-2 (process_commands)] INFO: Command 4 processed successfully.
+2024-09-27 01:48:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:39 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:40 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:40 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-27 01:48:40 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:40 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:40 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:40 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:40 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:40 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:40 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:41 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:41 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:41 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:41 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-27 01:48:41 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:42 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:42 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:42 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:42 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:42 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:42 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:42 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:42 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:42 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:42 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-27 01:48:43 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:43 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:43 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:43 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:43 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:43 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:43 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:43 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:43 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:44 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:44 [Thread-3 (test_podstawowy)] INFO: Dron zmienia wysokość... Bieżąca wysokość: N/D
+2024-09-27 01:48:44 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:44 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:44 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-09-27 01:48:45 [Thread-3 (test_podstawowy)] WARNING: Bieżąca wysokość jest niezdefiniowana.
+2024-10-04 21:52:07 [Thread-1 (telemetry_collection)] INFO: Sending command: <lambda> with priority 2
+2024-10-04 21:52:07 [Thread-1 (telemetry_collection)] INFO: Command <lambda> queued with counter 1
+2024-10-04 21:52:07 [Thread-2 (process_commands)] INFO: Processing command with counter 1 and priority 2
+2024-10-04 21:52:10 [Thread-2 (process_commands)] INFO: Command 1 processed successfully.
+2024-10-04 21:52:10 [Thread-2 (process_commands)] INFO: Command processing thread stopped.

@@ -1,0 +1,21 @@
+# Ignoruj pliki swap (Vim/Neovim)
+*.swp
+*.swo
+
+# Ignoruj pliki logów
+LOGS/*.json
+LOGS/*.json.temp
+
+# Ignoruj pliki binarne
+*.out
+*.exe
+*.dll
+
+# Ignoruj pliki Pythonowe
+__pycache__/
+*.py[cod]
+
+# Ignoruj tymczasowe pliki edytorów
+*.bak
+*.tmp
+*~

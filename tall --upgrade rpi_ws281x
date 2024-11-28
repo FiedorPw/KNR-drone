@@ -1,0 +1,485 @@
+Sep 28 12:38:12 knrpi systemd[1]: Started paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A start job for unit paski_led.service has finished successfully[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA start job for unit paski_led.service has finished successfully.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 160.[0m
+Sep 28 12:38:13 knrpi python3[2249]: Can't open /dev/mem: Permission denied
+Sep 28 12:38:13 knrpi python3[2249]: Traceback (most recent call last):
+Sep 28 12:38:13 knrpi python3[2249]:   File "/home/KNR/KNR-dron/paski_led.py", line 15, in <module>
+Sep 28 12:38:13 knrpi python3[2249]:     strip.begin()
+Sep 28 12:38:13 knrpi python3[2249]:   File "/usr/local/lib/python3.11/dist-packages/rpi_ws281x/rpi_ws281x.py", line 143, in begin
+Sep 28 12:38:13 knrpi python3[2249]:     raise RuntimeError('ws2811_init failed with code {0} ({1})'.format(resp, str_resp))
+Sep 28 12:38:13 knrpi python3[2249]: RuntimeError: ws2811_init failed with code -5 (mmap() failed)
+Sep 28 12:38:13 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Main process exited, code=killed, status=11/SEGV[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit process exited[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAn ExecStart= process belonging to unit paski_led.service has exited.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe process' exit code is 'killed' and its exit status is 11.[0m
+Sep 28 12:38:13 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Failed with result 'signal'.[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit failed[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe unit paski_led.service has entered the 'failed' state with result 'signal'.[0m
+Sep 28 12:38:13 knrpi systemd[1]: paski_led.service: Scheduled restart job, restart counter is at 1.
+[0;38;5;245m░░ [0m[0;32mSubject: Automatic restarting of a unit has been scheduled[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAutomatic restarting of the unit paski_led.service has been scheduled, as the result for[0m
+[0;38;5;245m░░[0m [0;32mthe configured Restart= setting for the unit.[0m
+Sep 28 12:38:13 knrpi systemd[1]: Stopped paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A stop job for unit paski_led.service has finished[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA stop job for unit paski_led.service has finished.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 4527 and the job result is done.[0m
+Sep 28 12:38:13 knrpi systemd[1]: Started paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A start job for unit paski_led.service has finished successfully[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA start job for unit paski_led.service has finished successfully.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 4527.[0m
+Sep 28 12:38:13 knrpi python3[2252]: Can't open /dev/mem: Permission denied
+Sep 28 12:38:13 knrpi python3[2252]: Traceback (most recent call last):
+Sep 28 12:38:13 knrpi python3[2252]:   File "/home/KNR/KNR-dron/paski_led.py", line 15, in <module>
+Sep 28 12:38:13 knrpi python3[2252]:     strip.begin()
+Sep 28 12:38:13 knrpi python3[2252]:   File "/usr/local/lib/python3.11/dist-packages/rpi_ws281x/rpi_ws281x.py", line 143, in begin
+Sep 28 12:38:13 knrpi python3[2252]:     raise RuntimeError('ws2811_init failed with code {0} ({1})'.format(resp, str_resp))
+Sep 28 12:38:13 knrpi python3[2252]: RuntimeError: ws2811_init failed with code -5 (mmap() failed)
+Sep 28 12:38:13 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Main process exited, code=killed, status=11/SEGV[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit process exited[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAn ExecStart= process belonging to unit paski_led.service has exited.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe process' exit code is 'killed' and its exit status is 11.[0m
+Sep 28 12:38:13 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Failed with result 'signal'.[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit failed[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe unit paski_led.service has entered the 'failed' state with result 'signal'.[0m
+Sep 28 12:38:13 knrpi systemd[1]: paski_led.service: Scheduled restart job, restart counter is at 2.
+[0;38;5;245m░░ [0m[0;32mSubject: Automatic restarting of a unit has been scheduled[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAutomatic restarting of the unit paski_led.service has been scheduled, as the result for[0m
+[0;38;5;245m░░[0m [0;32mthe configured Restart= setting for the unit.[0m
+Sep 28 12:38:13 knrpi systemd[1]: Stopped paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A stop job for unit paski_led.service has finished[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA stop job for unit paski_led.service has finished.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 4605 and the job result is done.[0m
+Sep 28 12:38:13 knrpi systemd[1]: Started paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A start job for unit paski_led.service has finished successfully[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA start job for unit paski_led.service has finished successfully.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 4605.[0m
+Sep 28 12:38:13 knrpi python3[2253]: Can't open /dev/mem: Permission denied
+Sep 28 12:38:13 knrpi python3[2253]: Traceback (most recent call last):
+Sep 28 12:38:13 knrpi python3[2253]:   File "/home/KNR/KNR-dron/paski_led.py", line 15, in <module>
+Sep 28 12:38:13 knrpi python3[2253]:     strip.begin()
+Sep 28 12:38:13 knrpi python3[2253]:   File "/usr/local/lib/python3.11/dist-packages/rpi_ws281x/rpi_ws281x.py", line 143, in begin
+Sep 28 12:38:13 knrpi python3[2253]:     raise RuntimeError('ws2811_init failed with code {0} ({1})'.format(resp, str_resp))
+Sep 28 12:38:13 knrpi python3[2253]: RuntimeError: ws2811_init failed with code -5 (mmap() failed)
+Sep 28 12:38:13 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Main process exited, code=killed, status=11/SEGV[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit process exited[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAn ExecStart= process belonging to unit paski_led.service has exited.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe process' exit code is 'killed' and its exit status is 11.[0m
+Sep 28 12:38:13 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Failed with result 'signal'.[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit failed[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe unit paski_led.service has entered the 'failed' state with result 'signal'.[0m
+Sep 28 12:38:14 knrpi systemd[1]: paski_led.service: Scheduled restart job, restart counter is at 3.
+[0;38;5;245m░░ [0m[0;32mSubject: Automatic restarting of a unit has been scheduled[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAutomatic restarting of the unit paski_led.service has been scheduled, as the result for[0m
+[0;38;5;245m░░[0m [0;32mthe configured Restart= setting for the unit.[0m
+Sep 28 12:38:14 knrpi systemd[1]: Stopped paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A stop job for unit paski_led.service has finished[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA stop job for unit paski_led.service has finished.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 4683 and the job result is done.[0m
+Sep 28 12:38:14 knrpi systemd[1]: Started paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A start job for unit paski_led.service has finished successfully[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA start job for unit paski_led.service has finished successfully.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 4683.[0m
+Sep 28 12:38:14 knrpi python3[2254]: Can't open /dev/mem: Permission denied
+Sep 28 12:38:14 knrpi python3[2254]: Traceback (most recent call last):
+Sep 28 12:38:14 knrpi python3[2254]:   File "/home/KNR/KNR-dron/paski_led.py", line 15, in <module>
+Sep 28 12:38:14 knrpi python3[2254]:     strip.begin()
+Sep 28 12:38:14 knrpi python3[2254]:   File "/usr/local/lib/python3.11/dist-packages/rpi_ws281x/rpi_ws281x.py", line 143, in begin
+Sep 28 12:38:14 knrpi python3[2254]:     raise RuntimeError('ws2811_init failed with code {0} ({1})'.format(resp, str_resp))
+Sep 28 12:38:14 knrpi python3[2254]: RuntimeError: ws2811_init failed with code -5 (mmap() failed)
+Sep 28 12:38:14 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Main process exited, code=killed, status=11/SEGV[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit process exited[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAn ExecStart= process belonging to unit paski_led.service has exited.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe process' exit code is 'killed' and its exit status is 11.[0m
+Sep 28 12:38:14 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Failed with result 'signal'.[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit failed[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe unit paski_led.service has entered the 'failed' state with result 'signal'.[0m
+Sep 28 12:38:14 knrpi systemd[1]: paski_led.service: Scheduled restart job, restart counter is at 4.
+[0;38;5;245m░░ [0m[0;32mSubject: Automatic restarting of a unit has been scheduled[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAutomatic restarting of the unit paski_led.service has been scheduled, as the result for[0m
+[0;38;5;245m░░[0m [0;32mthe configured Restart= setting for the unit.[0m
+Sep 28 12:38:14 knrpi systemd[1]: Stopped paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A stop job for unit paski_led.service has finished[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA stop job for unit paski_led.service has finished.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 4761 and the job result is done.[0m
+Sep 28 12:38:14 knrpi systemd[1]: Started paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A start job for unit paski_led.service has finished successfully[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA start job for unit paski_led.service has finished successfully.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 4761.[0m
+Sep 28 12:38:14 knrpi python3[2255]: Can't open /dev/mem: Permission denied
+Sep 28 12:38:14 knrpi python3[2255]: Traceback (most recent call last):
+Sep 28 12:38:14 knrpi python3[2255]:   File "/home/KNR/KNR-dron/paski_led.py", line 15, in <module>
+Sep 28 12:38:14 knrpi python3[2255]:     strip.begin()
+Sep 28 12:38:14 knrpi python3[2255]:   File "/usr/local/lib/python3.11/dist-packages/rpi_ws281x/rpi_ws281x.py", line 143, in begin
+Sep 28 12:38:14 knrpi python3[2255]:     raise RuntimeError('ws2811_init failed with code {0} ({1})'.format(resp, str_resp))
+Sep 28 12:38:14 knrpi python3[2255]: RuntimeError: ws2811_init failed with code -5 (mmap() failed)
+Sep 28 12:38:14 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Main process exited, code=killed, status=11/SEGV[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit process exited[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAn ExecStart= process belonging to unit paski_led.service has exited.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe process' exit code is 'killed' and its exit status is 11.[0m
+Sep 28 12:38:14 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Failed with result 'signal'.[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit failed[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe unit paski_led.service has entered the 'failed' state with result 'signal'.[0m
+Sep 28 12:38:14 knrpi systemd[1]: paski_led.service: Scheduled restart job, restart counter is at 5.
+[0;38;5;245m░░ [0m[0;32mSubject: Automatic restarting of a unit has been scheduled[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAutomatic restarting of the unit paski_led.service has been scheduled, as the result for[0m
+[0;38;5;245m░░[0m [0;32mthe configured Restart= setting for the unit.[0m
+Sep 28 12:38:14 knrpi systemd[1]: Stopped paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A stop job for unit paski_led.service has finished[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA stop job for unit paski_led.service has finished.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 4839 and the job result is done.[0m
+Sep 28 12:38:14 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Start request repeated too quickly.[0m
+Sep 28 12:38:14 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Failed with result 'signal'.[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit failed[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe unit paski_led.service has entered the 'failed' state with result 'signal'.[0m
+Sep 28 12:38:14 knrpi systemd[1]: [0;1;31m[0;1;39m[0;1;31mFailed to start paski_led.service - LED Strip Program.[0m
+[0;38;5;245m░░ [0m[0;32mSubject: A start job for unit paski_led.service has failed[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA start job for unit paski_led.service has finished with a failure.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 4839 and the job result is failed.[0m
+Sep 28 12:43:12 knrpi systemd[1]: Started paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A start job for unit paski_led.service has finished successfully[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA start job for unit paski_led.service has finished successfully.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 6089.[0m
+Sep 28 12:43:13 knrpi python3[3622]: Can't open /dev/mem: Permission denied
+Sep 28 12:43:13 knrpi python3[3622]: Traceback (most recent call last):
+Sep 28 12:43:13 knrpi python3[3622]:   File "/home/KNR/KNR-dron/paski_led.py", line 15, in <module>
+Sep 28 12:43:13 knrpi python3[3622]:     strip.begin()
+Sep 28 12:43:13 knrpi python3[3622]:   File "/usr/local/lib/python3.11/dist-packages/rpi_ws281x/rpi_ws281x.py", line 143, in begin
+Sep 28 12:43:13 knrpi python3[3622]:     raise RuntimeError('ws2811_init failed with code {0} ({1})'.format(resp, str_resp))
+Sep 28 12:43:13 knrpi python3[3622]: RuntimeError: ws2811_init failed with code -5 (mmap() failed)
+Sep 28 12:43:13 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Main process exited, code=killed, status=11/SEGV[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit process exited[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAn ExecStart= process belonging to unit paski_led.service has exited.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe process' exit code is 'killed' and its exit status is 11.[0m
+Sep 28 12:43:13 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Failed with result 'signal'.[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit failed[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe unit paski_led.service has entered the 'failed' state with result 'signal'.[0m
+Sep 28 12:43:13 knrpi systemd[1]: paski_led.service: Scheduled restart job, restart counter is at 1.
+[0;38;5;245m░░ [0m[0;32mSubject: Automatic restarting of a unit has been scheduled[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAutomatic restarting of the unit paski_led.service has been scheduled, as the result for[0m
+[0;38;5;245m░░[0m [0;32mthe configured Restart= setting for the unit.[0m
+Sep 28 12:43:13 knrpi systemd[1]: Stopped paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A stop job for unit paski_led.service has finished[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA stop job for unit paski_led.service has finished.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 6167 and the job result is done.[0m
+Sep 28 12:43:13 knrpi systemd[1]: Started paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A start job for unit paski_led.service has finished successfully[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA start job for unit paski_led.service has finished successfully.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 6167.[0m
+Sep 28 12:43:13 knrpi python3[3623]: Can't open /dev/mem: Permission denied
+Sep 28 12:43:13 knrpi python3[3623]: Traceback (most recent call last):
+Sep 28 12:43:13 knrpi python3[3623]:   File "/home/KNR/KNR-dron/paski_led.py", line 15, in <module>
+Sep 28 12:43:13 knrpi python3[3623]:     strip.begin()
+Sep 28 12:43:13 knrpi python3[3623]:   File "/usr/local/lib/python3.11/dist-packages/rpi_ws281x/rpi_ws281x.py", line 143, in begin
+Sep 28 12:43:13 knrpi python3[3623]:     raise RuntimeError('ws2811_init failed with code {0} ({1})'.format(resp, str_resp))
+Sep 28 12:43:13 knrpi python3[3623]: RuntimeError: ws2811_init failed with code -5 (mmap() failed)
+Sep 28 12:43:13 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Main process exited, code=killed, status=11/SEGV[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit process exited[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAn ExecStart= process belonging to unit paski_led.service has exited.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe process' exit code is 'killed' and its exit status is 11.[0m
+Sep 28 12:43:13 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Failed with result 'signal'.[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit failed[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe unit paski_led.service has entered the 'failed' state with result 'signal'.[0m
+Sep 28 12:43:13 knrpi systemd[1]: paski_led.service: Scheduled restart job, restart counter is at 2.
+[0;38;5;245m░░ [0m[0;32mSubject: Automatic restarting of a unit has been scheduled[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAutomatic restarting of the unit paski_led.service has been scheduled, as the result for[0m
+[0;38;5;245m░░[0m [0;32mthe configured Restart= setting for the unit.[0m
+Sep 28 12:43:13 knrpi systemd[1]: Stopped paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A stop job for unit paski_led.service has finished[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA stop job for unit paski_led.service has finished.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 6245 and the job result is done.[0m
+Sep 28 12:43:13 knrpi systemd[1]: Started paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A start job for unit paski_led.service has finished successfully[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA start job for unit paski_led.service has finished successfully.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 6245.[0m
+Sep 28 12:43:13 knrpi python3[3624]: Can't open /dev/mem: Permission denied
+Sep 28 12:43:13 knrpi python3[3624]: Traceback (most recent call last):
+Sep 28 12:43:13 knrpi python3[3624]:   File "/home/KNR/KNR-dron/paski_led.py", line 15, in <module>
+Sep 28 12:43:13 knrpi python3[3624]:     strip.begin()
+Sep 28 12:43:13 knrpi python3[3624]:   File "/usr/local/lib/python3.11/dist-packages/rpi_ws281x/rpi_ws281x.py", line 143, in begin
+Sep 28 12:43:13 knrpi python3[3624]:     raise RuntimeError('ws2811_init failed with code {0} ({1})'.format(resp, str_resp))
+Sep 28 12:43:13 knrpi python3[3624]: RuntimeError: ws2811_init failed with code -5 (mmap() failed)
+Sep 28 12:43:13 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Main process exited, code=killed, status=11/SEGV[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit process exited[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAn ExecStart= process belonging to unit paski_led.service has exited.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe process' exit code is 'killed' and its exit status is 11.[0m
+Sep 28 12:43:13 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Failed with result 'signal'.[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit failed[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe unit paski_led.service has entered the 'failed' state with result 'signal'.[0m
+Sep 28 12:43:13 knrpi systemd[1]: paski_led.service: Scheduled restart job, restart counter is at 3.
+[0;38;5;245m░░ [0m[0;32mSubject: Automatic restarting of a unit has been scheduled[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAutomatic restarting of the unit paski_led.service has been scheduled, as the result for[0m
+[0;38;5;245m░░[0m [0;32mthe configured Restart= setting for the unit.[0m
+Sep 28 12:43:13 knrpi systemd[1]: Stopped paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A stop job for unit paski_led.service has finished[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA stop job for unit paski_led.service has finished.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 6323 and the job result is done.[0m
+Sep 28 12:43:13 knrpi systemd[1]: Started paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A start job for unit paski_led.service has finished successfully[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA start job for unit paski_led.service has finished successfully.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 6323.[0m
+Sep 28 12:43:13 knrpi python3[3627]: Can't open /dev/mem: Permission denied
+Sep 28 12:43:13 knrpi python3[3627]: Traceback (most recent call last):
+Sep 28 12:43:13 knrpi python3[3627]:   File "/home/KNR/KNR-dron/paski_led.py", line 15, in <module>
+Sep 28 12:43:13 knrpi python3[3627]:     strip.begin()
+Sep 28 12:43:13 knrpi python3[3627]:   File "/usr/local/lib/python3.11/dist-packages/rpi_ws281x/rpi_ws281x.py", line 143, in begin
+Sep 28 12:43:13 knrpi python3[3627]:     raise RuntimeError('ws2811_init failed with code {0} ({1})'.format(resp, str_resp))
+Sep 28 12:43:13 knrpi python3[3627]: RuntimeError: ws2811_init failed with code -5 (mmap() failed)
+Sep 28 12:43:13 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Main process exited, code=killed, status=11/SEGV[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit process exited[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAn ExecStart= process belonging to unit paski_led.service has exited.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe process' exit code is 'killed' and its exit status is 11.[0m
+Sep 28 12:43:13 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Failed with result 'signal'.[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit failed[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe unit paski_led.service has entered the 'failed' state with result 'signal'.[0m
+Sep 28 12:43:13 knrpi systemd[1]: paski_led.service: Scheduled restart job, restart counter is at 4.
+[0;38;5;245m░░ [0m[0;32mSubject: Automatic restarting of a unit has been scheduled[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAutomatic restarting of the unit paski_led.service has been scheduled, as the result for[0m
+[0;38;5;245m░░[0m [0;32mthe configured Restart= setting for the unit.[0m
+Sep 28 12:43:13 knrpi systemd[1]: Stopped paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A stop job for unit paski_led.service has finished[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA stop job for unit paski_led.service has finished.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 6401 and the job result is done.[0m
+Sep 28 12:43:13 knrpi systemd[1]: Started paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A start job for unit paski_led.service has finished successfully[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA start job for unit paski_led.service has finished successfully.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 6401.[0m
+Sep 28 12:43:14 knrpi python3[3637]: Can't open /dev/mem: Permission denied
+Sep 28 12:43:14 knrpi python3[3637]: Traceback (most recent call last):
+Sep 28 12:43:14 knrpi python3[3637]:   File "/home/KNR/KNR-dron/paski_led.py", line 15, in <module>
+Sep 28 12:43:14 knrpi python3[3637]:     strip.begin()
+Sep 28 12:43:14 knrpi python3[3637]:   File "/usr/local/lib/python3.11/dist-packages/rpi_ws281x/rpi_ws281x.py", line 143, in begin
+Sep 28 12:43:14 knrpi python3[3637]:     raise RuntimeError('ws2811_init failed with code {0} ({1})'.format(resp, str_resp))
+Sep 28 12:43:14 knrpi python3[3637]: RuntimeError: ws2811_init failed with code -5 (mmap() failed)
+Sep 28 12:43:14 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Main process exited, code=killed, status=11/SEGV[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit process exited[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAn ExecStart= process belonging to unit paski_led.service has exited.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe process' exit code is 'killed' and its exit status is 11.[0m
+Sep 28 12:43:14 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Failed with result 'signal'.[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit failed[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe unit paski_led.service has entered the 'failed' state with result 'signal'.[0m
+Sep 28 12:43:14 knrpi systemd[1]: paski_led.service: Scheduled restart job, restart counter is at 5.
+[0;38;5;245m░░ [0m[0;32mSubject: Automatic restarting of a unit has been scheduled[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mAutomatic restarting of the unit paski_led.service has been scheduled, as the result for[0m
+[0;38;5;245m░░[0m [0;32mthe configured Restart= setting for the unit.[0m
+Sep 28 12:43:14 knrpi systemd[1]: Stopped paski_led.service - LED Strip Program.
+[0;38;5;245m░░ [0m[0;32mSubject: A stop job for unit paski_led.service has finished[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA stop job for unit paski_led.service has finished.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 6479 and the job result is done.[0m
+Sep 28 12:43:14 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Start request repeated too quickly.[0m
+Sep 28 12:43:14 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Failed with result 'signal'.[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit failed[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe unit paski_led.service has entered the 'failed' state with result 'signal'.[0m
+Sep 28 12:43:14 knrpi systemd[1]: [0;1;31m[0;1;39m[0;1;31mFailed to start paski_led.service - LED Strip Program.[0m
+[0;38;5;245m░░ [0m[0;32mSubject: A start job for unit paski_led.service has failed[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA start job for unit paski_led.service has finished with a failure.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 6479 and the job result is failed.[0m
+Sep 28 12:43:15 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Start request repeated too quickly.[0m
+Sep 28 12:43:15 knrpi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpaski_led.service: Failed with result 'signal'.[0m
+[0;38;5;245m░░ [0m[0;32mSubject: Unit failed[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe unit paski_led.service has entered the 'failed' state with result 'signal'.[0m
+Sep 28 12:43:15 knrpi systemd[1]: [0;1;31m[0;1;39m[0;1;31mFailed to start paski_led.service - LED Strip Program.[0m
+[0;38;5;245m░░ [0m[0;32mSubject: A start job for unit paski_led.service has failed[0m
+[0;38;5;245m░░[0m [0;32mDefined-By: systemd[0m
+[0;38;5;245m░░[0m [0;32mSupport: https://www.debian.org/support[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mA start job for unit paski_led.service has finished with a failure.[0m
+[0;38;5;245m░░[0m [0;32m[0m
+[0;38;5;245m░░[0m [0;32mThe job identifier is 6557 and the job result is failed.[0m
